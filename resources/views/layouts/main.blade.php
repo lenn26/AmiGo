@@ -6,23 +6,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ config('app.name', 'AmiGo') }}</title>
     <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600,700" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
     <!-- Styles / Scripts -->
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @else
+
+    <!-- Importation de police -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+    </style>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Instrument Sans', 'sans-serif'],
+                        sans: ['Outfit', 'sans-serif'],
                     },
                     colors: {
-                        'amigo-blue': '#3B82F6',
-                        'amigo-green': '#4ADE80',
+                        'amigo-blue': '#2794EB',
+                        'amigo-green': '#70D78D',
                     }
                 }
             }
@@ -34,6 +39,7 @@
 <body class="font-sans antialiased text-gray-900 bg-white flex flex-col min-h-screen">
     <!-- Header -->
     <header class="container mx-auto px-6 py-4 flex items-center justify-between">
+        <!-- Navbar -->
         <div class="flex items-center gap-2">
             <!-- Logo -->
             <div class="w-8 h-8 rounded-full bg-gradient-to-b from-blue-500 to-green-400 flex items-center justify-center text-white font-bold shadow-sm">
@@ -60,13 +66,14 @@
         {{ $slot }}
     </main>
 
-    <footer class="bg-[#111827] text-white pt-20 pb-10 border-t border-gray-800">
+    <!-- Footer -->
+    <footer class="bg-[#1E1E1E] text-white pt-20 pb-3 border-t border-[#1E1E1E]">
         <div class="container mx-auto px-6">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-32">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-24">
                 <!-- Page Links -->
-                <div class="text-center md:text-left">
-                    <h4 class="text-[#3B82F6] font-bold text-2xl mb-8 uppercase tracking-wider">Page</h4>
-                    <ul class="space-y-4 text-gray-300 font-medium text-lg">
+                <div class="text-center">
+                    <h4 class="bg-gradient-to-r from-[#2794EB] to-[#379ECF] bg-clip-text text-transparent font-semibold text-5xl mb-8 uppercase tracking-wider">Page</h4>
+                    <ul class="space-y-4 text-gray-300 font-semibold text-4xl">
                         <li><a href="/" class="hover:text-white transition">Accueil</a></li>
                         <li><a href="#" class="hover:text-white transition">Réserver un trajet !</a></li>
                         <li><a href="#" class="hover:text-white transition">FAQ</a></li>
@@ -75,9 +82,9 @@
                 </div>
 
                 <!-- Social Links -->
-                <div class="text-center md:text-left">
-                    <h4 class="text-[#2DD4BF] font-bold text-2xl mb-8 uppercase tracking-wider">Social</h4>
-                    <ul class="space-y-4 text-gray-300 font-medium text-lg inline-block text-left">
+                <div class="text-center">
+                    <h4 class="bg-gradient-to-r from-[#3AA0C9] to-[#54B09B] bg-clip-text text-transparent font-semibold text-5xl mb-8 uppercase tracking-wider">Social</h4>
+                    <ul class="space-y-4 text-gray-300 font-semibold text-4xl inline-block text-left">
                         <li class="flex items-center gap-4">
                             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37zm1.5-4.87h.01"></path>
@@ -102,9 +109,9 @@
                 </div>
 
                 <!-- Legal Links -->
-                <div class="text-center md:text-left">
-                    <h4 class="text-[#4ADE80] font-bold text-2xl mb-8 uppercase tracking-wider">Légal</h4>
-                    <ul class="space-y-4 text-gray-300 font-medium text-lg">
+                <div class="text-center">
+                    <h4 class="bg-gradient-to-r from-[#5CB68A] to-[#6EC26B] bg-clip-text text-transparent font-semibold text-5xl mb-8 uppercase tracking-wider">Légal</h4>
+                    <ul class="space-y-4 text-gray-300 font-semibold text-4xl">
                         <li><a href="#" class="hover:text-white transition">Mention légales</a></li>
                         <li><a href="#" class="hover:text-white transition">Confidentialité</a></li>
                         <li><a href="#" class="hover:text-white transition">Conditions d'utilisation</a></li>
@@ -112,23 +119,23 @@
                 </div>
             </div>
 
-            <div class="flex flex-col items-center justify-center pt-10">
+            <div class="flex flex-col items-center justify-center pt-4">
                 <!-- Logo Section -->
-                <div class="flex items-center gap-6 mb-10 select-none">
-                    <!-- Logo Image -->
-                    <div class="w-32 h-32 rounded-full flex items-center justify-center relative overflow-hidden">
+                <div class="flex items-center gap-14 mb-16 select-none">
+                    <!-- Image logo AmiGo -->
+                    <div class="w-48 h-48 md:w-72 md:h-72 rounded-full flex items-center justify-center relative overflow-hidden">
                         <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-full h-full object-cover">
                     </div>
 
-                    <!-- Text -->
-                    <span class="text-[8rem] md:text-[10rem] font-bold text-[#1F2937] leading-none tracking-tighter">
+                    <!-- Texte AmiGo -->
+                    <span class="text-[5rem] sm:text-[7rem] md:text-[11rem] lg:text-[20rem] font-bold text-[#333333] leading-none tracking-normal">
                         AmiGo<span class="text-[#84CC16]">.</span>
                     </span>
                 </div>
 
-                <div class="w-full border-t border-gray-800 mb-6"></div>
+                <div class="w-full border-t-[1.5px] border-[#474747] mt-16 mb-6"></div>
 
-                <p class="text-gray-500 text-sm text-left w-full">
+                <p class="text-[#D9DBE1] text-sm text-left w-full">
                     &copy; 2025 AmiGo. Tout droits réservés.
                 </p>
             </div>

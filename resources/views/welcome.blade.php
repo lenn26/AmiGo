@@ -2,45 +2,54 @@
     <!-- Hero Section -->
     <section class="container mx-auto px-6 py-12 lg:py-20 flex flex-col lg:flex-row items-center gap-12">
         <!-- Text Content -->
-        <div class="lg:w-1/2 space-y-8">
+        <div class="lg:w-5/6 space-y-8">
             <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gray-100 text-xs font-medium text-gray-600">
                 <span class="w-2 h-2 rounded-full bg-green-500"></span>
-                Nouveau sur Amiens
+                Réseau étudiant 100% Amiénois
             </div>
 
-            <h1 class="text-5xl lg:text-6xl font-extrabold text-[#333333] leading-tight">
+            <!-- Slogan -->
+            <h1 class="text-5xl lg:text-[96px] font-extrabold text-[#333333]/ leading-[1]">
                 T'as pas de voiture ? <br>
-                <span class="bg-gradient-to-r from-blue-500 to-green-500 bg-clip-text text-transparent">Trouve un Amigo.</span>
+                <span class="bg-gradient-to-r from-[#2794EB] to-[#70D78D] bg-clip-text text-transparent">Trouve un Amigo.</span>
             </h1>
 
-            <p class="text-lg text-[#333333] max-w-lg leading-relaxed">
+            <!-- Description -->
+            <p class="text-lg text-[#333333]/80 max-w-lg leading-relaxed">
                 Amigo connecte les étudiants d'Amiens pour aller en cours.
                 Économise, rencontre du monde, et oublie le bus blindé de 8h.
             </p>
 
+            <!-- Boutons -->
             <div class="flex flex-wrap gap-4">
-                <a href="#" class="px-8 py-4 bg-blue-500 text-white font-semibold rounded-xl hover:bg-blue-600 transition shadow-lg shadow-blue-500/25">
+                <!-- Bouton recherche de trajet -->
+                <a href="#" class="px-8 py-4 bg-[#2794EB] text-white font-semibold rounded-xl hover:bg-blue-600 transition shadow-lg shadow-blue-500/25">
                     Tu cherches un trajet ?
                 </a>
-                <a href="#" class="px-8 py-4 bg-green-400 text-white font-semibold rounded-xl hover:bg-green-500 transition shadow-lg shadow-green-400/25">
+                <!-- Bouton publication de trajet -->
+                <a href="#" class="px-8 py-4 bg-[#70D78D] text-white font-semibold rounded-xl hover:bg-green-500 transition shadow-lg shadow-green-400/25">
                     Publie ton trajet !
                 </a>
             </div>
 
-            <div class="flex items-center gap-8 pt-4 border-t border-gray-100">
+            <!-- Trajets, prix moyen, étudiants connectés, note -->
+            <div class="flex items-center gap-8 pt-4 border-t-[1px] border-[#000000]/13">
                 <div>
                     <p class="text-2xl font-bold text-gray-900">450+</p>
-                    <p class="text-sm text-gray-500">Trajets / semaine</p>
+                    <p class="text-base text-gray-500">Trajets / semaine</p>
                 </div>
                 <div>
                     <p class="text-2xl font-bold text-gray-900">2.5€</p>
-                    <p class="text-sm text-gray-500">Prix moyen</p>
+                    <p class="text-base text-gray-500">Prix moyen</p>
                 </div>
-                <div>
-                    <p class="text-sm font-medium text-gray-900">+400 Étudiants connectés</p>
-                    <div class="flex text-blue-500 text-xs">
-                        ★★★★★ <span class="text-gray-400 ml-1">4.9/5</span>
-                    </div>
+            </div>
+            <div>
+                <div class="flex flex-row">
+                    <p class="text-2xl text-red-500">Faut mettre les images ici</p>
+                    <p class="self-center text-2xl font-medium text-[#333333]/80">+400 Étudiants connectés</p>
+                </div>
+                <div class="flex text-xl text-blue-500">
+                    ★★★★★ <span class="text-blue-500 ml-1">4.9/5</span>
                 </div>
             </div>
         </div>
@@ -144,10 +153,10 @@
     <section class="container mx-auto px-6 py-12">
         <div class="max-w-6xl mx-auto">
             <div class="mb-8">
-                <h2 class="text-3xl font-bold text-gray-900 mb-2">
+                <h2 class="text-5xl font-bold text-[#333333] mb-2">
                     La Map des Amigos<span class="text-blue-500">.</span>
                 </h2>
-                <p class="text-gray-600">
+                <p class="text-[#333333]/80">
                     Visualise en temps réel les conducteurs autour de toi.
                 </p>
             </div>
@@ -158,10 +167,8 @@
                     <!-- Map Background Pattern -->
                     <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#cbd5e1 1px, transparent 1px); background-size: 20px 20px;"></div>
 
-                    <!-- Roads -->
-                    <div class="absolute top-1/2 left-0 w-full h-4 bg-white rotate-12 transform -translate-y-1/2"></div>
-                    <div class="absolute top-0 left-1/3 h-full w-4 bg-white -rotate-6"></div>
-                    <div class="absolute top-1/4 right-0 w-1/2 h-3 bg-white -rotate-3"></div>
+                    <!-- Map -->
+                    <p class="text-center text-red-500">Faut mettre la map ici</p>
 
                     <!-- Pins -->
                     <div class="absolute top-1/3 left-1/4 transform hover:scale-110 transition cursor-pointer group">
@@ -171,7 +178,7 @@
                             </svg>
                         </div>
                         <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-1 bg-gray-900 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition whitespace-nowrap">
-                            Étudiant
+                            Université
                         </div>
                     </div>
 
@@ -182,7 +189,7 @@
                             </svg>
                         </div>
                         <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-1 bg-gray-900 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition whitespace-nowrap">
-                            Départ imminent
+                            Départ
                         </div>
                     </div>
 
@@ -203,7 +210,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                             </svg>
                         </div>
-                        <span class="font-medium text-gray-700">Étudiants</span>
+                        <span class="font-medium text-gray-700">Université</span>
                     </div>
                     <div class="flex items-center gap-3 p-4 bg-white rounded-xl shadow-sm border border-gray-100">
                         <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white">
@@ -211,7 +218,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                             </svg>
                         </div>
-                        <span class="font-medium text-gray-700">Départ imminent</span>
+                        <span class="font-medium text-gray-700">Départ</span>
                     </div>
                 </div>
             </div>
