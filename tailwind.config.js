@@ -12,10 +12,21 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: ['Outfit', ...defaultTheme.fontFamily.sans],
             },
         },
     },
 
-    plugins: [forms],
+    plugins: [
+        forms,
+        function ({ addUtilities }) {
+            addUtilities({
+                '.text-3d': {
+                    'color': '#FFFFFF',
+                    '-webkit-text-stroke': '2px #000000',
+                    'text-shadow': '6px 6px 0px #84CC16',
+                },
+            });
+        },
+    ],
 };

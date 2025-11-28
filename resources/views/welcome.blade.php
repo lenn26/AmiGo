@@ -9,9 +9,9 @@
             </div>
 
             <!-- Slogan -->
-            <h1 class="text-5xl lg:text-[96px] font-extrabold text-[#333333]/ leading-[1]">
-                T'as pas de voiture ? <br>
-                <span class="bg-gradient-to-r from-[#2794EB] to-[#70D78D] bg-clip-text text-transparent">Trouve un Amigo.</span>
+            <h1 class="text-5xl lg:text-[96px] font-bold text-[#333333]/ leading-[1]">
+                T&#8217;as pas de voiture ? <br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-green-500 to-blue-500 bg-300% animate-gradient">Trouve un Amigo.</span>
             </h1>
 
             <!-- Description -->
@@ -163,51 +163,25 @@
 
             <div class="flex flex-col lg:flex-row gap-8">
                 <!-- Map Visual Placeholder -->
-                <div class="w-full lg:w-3/4 bg-gray-100 rounded-[2rem] h-[500px] relative overflow-hidden shadow-inner border border-gray-200">
+                <div class="w-full lg:w-3/4 bg-gray-100 rounded-[2rem] h-[500px] relative overflow-hidden shadow-2xl border border-gray-200">
                     <!-- Map Background Pattern -->
                     <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#cbd5e1 1px, transparent 1px); background-size: 20px 20px;"></div>
 
                     <!-- Map -->
-                    <p class="text-center text-red-500">Faut mettre la map ici</p>
+                    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+                    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
-                    <!-- Pins -->
-                    <div class="absolute top-1/3 left-1/4 transform hover:scale-110 transition cursor-pointer group">
-                        <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white shadow-lg border-4 border-white z-10 relative">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                            </svg>
-                        </div>
-                        <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-1 bg-gray-900 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition whitespace-nowrap">
-                            Université
-                        </div>
-                    </div>
+                    <div id="map" class="w-full h-full z-0"></div>
 
-                    <div class="absolute bottom-1/3 right-1/3 transform hover:scale-110 transition cursor-pointer group">
-                        <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white shadow-lg border-4 border-white z-10 relative">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                            </svg>
-                        </div>
-                        <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-1 bg-gray-900 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition whitespace-nowrap">
-                            Départ
-                        </div>
-                    </div>
 
-                    <div class="absolute top-1/2 right-1/4 transform hover:scale-110 transition cursor-pointer">
-                        <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-white shadow-lg border-2 border-white">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                            </svg>
-                        </div>
-                    </div>
                 </div>
 
                 <!-- Legend -->
                 <div class="w-full lg:w-1/4 space-y-4">
                     <div class="flex items-center gap-3 p-4 bg-white rounded-xl shadow-sm border border-gray-100">
-                        <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        <div class="w-10 h-10 bg-[#84cc16] rounded-full flex items-center justify-center text-white shadow-lg border-2 border-white">
+                            <svg fill="#ffffff" width="20px" height="20px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M16 6.28a1.23 1.23 0 0 0-.62-1.07l-6.74-4a1.27 1.27 0 0 0-1.28 0l-6.75 4a1.25 1.25 0 0 0 0 2.15l1.92 1.12v2.81a1.28 1.28 0 0 0 .62 1.09l4.25 2.45a1.28 1.28 0 0 0 1.24 0l4.25-2.45a1.28 1.28 0 0 0 .62-1.09V8.45l1.24-.73v2.72H16V6.28zm-3.73 5L8 13.74l-4.22-2.45V9.22l3.58 2.13a1.29 1.29 0 0 0 1.28 0l3.62-2.16zM8 10.27l-6.75-4L8 2.26l6.75 4z" />
                             </svg>
                         </div>
                         <span class="font-medium text-gray-700">Université</span>
