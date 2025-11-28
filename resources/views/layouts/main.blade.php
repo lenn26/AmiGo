@@ -36,29 +36,31 @@
     @endif
 </head>
 
-<body class="font-sans antialiased text-gray-900 bg-white flex flex-col min-h-screen">
+<body class="font-sans antialiased text-gray-900 bg-gray-50 flex flex-col min-h-screen">
     <!-- Header -->
-    <header class="container mx-auto px-6 py-4 flex items-center justify-between">
-        <!-- Navbar -->
-        <div class="flex items-center gap-2">
-            <!-- Logo -->
-            <div class="w-8 h-8 rounded-full bg-gradient-to-b from-blue-500 to-green-400 flex items-center justify-center text-white font-bold shadow-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
-                </svg>
+    <header class="w-full py-6 px-4 flex justify-center sticky top-0 z-50 pointer-events-none">
+        <div class="w-full max-w-7xl bg-white rounded-full shadow-xl px-8 py-4 flex items-center justify-between border border-gray-100 pointer-events-auto">
+            <!-- Navbar -->
+            <div class="flex items-center gap-2">
+                <!-- Logo -->
+                <div class="w-8 h-8 rounded-full bg-gradient-to-b from-blue-500 to-green-400 flex items-center justify-center text-white font-bold shadow-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                    </svg>
+                </div>
+                <span class="text-2xl font-bold text-gray-800 tracking-tight">AmiGo<span class="text-green-500">.</span></span>
             </div>
-            <span class="text-2xl font-bold text-gray-800 tracking-tight">Ami<span class="text-green-500">Go.</span></span>
-        </div>
-        <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
-            <a href="/" class="hover:text-black transition">Accueil</a>
-            <a href="#" class="hover:text-black transition">Réserver un trajet !</a>
-            <a href="#" class="hover:text-black transition">FAQ</a>
-            <a href="#" class="hover:text-black transition">Contact</a>
-        </nav>
-        <div class="flex items-center gap-4">
-            <a href="{{ route('register') }}" class="text-sm font-medium text-gray-600 hover:text-black transition">Inscription</a>
-            <a href="{{ route('login') }}" class="px-6 py-2 bg-blue-500 text-white text-sm font-semibold rounded-lg hover:bg-blue-600 transition shadow-md shadow-blue-500/20">Connexion</a>
+            <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
+                <a href="/" class="hover:text-black transition">Accueil</a>
+                <a href="#" class="hover:text-black transition">Réserver un trajet !</a>
+                <a href="#" class="hover:text-black transition">FAQ</a>
+                <a href="#" class="hover:text-black transition">Contact</a>
+            </nav>
+            <div class="flex items-center gap-4">
+                <a href="{{ route('register') }}" class="text-sm font-medium text-gray-600 hover:text-black transition">Inscription</a>
+                <a href="{{ route('login') }}" class="px-6 py-2 bg-blue-500 text-white text-sm font-semibold rounded-lg hover:bg-blue-600 transition shadow-md shadow-blue-500/20">Connexion</a>
+            </div>
         </div>
     </header>
 

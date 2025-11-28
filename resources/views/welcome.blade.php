@@ -9,7 +9,7 @@
             </div>
 
             <!-- Slogan -->
-            <h1 class="text-5xl lg:text-[96px] font-bold text-[#333333]/ leading-[1]">
+            <h1 class="text-5xl lg:text-[96px] font-bold text-[#333333] leading-[1]">
                 T&#8217;as pas de voiture ? <br>
                 <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-green-500 to-blue-500 bg-300% animate-gradient">Trouve un Amigo.</span>
             </h1>
@@ -187,9 +187,9 @@
                         <span class="font-medium text-gray-700">Université</span>
                     </div>
                     <div class="flex items-center gap-3 p-4 bg-white rounded-xl shadow-sm border border-gray-100">
-                        <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        <div class="w-10 h-10 bg-[#2794eb] rounded-full flex items-center justify-center text-white shadow-lg border-2 border-white">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z" />
                             </svg>
                         </div>
                         <span class="font-medium text-gray-700">Départ</span>
