@@ -28,6 +28,15 @@
                     colors: {
                         'amigo-blue': '#2794EB',
                         'amigo-green': '#70D78D',
+                    },
+                    keyframes: {
+                        'underline-grow': {
+                            '0%': { width: '0%' },
+                            '100%': { width: '100%' },
+                        }
+                    },
+                    animation: {
+                        'underline-grow': 'underline-grow 0.3s ease-in-out',
                     }
                 }
             }
@@ -47,10 +56,10 @@
                 <span class="text-3xl font-bold text-[#333333] tracking-tight">AmiGo<span class="text-[#8ED630]">.</span></span>
             </div>
             <nav class="hidden md:flex items-center gap-8 text-base font-medium text-[#333333]">
-                <a href="/" class="hover:text-black transition">Accueil</a>
-                <a href="#" class="hover:text-black transition">Réserver un trajet !</a>
-                <a href="#" class="hover:text-black transition">FAQ</a>
-                <a href="#" class="hover:text-black transition">Contact</a>
+                <a href="/" class="@if(request()->is('/')) text-[#3499FE] font-semibold @else hover:text-black @endif transition">Accueil</a>
+                <a href="#" class="@if(request()->is('trajets*')) text-[#3499FE] font-semibold @else hover:text-black @endif transition">Mes trajets</a>
+                <a href="#" class="@if(request()->is('faq*')) text-[#3499FE] font-semibold @else hover:text-black @endif transition">FAQ</a>
+                <a href="#" class="@if(request()->is('contact*')) text-[#3499FE] font-semibold @else hover:text-black @endif transition">Contact</a>
             </nav>
             <div class="flex items-center gap-4">
                 <a href="{{ route('register') }}" class="text-base font-medium text-[#333333] hover:text-black transition">Inscription</a>
@@ -69,34 +78,34 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-24">
                 <!-- Page Links -->
                 <div class="text-center">
-                    <h4 class="bg-gradient-to-r from-[#2794EB] to-[#379ECF] bg-clip-text text-transparent font-semibold text-5xl mb-8 uppercase tracking-wider">Page</h4>
-                    <ul class="space-y-4 text-gray-300 font-semibold text-4xl">
-                        <li><a href="/" class="hover:text-white transition">Accueil</a></li>
-                        <li><a href="#" class="hover:text-white transition">Réserver un trajet !</a></li>
-                        <li><a href="#" class="hover:text-white transition">FAQ</a></li>
-                        <li><a href="#" class="hover:text-white transition">Contact</a></li>
+                    <h4 class="bg-gradient-to-r from-[#2794EB] to-[#379ECF] bg-clip-text text-transparent font-semibold text-5xl mb-8 uppercase tracking-wider relative inline-block group pb-2">Page<span class="absolute bottom-0 left-0 w-0 h-1 bg-gradient-to-r from-[#2794EB] to-[#379ECF] group-hover:w-full transition-all duration-300"></span></h4>
+                    <ul class="space-y-4 text-gray-300 font-medium text-3xl">
+                        <li class="transition-transform duration-300 hover:-translate-y-1"><a href="/" class="hover:text-white transition">Accueil</a></li>
+                        <li class="transition-transform duration-300 hover:-translate-y-1"><a href="#" class="hover:text-white transition">Mes trajets</a></li>
+                        <li class="transition-transform duration-300 hover:-translate-y-1"><a href="#" class="hover:text-white transition">FAQ</a></li>
+                        <li class="transition-transform duration-300 hover:-translate-y-1"><a href="#" class="hover:text-white transition">Contact</a></li>
                     </ul>
                 </div>
 
                 <!-- Social Links -->
                 <div class="text-center">
-                    <h4 class="bg-gradient-to-r from-[#3AA0C9] to-[#54B09B] bg-clip-text text-transparent font-semibold text-5xl mb-8 uppercase tracking-wider">Social</h4>
-                    <ul class="space-y-4 text-gray-300 font-semibold text-4xl inline-block text-left">
-                        <li class="flex items-center gap-4">
+                    <h4 class="bg-gradient-to-r from-[#3AA0C9] to-[#54B09B] bg-clip-text text-transparent font-semibold text-5xl mb-8 uppercase tracking-wider relative inline-block group pb-2 pt-2">Social<span class="absolute bottom-0 left-0 w-0 h-1 bg-gradient-to-r from-[#3AA0C9] to-[#54B09B] group-hover:w-full transition-all duration-300"></span></h4>
+                    <ul class="space-y-4 text-gray-300 font-medium text-3xl flex flex-col items-start justify-center mx-auto w-fit">
+                        <li class="flex items-center gap-4 transition-transform duration-300 hover:-translate-y-1">
                             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37zm1.5-4.87h.01"></path>
                                 <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
                             </svg>
                             <a href="#" class="hover:text-white transition">Instagram</a>
                         </li>
-                        <li class="flex items-center gap-4">
+                        <li class="flex items-center gap-4 transition-transform duration-300 hover:-translate-y-1">
                             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
                                 <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
                             </svg>
                             <a href="#" class="hover:text-white transition">Twitter</a>
                         </li>
-                        <li class="flex items-center gap-4">
+                        <li class="flex items-center gap-4 transition-transform duration-300 hover:-translate-y-1">
                             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"></path>
                             </svg>
@@ -107,11 +116,11 @@
 
                 <!-- Legal Links -->
                 <div class="text-center">
-                    <h4 class="bg-gradient-to-r from-[#5CB68A] to-[#6EC26B] bg-clip-text text-transparent font-semibold text-5xl mb-8 uppercase tracking-wider">Légal</h4>
-                    <ul class="space-y-4 text-gray-300 font-semibold text-4xl">
-                        <li><a href="#" class="hover:text-white transition">Mention légales</a></li>
-                        <li><a href="#" class="hover:text-white transition">Confidentialité</a></li>
-                        <li><a href="#" class="hover:text-white transition">Conditions d'utilisation</a></li>
+                    <h4 class="bg-gradient-to-r from-[#5CB68A] to-[#6EC26B] bg-clip-text text-transparent font-semibold text-5xl mb-8 uppercase tracking-wider relative inline-block group pb-2 pt-2">Légal<span class="absolute bottom-0 left-0 w-0 h-1 bg-gradient-to-r from-[#5CB68A] to-[#6EC26B] group-hover:w-full transition-all duration-300"></span></h4>
+                    <ul class="space-y-4 text-gray-300 font-medium text-3xl">
+                        <li class="transition-transform duration-300 hover:-translate-y-1"><a href="#" class="hover:text-white transition">Mention légales</a></li>
+                        <li class="transition-transform duration-300 hover:-translate-y-1"><a href="#" class="hover:text-white transition">Confidentialité</a></li>
+                        <li class="transition-transform duration-300 hover:-translate-y-1"><a href="#" class="hover:text-white transition">Conditions d'utilisation</a></li>
                     </ul>
                 </div>
             </div>
