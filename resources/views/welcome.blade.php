@@ -35,11 +35,11 @@
             <!-- Trajets, prix moyen, étudiants connectés, note -->
             <div class="flex items-center gap-8 pt-4 border-t-[1px] border-[#000000]/13">
                 <div>
-                    <p class="text-2xl font-bold text-gray-900">450+</p>
+                    <p class="text-2xl font-bold text-[#333333]">450+</p>
                     <p class="text-base text-gray-500">Trajets / semaine</p>
                 </div>
                 <div>
-                    <p class="text-2xl font-bold text-gray-900">2.5€</p>
+                    <p class="text-2xl font-bold text-[#333333]">2.5€</p>
                     <p class="text-base text-gray-500">Prix moyen</p>
                 </div>
             </div>
@@ -91,56 +91,58 @@
     </section>
 
     <!-- Search Section -->
-    <section class="container mx-auto px-6 py-12">
-        <div class="max-w-4xl mx-auto">
-            <h2 class="text-3xl font-bold text-gray-900 mb-4">
-                Ton trajet express<span class="text-green-500">.</span>
+    <section class="container mx-auto px-6 py-14">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-6xl font-bold text-[#333333] mb-4">
+                Ton trajet express<span class="text-[#8ED630]">.</span>
             </h2>
-            <p class="text-gray-600 mb-8 max-w-2xl">
+            <p class="text-base text-[#333333]/80 mb-8 max-w-3xl">
                 Réserve ta place en deux clics et profite d'un trajet confortable vers ton campus.
                 Arrive à l'heure, sans le stress des transports.
             </p>
 
-            <div class="bg-gradient-to-r from-blue-400 to-green-400 rounded-[2rem] p-8 shadow-xl">
-                <div class="flex flex-col md:flex-row items-center gap-4 bg-white/10 p-2 rounded-xl md:rounded-full backdrop-blur-sm">
-                    <!-- Departure -->
+            <div class="bg-gradient-to-r from-blue-400 to-green-400 rounded-[4rem] p-8 shadow-xl">
+                <div class="flex flex-col md:flex-row items-center gap-4 p-2 rounded-xl md:rounded-full backdrop-blur-sm">
+                    <!-- Départ -->
                     <div class="flex-1 w-full relative group">
                         <label class="block text-xs text-white ml-4 mb-1 font-medium">Départ</label>
-                        <div class="flex items-center bg-white rounded-full px-4 py-3 shadow-sm">
-                            <svg class="w-5 h-5 text-blue-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        <div class="flex items-center bg-white rounded-full px-4 py-3 shadow-sm focus-within:ring-2 focus:ring-blue-500">
+                            <svg width="38px" height="38px" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path clip-rule="evenodd" d="M2 6V6.29266C2 7.72154 2.4863 9.10788 3.37892 10.2236L8 16L12.6211 10.2236C13.5137 9.10788 14 7.72154 14 6.29266V6C14 2.68629 11.3137 0 8 0C4.68629 0 2 2.68629 2 6ZM8 8C9.10457 8 10 7.10457 10 6C10 4.89543 9.10457 4 8 4C6.89543 4 6 4.89543 6 6C6 7.10457 6.89543 8 8 8Z" fill="#2794EB" fill-rule="evenodd" />
                             </svg>
-                            <input type="text" placeholder="Dr. Gare du Nord" class="w-full bg-transparent outline-none text-gray-700 placeholder-gray-400 font-medium">
+                            <input type="text" placeholder="Ex : Gare du Nord" class="w-full bg-transparent outline-none focus:ring-0 border-none text-[#333333] placeholder-gray-400 font-medium focus:border-blue-500">
                         </div>
                     </div>
 
                     <!-- Swap Icon -->
                     <button class="p-2 text-white hover:bg-white/20 rounded-full transition">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
+                        <svg width="55px" height="55px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff">
+                            <path d="M6 13 2 9l4-4" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M2 9h12" stroke="#ffffff" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" />
+                            <path d="m18 19 4-4-4-4" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M22 15H10" stroke="#ffffff" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" />
                         </svg>
                     </button>
 
-                    <!-- Arrival -->
+                    <!-- Arrivée -->
                     <div class="flex-1 w-full relative">
                         <label class="block text-xs text-white ml-4 mb-1 font-medium">Arrivée</label>
-                        <div class="flex items-center bg-white rounded-full px-4 py-3 shadow-sm">
-                            <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21v-8a2 2 0 012-2h14a2 2 0 012 2v8"></path>
+                        <div class="flex items-center bg-white rounded-full px-4 py-3 shadow-sm focus-within:ring-2 focus:ring-blue-500">
+                            <svg width="38px" height="38px" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M1 1V16H3V10H7L9 12H15V3H9L7 1H1Z" fill="#47D6B6" />
                             </svg>
-                            <input type="text" placeholder="Dr. Campus Citadelle" class="w-full bg-transparent outline-none text-gray-700 placeholder-gray-400 font-medium">
+                            <input type="text" placeholder="Ex : Campus Citadelle" class="w-full bg-transparent outline-none focus:ring-0 border-none text-[#333333] placeholder-gray-400 font-medium focus:border-blue-500">
                         </div>
                     </div>
 
-                    <!-- Submit -->
+                    <!-- Bouton go -->
                     <button class="bg-white text-green-500 font-bold py-3 px-8 rounded-full hover:bg-gray-50 transition shadow-lg mt-6 md:mt-0">
                         GO
                     </button>
                 </div>
 
                 <div class="mt-6 flex flex-wrap items-center gap-3 text-sm text-white font-medium">
-                    <span class="opacity-80">Prochains :</span>
+                    <span class="opacity-80">Populaires :</span>
                     <button class="px-3 py-1 border border-white/30 rounded-full hover:bg-white/10 transition">Gare d'Amiens</button>
                     <button class="px-3 py-1 border border-white/30 rounded-full hover:bg-white/10 transition">CHU Sud</button>
                     <button class="px-3 py-1 border border-white/30 rounded-full hover:bg-white/10 transition">St-Leu</button>
@@ -151,12 +153,12 @@
 
     <!-- Map Section -->
     <section class="container mx-auto px-6 py-12">
-        <div class="max-w-6xl mx-auto">
+        <div class="max-w-7xl mx-auto">
             <div class="mb-8">
-                <h2 class="text-5xl font-bold text-[#333333] mb-2">
-                    La Map des Amigos<span class="text-blue-500">.</span>
+                <h2 class="text-6xl font-bold text-[#333333] mb-2">
+                    La Map des Amigos<span class="text-[#2794EB]">.</span>
                 </h2>
-                <p class="text-[#333333]/80">
+                <p class="text-base text-[#333333]/80">
                     Visualise en temps réel les conducteurs autour de toi.
                 </p>
             </div>

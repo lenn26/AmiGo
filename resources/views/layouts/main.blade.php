@@ -38,28 +38,23 @@
 
 <body class="font-sans antialiased text-gray-900 bg-gray-50 flex flex-col min-h-screen">
     <!-- Header -->
-    <header class="w-full py-6 px-4 flex justify-center sticky top-0 z-50 pointer-events-none">
+    <header id="main-navbar" class="w-full py-6 px-4 flex justify-center sticky top-0 z-50 pointer-events-none transition-transform duration-300">
         <div class="w-full max-w-7xl bg-white rounded-full shadow-xl px-8 py-4 flex items-center justify-between border border-gray-100 pointer-events-auto">
             <!-- Navbar -->
             <div class="flex items-center gap-2">
                 <!-- Logo -->
-                <div class="w-8 h-8 rounded-full bg-gradient-to-b from-blue-500 to-green-400 flex items-center justify-center text-white font-bold shadow-sm">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
-                    </svg>
-                </div>
-                <span class="text-2xl font-bold text-gray-800 tracking-tight">AmiGo<span class="text-green-500">.</span></span>
+                <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-12 h-12 rounded-full object-cover">
+                <span class="text-3xl font-bold text-[#333333] tracking-tight">AmiGo<span class="text-[#8ED630]">.</span></span>
             </div>
-            <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
+            <nav class="hidden md:flex items-center gap-8 text-base font-medium text-[#333333]">
                 <a href="/" class="hover:text-black transition">Accueil</a>
                 <a href="#" class="hover:text-black transition">Réserver un trajet !</a>
                 <a href="#" class="hover:text-black transition">FAQ</a>
                 <a href="#" class="hover:text-black transition">Contact</a>
             </nav>
             <div class="flex items-center gap-4">
-                <a href="{{ route('register') }}" class="text-sm font-medium text-gray-600 hover:text-black transition">Inscription</a>
-                <a href="{{ route('login') }}" class="px-6 py-2 bg-blue-500 text-white text-sm font-semibold rounded-lg hover:bg-blue-600 transition shadow-md shadow-blue-500/20">Connexion</a>
+                <a href="{{ route('register') }}" class="text-base font-medium text-[#333333] hover:text-black transition">Inscription</a>
+                <a href="{{ route('login') }}" class="px-6 py-2 bg-[#2794EB] text-white text-base font-semibold rounded-lg hover:bg-blue-600 transition shadow-md shadow-blue-500/20">Connexion</a>
             </div>
         </div>
     </header>
@@ -69,7 +64,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-[#1E1E1E] text-white pt-20 pb-3 border-t border-[#1E1E1E]">
+    <footer id="main-footer" class="bg-[#1E1E1E] text-white pt-20 pb-3 border-t border-[#1E1E1E]">
         <div class="container mx-auto px-6">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-24">
                 <!-- Page Links -->
@@ -143,6 +138,31 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const navbar = document.getElementById('main-navbar');
+            const footer = document.getElementById('main-footer');
+
+            if (navbar && footer) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            // Footer is visible, hide navbar
+                            navbar.classList.add('-translate-y-full');
+                        } else {
+                            // Footer is not visible, show navbar
+                            navbar.classList.remove('-translate-y-full');
+                        }
+                    });
+                }, {
+                    threshold: 0.5 // Trigger when 50% of the footer is visible
+                });
+
+                observer.observe(footer);
+            }
+        });
+    </script>
 </body>
 
 </html>
