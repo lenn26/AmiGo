@@ -1,0 +1,29 @@
+/* Modification du style du bouton de fermeture des icons Mapbox */
+.mapboxgl-popup-close-button {
+    font-size: 24px;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    color: #4b5563;
+    right: 4px;
+    top: 4px;
+}
+
+/* Ajout d'un effet au survol pour le bouton de fermeture des icons Mapbox */
+.mapboxgl-popup-close-button:hover {
+    background-color: transparent;
+    color: #000;
+}
+
+/* Modification du logo mapbox en bas à gauche de la map pour être moins visible */
+.mapboxgl-ctrl-logo {
+    transform: scale(0.7);
+    opacity: 0.5;
+    transform-origin: bottom left;
+}
+
+/* Modifie les textes en bas à droite de la map pour les rendres moins visibles */
+.mapboxgl-ctrl-attrib {
+    font-size: 8px;
+    opacity: 0.5;
+}
