@@ -169,13 +169,12 @@
                     <!-- Map Background Pattern -->
                     <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#cbd5e1 1px, transparent 1px); background-size: 20px 20px;"></div>
 
-                    <!-- Map -->
-                    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-                    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+                    <!-- Mapbox Integration -->
+                    <link href="https://api.mapbox.com/mapbox-gl-js/v3.9.4/mapbox-gl.css" rel="stylesheet">
+                    <script src="https://api.mapbox.com/mapbox-gl-js/v3.9.4/mapbox-gl.js"></script>
 
-                    <div id="map" class="w-full h-full z-0"></div>
-
-
+                    <!-- Container de la map -->
+                    <div id="map" class="w-full h-full z-0 rounded-[2rem]"></div>
                 </div>
 
                 <!-- Legend -->
