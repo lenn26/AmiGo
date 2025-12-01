@@ -3,7 +3,7 @@
     <section class="container mx-auto px-6 py-12 lg:py-20 flex flex-col lg:flex-row items-center gap-12">
         <!-- Text Content -->
         <div class="lg:w-5/6 space-y-8">
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gray-100 text-xs font-medium text-gray-600">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gray-100 text-s font-medium text-gray-600">
                 <span class="w-2 h-2 rounded-full bg-green-500"></span>
                 Réseau étudiant 100% Amiénois
             </div>
@@ -56,29 +56,81 @@
 
         <!-- Image/Visual Content -->
         <div class="lg:w-1/2 relative">
-            <div class="relative z-10 bg-white rounded-[2.5rem] shadow-2xl p-4 max-w-sm mx-auto border-8 border-gray-900">
-                <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-32 h-6 bg-gray-900 rounded-b-xl"></div>
+            <div class="relative z-10 bg-white rounded-[2.5rem] shadow-2xl p-3 w-[320px] mx-auto border-8 border-gray-900">
+                <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-24 h-6 bg-gray-900 rounded-b-xl"></div>
                 <div class="h-[600px] bg-gray-50 rounded-[2rem] overflow-hidden flex flex-col relative">
                     <!-- App Header -->
                     <div class="p-6 pt-12 flex justify-between items-center">
                         <div>
-                            <p class="text-gray-500 text-sm">Bonjour !</p>
-                            <h3 class="font-bold text-xl text-gray-900">Où vas-tu ?</h3>
+                            <h3 class="font-bold text-3xl text-gray-900">Bonjour !</h3>
                         </div>
-                        <div class="w-8 h-8 bg-blue-100 rounded-full"></div>
+                        <div class="w-10 h-10 bg-[#47D6B6] rounded-full flex items-center justify-center text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                        </div>
                     </div>
-                    <div class="space-y-3">
-                        <div class="p-4 bg-blue-500 text-white rounded-xl text-center text-sm font-medium">Tu cherches un trajet ?</div>
-                        <div class="p-4 bg-green-400 text-white rounded-xl text-center text-sm font-medium">Publie ton trajet !</div>
+                    
+                    <div class="px-6 space-y-4">
+                        <button class="w-full py-6 bg-[#2794EB] text-white rounded-xl text-center text-lg font-bold shadow-lg shadow-blue-500/20 hover:bg-blue-600 transition">
+                            Tu cherches un trajet ?
+                        </button>
+                        <button class="w-full py-6 bg-[#70D78D] text-white rounded-xl text-center text-lg font-bold shadow-lg shadow-green-500/20 hover:bg-green-500 transition">
+                            Publie ton trajet !
+                        </button>
                     </div>
-                    <div class="mt-8">
-                        <h4 class="font-semibold text-gray-900 mb-4">Trajets à venir</h4>
-                        <div class="space-y-3">
-                            <div class="bg-white p-3 rounded-xl shadow-sm border border-gray-100 flex items-center gap-3">
-                                <div class="w-10 h-10 bg-gray-100 rounded-full"></div>
-                                <div>
-                                    <p class="font-bold text-sm text-gray-900">Gare du Nord</p>
-                                    <p class="text-xs text-gray-500">Départ dans 15 min</p>
+
+                    <div class="mt-8 px-6">
+                        <h4 class="font-bold text-xl text-gray-900 mb-4">Trajets à venir</h4>
+                        <div class="bg-white p-4 rounded-3xl shadow-sm border border-gray-100">
+                            <!-- User Info -->
+                            <div class="flex items-center gap-2 mb-4">
+                                <div class="w-8 h-8 bg-[#2794EB] rounded-full flex items-center justify-center text-white">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                                <span class="font-bold text-gray-900">Sophie L.</span>
+                                <div class="flex items-center text-yellow-400 text-sm">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                    <span class="ml-1 text-gray-500 font-medium">3.8/5</span>
+                                </div>
+                            </div>
+
+                            <!-- Trip Details -->
+                            <div class="flex justify-between items-end">
+                                <!-- Timeline -->
+                                <div class="relative pl-4 border-l-2 border-gray-200 space-y-6 ml-2">
+                                     <!-- Start -->
+                                     <div class="relative">
+                                        <div class="absolute -left-[21px] top-1 w-3 h-3 rounded-full border-2 border-gray-400 bg-white"></div>
+                                        <p class="font-bold text-gray-900 leading-none">07:50</p>
+                                        <p class="text-xs text-gray-500 mt-1">Gare d'Amiens</p>
+                                     </div>
+                                     <!-- End -->
+                                     <div class="relative">
+                                        <div class="absolute -left-[21px] top-1 w-3 h-3 rounded-full border-2 border-[#70D78D] bg-white"></div>
+                                        <p class="font-bold text-gray-900 leading-none">08:15</p>
+                                        <p class="text-xs text-gray-500 mt-1">Campus Citadelle</p>
+                                     </div>
+                                </div>
+
+                                <!-- Price & Info -->
+                                <div class="text-right space-y-2">
+                                    <p class="font-bold text-xl text-gray-900">2,00€</p>
+                                    <div class="bg-[#70D78D]/20 text-[#70D78D] text-[10px] font-bold px-2 py-1 rounded-md inline-block">
+                                        2 places restantes
+                                    </div>
+                                    <div class="flex justify-end gap-2 text-gray-400 pt-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                                        </svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                                        </svg>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -102,7 +154,7 @@
             </p>
 
             <div class="bg-gradient-to-r from-blue-400 to-green-400 rounded-[4rem] p-8 shadow-xl">
-                <div class="flex flex-col md:flex-row items-center gap-4 p-2 rounded-xl md:rounded-full backdrop-blur-sm">
+                <div class="flex flex-col md:flex-row items-center md:items-start gap-4 p-2 rounded-xl md:rounded-full backdrop-blur-sm">
                     <!-- Départ -->
                     <div class="flex-1 w-full relative group">
                         <label class="block text-xs text-white ml-4 mb-1 font-medium">Départ</label>
@@ -115,7 +167,7 @@
                     </div>
 
                     <!-- Swap Icon -->
-                    <button class="p-2 text-white hover:bg-white/20 rounded-full transition">
+                    <button class="p-2 text-white hover:bg-white/20 rounded-full transition md:mt-4">
                         <svg width="55px" height="55px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff">
                             <path d="M6 13 2 9l4-4" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                             <path d="M2 9h12" stroke="#ffffff" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" />
@@ -136,7 +188,7 @@
                     </div>
 
                     <!-- Bouton go -->
-                    <button class="bg-white text-green-500 font-bold py-3 px-8 rounded-full hover:bg-gray-50 transition shadow-lg mt-6 md:mt-0">
+                    <button class="bg-white text-green-500 font-bold py-3 px-8 rounded-full hover:bg-gray-50 transition shadow-lg mt-6 md:mt-7">
                         GO
                     </button>
                 </div>
