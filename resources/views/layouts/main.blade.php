@@ -52,16 +52,29 @@
             <!-- Navbar -->
             <div class="flex items-center gap-2">
                 <!-- Logo -->
-                 <a href="/" class="flex items-center gap-2">
+                <a href="/" class="flex items-center gap-2">
                 <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-12 h-12 rounded-full object-cover">
                 <span class="text-3xl font-bold text-[#333333] tracking-tight">AmiGo<span class="text-[#8ED630]">.</span></span>
                 </a>
             </div>
             <nav class="hidden md:flex items-center gap-8 text-base font-medium text-[#333333]">
-                <a href="/" class="@if(request()->is('/')) text-[#3499FE] font-semibold @else hover:text-black @endif transition">Accueil</a>
-                <a href="#" class="@if(request()->is('trajets*')) text-[#3499FE] font-semibold @else hover:text-black @endif transition">Mes trajets</a>
-                <a href="#" class="@if(request()->is('faq*')) text-[#3499FE] font-semibold @else hover:text-black @endif transition">FAQ</a>
-                <a href="#" class="@if(request()->is('contact*')) text-[#3499FE] font-semibold @else hover:text-black @endif transition">Contact</a>
+                <a href="/" class="relative group @if(request()->is('/')) text-[#3499FE] font-semibold @else hover:text-black @endif transition">
+                    Accueil
+                    <!-- Animation quand on passe la souris sur la navbar -->
+                    <span class="absolute bottom-0 left-0 w-full h-[2px] bg-[#3499FE] origin-right scale-x-0 transition-transform duration-300 group-hover:scale-x-100 group-hover:origin-left"></span>
+                </a>
+                <a href="#" class="relative group @if(request()->is('trajets*')) text-[#3499FE] font-semibold @else hover:text-black @endif transition">
+                    Mes trajets
+                    <span class="absolute bottom-0 left-0 w-full h-[2px] bg-[#3499FE] origin-right scale-x-0 transition-transform duration-300 group-hover:scale-x-100 group-hover:origin-left"></span>
+                </a>
+                <a href="#" class="relative group @if(request()->is('faq*')) text-[#3499FE] font-semibold @else hover:text-black @endif transition">
+                    FAQ
+                    <span class="absolute bottom-0 left-0 w-full h-[2px] bg-[#3499FE] origin-right scale-x-0 transition-transform duration-300 group-hover:scale-x-100 group-hover:origin-left"></span>
+                </a>
+                <a href="{{ route('contact') }}" class="relative group @if(request()->is('contact*')) text-[#3499FE] font-semibold @else hover:text-black @endif transition">
+                    Contact
+                    <span class="absolute bottom-0 left-0 w-full h-[2px] bg-[#3499FE] origin-right scale-x-0 transition-transform duration-300 group-hover:scale-x-100 group-hover:origin-left"></span>
+                </a>
             </nav>
             <div class="flex items-center gap-4">
                 <a href="{{ route('register') }}" class="text-base font-medium text-[#333333] hover:text-black transition">Inscription</a>
