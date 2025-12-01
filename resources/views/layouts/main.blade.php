@@ -52,8 +52,10 @@
             <!-- Navbar -->
             <div class="flex items-center gap-2">
                 <!-- Logo -->
+                 <a href="/" class="flex items-center gap-2">
                 <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-12 h-12 rounded-full object-cover">
                 <span class="text-3xl font-bold text-[#333333] tracking-tight">AmiGo<span class="text-[#8ED630]">.</span></span>
+                </a>
             </div>
             <nav class="hidden md:flex items-center gap-8 text-base font-medium text-[#333333]">
                 <a href="/" class="@if(request()->is('/')) text-[#3499FE] font-semibold @else hover:text-black @endif transition">Accueil</a>

@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const mapElement = document.getElementById("map");
 
     if (mapElement && typeof mapboxgl !== "undefined") {
-        // 1. Configuration de base pour la map
+        // Configuration de base pour la map
         // Clé d'API Mapbox
         mapboxgl.accessToken =
             "pk.eyJ1IjoiaHh5cGUiLCJhIjoiY21pbDVvOW1uMGo3azNlczF4NDNiMDM4MiJ9.xCqfDte4hRFnmkrLAPC5fQ";
@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Ajout des contrôles de navigation (zoom et rotation)
         map.addControl(new mapboxgl.NavigationControl());
 
-        // 2. Liste des universités avec leurs adresses
+        // Liste des universités avec leurs adresses
         const locations = [
             {
                 name: "La Citadelle",
@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
             { name: "ESIEE", address: "14 Quai de la Somme, 80080 Amiens" },
         ];
 
-        // 3. Fonction pour géocoder et ajouter le marqueur
+        // Fonction pour géocoder et ajouter le marqueur
         locations.forEach(function (loc) {
             // Appel à l'API de Geocoding Mapbox
             const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
