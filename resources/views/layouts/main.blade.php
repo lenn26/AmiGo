@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ config('app.name', 'AmiGo') }}</title>
+    <link rel="icon" href="{{ asset('images/logo.png') }}" type="image/png">
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
@@ -31,8 +32,12 @@
                     },
                     keyframes: {
                         'underline-grow': {
-                            '0%': { width: '0%' },
-                            '100%': { width: '100%' },
+                            '0%': {
+                                width: '0%'
+                            },
+                            '100%': {
+                                width: '100%'
+                            },
                         }
                     },
                     animation: {
@@ -53,8 +58,8 @@
             <div class="flex items-center gap-2">
                 <!-- Logo -->
                 <a href="/" class="flex items-center gap-2">
-                <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-12 h-12 rounded-full object-cover">
-                <span class="text-3xl font-bold text-[#333333] tracking-tight">AmiGo<span class="text-[#8ED630]">.</span></span>
+                    <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-12 h-12 rounded-full object-cover">
+                    <span class="text-3xl font-bold text-[#333333] tracking-tight">AmiGo<span class="text-[#8ED630]">.</span></span>
                 </a>
             </div>
             <nav class="hidden md:flex items-center gap-8 text-base font-medium text-[#333333]">
@@ -118,7 +123,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
                                 <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
                             </svg>
-                            <a href="#" class="hover:text-white transition">Twitter</a>
+                            <a href="#" class="hover:text-white transition">X</a>
                         </li>
                         <li class="flex items-center gap-4 transition-transform duration-300 hover:-translate-y-1">
                             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
