@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ config('app.name', 'AmiGo') }}</title>
     <link rel="icon" href="{{ asset('images/logo.png') }}" type="image/png">
+    <link href="{{ asset('images/logo.png') }}">
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
@@ -154,7 +155,7 @@
                     </div>
 
                     <!-- Texte AmiGo -->
-                    <span class="text-[5rem] sm:text-[7rem] md:text-[11rem] lg:text-[20rem] font-bold text-[#333333] leading-none tracking-normal">
+                    <span class="text-[5rem] sm:text-[7rem] md:text-[11rem] lg:text-[20rem] font-bold text-[#ffffff] leading-none tracking-normal">
                         AmiGo<span class="text-[#84CC16]">.</span>
                     </span>
                 </div>

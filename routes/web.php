@@ -21,4 +21,8 @@ Route::get('/contact', function () {
     return view('contact');
 })->name('contact');
 
-require __DIR__.'/auth.php';
+Route::get('/faq', function () {
+    return view('faq');
+})->name('faq');
+
+require __DIR__ . '/auth.php';
