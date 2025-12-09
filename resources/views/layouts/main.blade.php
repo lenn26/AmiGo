@@ -52,6 +52,16 @@
 </head>
 
 <body class="font-sans antialiased text-gray-900 bg-gray-50 flex flex-col min-h-screen">
+    <!-- Global Loader -->
+    <div id="global-loader" class="fixed inset-0 z-[100] bg-white flex flex-col items-center justify-center transition-opacity duration-500">
+        <div class="relative w-24 h-24">
+            <div class="absolute top-0 left-0 w-full h-full border-4 border-gray-100 rounded-full"></div>
+            <div class="absolute top-0 left-0 w-full h-full border-4 border-[#2794EB] rounded-full animate-spin border-t-transparent"></div>
+            <img src="{{ asset('images/logo.png') }}" alt="Loading..." class="w-10 h-10 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-pulse">
+        </div>
+        <p class="mt-4 text-[#333333] font-medium text-lg animate-pulse">Préchauffage du moteur...</p>
+    </div>
+
     <!-- Header -->
     <header id="main-navbar" class="w-full py-6 px-4 flex justify-center sticky top-0 z-50 pointer-events-none transition-transform duration-300">
         <div class="w-full max-w-7xl bg-white rounded-full shadow-xl px-8 py-4 flex items-center justify-between border border-gray-100 pointer-events-auto">
@@ -73,7 +83,7 @@
                     Mes trajets
                     <span class="absolute bottom-0 left-0 w-full h-[2px] bg-[#3499FE] origin-right scale-x-0 transition-transform duration-300 group-hover:scale-x-100 group-hover:origin-left"></span>
                 </a>
-                <a href="#" class="relative group @if(request()->is('faq*')) text-[#3499FE] font-semibold @else hover:text-black @endif transition">
+                <a href="{{ route('faq') }}" class="relative group @if(request()->is('faq*')) text-[#3499FE] font-semibold @else hover:text-black @endif transition">
                     FAQ
                     <span class="absolute bottom-0 left-0 w-full h-[2px] bg-[#3499FE] origin-right scale-x-0 transition-transform duration-300 group-hover:scale-x-100 group-hover:origin-left"></span>
                 </a>
@@ -103,8 +113,8 @@
                     <ul class="space-y-4 text-gray-300 font-medium text-3xl">
                         <li class="transition-transform duration-300 hover:-translate-y-1"><a href="/" class="hover:text-white transition">Accueil</a></li>
                         <li class="transition-transform duration-300 hover:-translate-y-1"><a href="#" class="hover:text-white transition">Mes trajets</a></li>
-                        <li class="transition-transform duration-300 hover:-translate-y-1"><a href="#" class="hover:text-white transition">FAQ</a></li>
-                        <li class="transition-transform duration-300 hover:-translate-y-1"><a href="#" class="hover:text-white transition">Contact</a></li>
+                        <li class="transition-transform duration-300 hover:-translate-y-1"><a href="{{ route('faq') }}" class="hover:text-white transition">FAQ</a></li>
+                        <li class="transition-transform duration-300 hover:-translate-y-1"><a href="{{ route('contact') }}" class="hover:text-white transition">Contact</a></li>
                     </ul>
                 </div>
 
@@ -155,7 +165,7 @@
                     </div>
 
                     <!-- Texte AmiGo -->
-                    <span class="text-[5rem] sm:text-[7rem] md:text-[11rem] lg:text-[20rem] font-bold text-[#ffffff] leading-none tracking-normal">
+                    <span class="text-[5rem] sm:text-[7rem] md:text-[11rem] lg:text-[20rem] font-bold text-[#333333] leading-none tracking-normal">
                         AmiGo<span class="text-[#84CC16]">.</span>
                     </span>
                 </div>
@@ -170,6 +180,33 @@
     </footer>
 
     <script>
+        // Loader Logic
+        window.addEventListener('load', function() {
+            const loader = document.getElementById('global-loader');
+            if (loader) {
+                loader.classList.add('opacity-0', 'pointer-events-none');
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                }, 500);
+            }
+        });
+
+        // Show loader on page transition (link click)
+        document.addEventListener('click', function(e) {
+            const link = e.target.closest('a');
+            // Check if it's a valid link, not an anchor, not external, and not opening in new tab
+            if (link && link.href && !link.href.startsWith('#') && !link.href.includes('#') && link.target !== '_blank' && link.hostname === window.location.hostname) {
+                const loader = document.getElementById('global-loader');
+                if (loader) {
+                    loader.style.display = 'flex';
+                    // Small delay to ensure display:flex is applied before removing opacity
+                    requestAnimationFrame(() => {
+                        loader.classList.remove('opacity-0', 'pointer-events-none');
+                    });
+                }
+            }
+        });
+
         document.addEventListener('DOMContentLoaded', function() {
             const navbar = document.getElementById('main-navbar');
             const footer = document.getElementById('main-footer');

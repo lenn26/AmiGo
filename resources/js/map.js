@@ -40,7 +40,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 name: "IUT Amiens",
                 address: "Avenue des Facultés, 80025 Amiens",
             },
-            { name: "ESIEE", address: "14 Quai de la Somme, 80080 Amiens" },
+            {
+                name: "ESIEE",
+                address: "14 Quai de la Somme, 80080 Amiens",
+            },
         ];
 
         // Fonction pour géocoder et ajouter le marqueur

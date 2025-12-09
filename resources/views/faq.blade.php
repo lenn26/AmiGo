@@ -9,9 +9,14 @@
             <!-- Search Bar -->
             <div class="max-w-4xl mx-auto relative">
                 <div class="relative bg-gradient-to-r from-blue-400 to-[#84CC16] p-2 rounded-full shadow-lg">
-                    <div class="rounded-full flex items-center p-2">
-                        <input type="text" placeholder="Rechercher une FAQ" class="flex-1 px-6 py-3 bg-white outline-none text-gray-700 placeholder-gray-400 font-medium">
-                        <button class="bg-white text-[#333333] px-8 py-3 rounded-full font-bold hover:bg-gray-50 transition shadow-md">
+                    <div class="rounded-full flex items-center gap-2 p-1">
+                        <div class="flex-1 flex items-center bg-white rounded-full px-4 py-3 shadow-sm focus-within:ring-2 focus:ring-blue-500">
+                            <svg width="38px" height="38px" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path clip-rule="evenodd" d="M2 6V6.29266C2 7.72154 2.4863 9.10788 3.37892 10.2236L8 16L12.6211 10.2236C13.5137 9.10788 14 7.72154 14 6.29266V6C14 2.68629 11.3137 0 8 0C4.68629 0 2 2.68629 2 6ZM8 8C9.10457 8 10 7.10457 10 6C10 4.89543 9.10457 4 8 4C6.89543 4 6 4.89543 6 6C6 7.10457 6.89543 8 8 8Z" fill="#2794EB" fill-rule="evenodd" />
+                            </svg>
+                            <input type="text" placeholder="Rechercher une FAQ" class="w-full bg-transparent outline-none focus:ring-0 border-none text-[#333333] placeholder-gray-400 font-medium focus:border-blue-500">
+                        </div>
+                        <button class="bg-white text-[#333333] px-8 py-4 rounded-full font-bold hover:bg-gray-50 transition shadow-md h-full">
                             GO
                         </button>
                     </div>
