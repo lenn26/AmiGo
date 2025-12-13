@@ -52,7 +52,7 @@
 </head>
 
 <body class="font-sans antialiased text-gray-900 bg-gray-50 flex flex-col min-h-screen">
-    <!-- Global Loader -->
+    <!-- Chargement Global -->
     <div id="global-loader" class="fixed inset-0 z-[100] bg-white flex flex-col items-center justify-center transition-opacity duration-500">
         <div class="relative w-24 h-24">
             <div class="absolute top-0 left-0 w-full h-full border-4 border-gray-100 rounded-full"></div>
@@ -62,17 +62,28 @@
         <p class="mt-4 text-[#333333] font-medium text-lg animate-pulse">Préchauffage du moteur...</p>
     </div>
 
-    <!-- Header -->
-    <header id="main-navbar" class="w-full py-6 px-4 flex justify-center sticky top-0 z-50 pointer-events-none transition-transform duration-300">
-        <div class="w-full max-w-7xl bg-white rounded-full shadow-xl px-8 py-4 flex items-center justify-between border border-gray-100 pointer-events-auto">
-            <!-- Navbar -->
-            <div class="flex items-center gap-2">
-                <!-- Logo -->
-                <a href="/" class="flex items-center gap-2">
-                    <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-12 h-12 rounded-full object-cover">
-                    <span class="text-3xl font-bold text-[#333333] tracking-tight">AmiGo<span class="text-[#8ED630]">.</span></span>
-                </a>
+    <!-- En-tête -->
+    <header id="main-navbar" class="w-full py-6 px-4 flex justify-center sticky top-0 z-50 pointer-events-none transition-transform duration-300" x-data="{ open: false }">
+        <div class="w-full max-w-7xl bg-white rounded-[2rem] md:rounded-full shadow-xl px-8 py-4 flex flex-col md:flex-row items-center justify-between border border-gray-100 pointer-events-auto relative">
+            <div class="w-full md:w-auto flex items-center justify-between">
+                <!-- Navbar -->
+                <div class="flex items-center gap-2">
+                    <!-- Logo -->
+                    <a href="/" class="flex items-center gap-2">
+                        <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-12 h-12 rounded-full object-cover">
+                        <span class="text-3xl font-bold text-[#333333] tracking-tight">AmiGo<span class="text-[#8ED630]">.</span></span>
+                    </a>
+                </div>
+
+                <!-- Bouton Menu Mobile -->
+                <button @click="open = !open" class="group md:hidden flex flex-col justify-center items-center gap-1.5 w-10 h-10 z-50 focus:outline-none">
+                    <div class="w-6 h-0.5 bg-[#333333] transition-all duration-300 origin-center" :class="{ 'group-hover:rotate-45 group-hover:translate-y-2': open }"></div>
+                    <div class="w-6 h-0.5 bg-[#333333] transition-all duration-300" :class="{ 'group-hover:opacity-0': open }"></div>
+                    <div class="w-6 h-0.5 bg-[#333333] transition-all duration-300 origin-center" :class="{ 'group-hover:-rotate-45 group-hover:-translate-y-2': open }"></div>
+                </button>
             </div>
+
+            <!-- Desktop Nav -->
             <nav class="hidden md:flex items-center gap-8 text-base font-medium text-[#333333]">
                 <a href="/" class="relative group @if(request()->is('/')) text-[#3499FE] font-semibold @else hover:text-black @endif transition">
                     Accueil
@@ -92,9 +103,32 @@
                     <span class="absolute bottom-0 left-0 w-full h-[2px] bg-[#3499FE] origin-right scale-x-0 transition-transform duration-300 group-hover:scale-x-100 group-hover:origin-left"></span>
                 </a>
             </nav>
-            <div class="flex items-center gap-4">
+            
+            <!-- Login -->
+            <div class="hidden md:flex items-center gap-4">
                 <a href="{{ route('register') }}" class="text-base font-medium text-[#333333] hover:text-black transition">Inscription</a>
                 <a href="{{ route('login') }}" class="px-6 py-2 bg-[#2794EB] text-white text-base font-semibold rounded-lg hover:bg-blue-600 transition shadow-md shadow-blue-500/20">Connexion</a>
+            </div>
+
+            <!-- Menu Déroulant Mobile -->
+            <div x-show="open" 
+                 x-transition:enter="transition ease-out duration-200"
+                 x-transition:enter-start="opacity-0 -translate-y-2"
+                 x-transition:enter-end="opacity-100 translate-y-0"
+                 x-transition:leave="transition ease-in duration-150"
+                 x-transition:leave-start="opacity-100 translate-y-0"
+                 x-transition:leave-end="opacity-0 -translate-y-2"
+                 class="w-full md:hidden flex flex-col gap-4 pt-6 pb-2 border-t border-gray-100 mt-4">
+                
+                <x-mobile-nav-link href="/" :active="request()->is('/')">Accueil</x-mobile-nav-link>
+                <x-mobile-nav-link href="#" :active="request()->is('trajets*')">Mes trajets</x-mobile-nav-link>
+                <x-mobile-nav-link :href="route('faq')" :active="request()->is('faq*')">FAQ</x-mobile-nav-link>
+                <x-mobile-nav-link :href="route('contact')" :active="request()->is('contact*')">Contact</x-mobile-nav-link>
+                
+                <div class="flex flex-col gap-3 mt-2">
+                    <a href="{{ route('register') }}" class="text-center text-base font-medium text-[#333333] hover:text-black transition py-2">Inscription</a>
+                    <a href="{{ route('login') }}" class="text-center px-6 py-3 bg-[#2794EB] text-white text-base font-semibold rounded-lg hover:bg-blue-600 transition shadow-md shadow-blue-500/20">Connexion</a>
+                </div>
             </div>
         </div>
     </header>
@@ -178,58 +212,6 @@
             </div>
         </div>
     </footer>
-
-    <script>
-        // Loader Logic
-        window.addEventListener('load', function() {
-            const loader = document.getElementById('global-loader');
-            if (loader) {
-                loader.classList.add('opacity-0', 'pointer-events-none');
-                setTimeout(() => {
-                    loader.style.display = 'none';
-                }, 500);
-            }
-        });
-
-        // Show loader on page transition (link click)
-        document.addEventListener('click', function(e) {
-            const link = e.target.closest('a');
-            // Check if it's a valid link, not an anchor, not external, and not opening in new tab
-            if (link && link.href && !link.href.startsWith('#') && !link.href.includes('#') && link.target !== '_blank' && link.hostname === window.location.hostname) {
-                const loader = document.getElementById('global-loader');
-                if (loader) {
-                    loader.style.display = 'flex';
-                    // Small delay to ensure display:flex is applied before removing opacity
-                    requestAnimationFrame(() => {
-                        loader.classList.remove('opacity-0', 'pointer-events-none');
-                    });
-                }
-            }
-        });
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const navbar = document.getElementById('main-navbar');
-            const footer = document.getElementById('main-footer');
-
-            if (navbar && footer) {
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            // Footer is visible, hide navbar
-                            navbar.classList.add('-translate-y-full');
-                        } else {
-                            // Footer is not visible, show navbar
-                            navbar.classList.remove('-translate-y-full');
-                        }
-                    });
-                }, {
-                    threshold: 0.5 // Trigger when 50% of the footer is visible
-                });
-
-                observer.observe(footer);
-            }
-        });
-    </script>
 </body>
 
 </html>
