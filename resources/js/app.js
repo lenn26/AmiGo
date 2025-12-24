@@ -52,17 +52,20 @@ document.addEventListener("DOMContentLoaded", function () {
             (entries) => {
                 entries.forEach((entry) => {
                     if (entry.isIntersecting) {
-                        navbar.classList.add("-translate-y-full");
+                        navbar.style.transform = "translateY(-120px)";
                     } else {
-                        navbar.classList.remove("-translate-y-full");
+                        navbar.style.transform = "translateY(0)";
                     }
                 });
             },
             {
-                threshold: 0.5,
+                threshold: 0.6
             }
         );
 
         observer.observe(footer);
+    } else {
+        // Afficher un message d'erreur dans la console si ca marche pas
+        console.error("Navbar ou Footer non trouvés");
     }
 });

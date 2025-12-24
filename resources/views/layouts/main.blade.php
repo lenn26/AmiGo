@@ -63,7 +63,7 @@
     </div>
 
     <!-- En-tête -->
-    <header id="main-navbar" class="w-full py-6 px-4 flex justify-center sticky top-0 z-50 pointer-events-none transition-transform duration-300" x-data="{ open: false }">
+    <header id="main-navbar" class="w-full py-6 px-4 flex justify-center sticky top-0 z-50 pointer-events-none transition-transform duration-300 ease-in-out" x-data="{ open: false }">
         <div class="w-full max-w-7xl bg-white rounded-[2rem] md:rounded-full shadow-xl px-8 py-4 flex flex-col md:flex-row items-center justify-between border border-gray-100 pointer-events-auto relative">
             <div class="w-full md:w-auto flex items-center justify-between">
                 <!-- Navbar -->
@@ -206,9 +206,10 @@
 
                 <div class="w-full border-t-[1.5px] border-[#474747] mt-16 mb-6"></div>
 
-                <p class="text-[#D9DBE1] text-sm text-left w-full">
-                    &copy; 2025 AmiGo. Tout droits réservés.
-                </p>
+                <div class="text-[#D9DBE1] text-sm w-full flex flex-col md:flex-row justify-between items-center gap-2">
+                    <p>&copy; 2025 AmiGo. Tous droits réservés.</p>
+                    <p class="text-gray-400">Projet étudiant réalisé dans le cadre du BUT Informatique</p>
+                </div>
             </div>
         </div>
     </footer>
