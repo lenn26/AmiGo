@@ -224,6 +224,9 @@
                     <!-- Mapbox Integration -->
                     <link href="https://api.mapbox.com/mapbox-gl-js/v3.9.4/mapbox-gl.css" rel="stylesheet">
                     <script src="https://api.mapbox.com/mapbox-gl-js/v3.9.4/mapbox-gl.js"></script>
+                    <script>
+                        window.universities = @json($universities);
+                    </script>
 
                     <!-- Container de la map -->
                     <div id="map" class="w-full h-full z-0 rounded-[2rem]"></div>

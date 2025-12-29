@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Models\University;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('index');
+    $universities = University::all();
+    return view('index', compact('universities'));
 });
 
 Route::get('/dashboard', function () {
