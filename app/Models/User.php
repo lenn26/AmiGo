@@ -12,6 +12,8 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
+    protected $table = 'USERS';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -45,5 +47,15 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function ratingsReceived()
+    {
+        return $this->hasMany(Rating::class, 'rated_id');
+    }
+
+    public function getAverageRatingAttribute()
+    {
+        return round($this->ratingsReceived()->avg('rating'), 1) ?: 5.0;
     }
 }

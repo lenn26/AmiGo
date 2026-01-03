@@ -49,6 +49,7 @@
         }
     </script>
     @endif
+    @stack('styles')
 </head>
 
 <body class="font-sans antialiased text-gray-900 bg-gray-50 flex flex-col min-h-screen">
@@ -90,7 +91,7 @@
                     <!-- Animation quand on passe la souris sur la navbar -->
                     <span class="absolute bottom-0 left-0 w-full h-[2px] bg-[#3499FE] origin-right scale-x-0 transition-transform duration-300 group-hover:scale-x-100 group-hover:origin-left"></span>
                 </a>
-                <a href="#" class="relative group @if(request()->is('trajets*')) text-[#3499FE] font-semibold @else hover:text-black @endif transition">
+                <a href="{{ route('trips') }}" class="relative group @if(request()->is('trajets*')) text-[#3499FE] font-semibold @else hover:text-black @endif transition">
                     Mes trajets
                     <span class="absolute bottom-0 left-0 w-full h-[2px] bg-[#3499FE] origin-right scale-x-0 transition-transform duration-300 group-hover:scale-x-100 group-hover:origin-left"></span>
                 </a>
@@ -121,7 +122,7 @@
                  class="w-full md:hidden flex flex-col gap-4 pt-6 pb-2 border-t border-gray-100 mt-4">
                 
                 <x-mobile-nav-link href="/" :active="request()->is('/')">Accueil</x-mobile-nav-link>
-                <x-mobile-nav-link href="#" :active="request()->is('trajets*')">Mes trajets</x-mobile-nav-link>
+                <x-mobile-nav-link :href="route('trips')" :active="request()->is('trajets*')">Mes trajets</x-mobile-nav-link>
                 <x-mobile-nav-link :href="route('faq')" :active="request()->is('faq*')">FAQ</x-mobile-nav-link>
                 <x-mobile-nav-link :href="route('contact')" :active="request()->is('contact*')">Contact</x-mobile-nav-link>
                 
@@ -146,7 +147,7 @@
                     <h4 class="bg-gradient-to-r from-[#2794EB] to-[#379ECF] bg-clip-text text-transparent font-semibold text-5xl mb-8 uppercase tracking-wider relative inline-block group pb-2">Page<span class="absolute bottom-0 left-0 w-0 h-1 bg-gradient-to-r from-[#2794EB] to-[#379ECF] group-hover:w-full transition-all duration-300"></span></h4>
                     <ul class="space-y-4 text-gray-300 font-medium text-3xl">
                         <li class="transition-transform duration-300 hover:-translate-y-1"><a href="/" class="hover:text-white transition">Accueil</a></li>
-                        <li class="transition-transform duration-300 hover:-translate-y-1"><a href="#" class="hover:text-white transition">Mes trajets</a></li>
+                        <li class="transition-transform duration-300 hover:-translate-y-1"><a href="{{ route('trips') }}" class="hover:text-white transition">Mes trajets</a></li>
                         <li class="transition-transform duration-300 hover:-translate-y-1"><a href="{{ route('faq') }}" class="hover:text-white transition">FAQ</a></li>
                         <li class="transition-transform duration-300 hover:-translate-y-1"><a href="{{ route('contact') }}" class="hover:text-white transition">Contact</a></li>
                     </ul>
@@ -213,6 +214,7 @@
             </div>
         </div>
     </footer>
+    @stack('scripts')
 </body>
 
 </html>
