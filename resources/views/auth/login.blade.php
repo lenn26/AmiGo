@@ -40,7 +40,7 @@
             <!-- Partie droite - Formulaire de connexion -->
             <div class="w-full md:w-1/2 bg-white p-8 md:p-10 flex items-center justify-center">
                 <div class="w-full max-w-md space-y-8">
-                    <div class="text-center md:text-left">
+                    <div class="text-center">
                         <h2 class="text-3xl md:text-4xl font-bold text-[#333333] mb-2">Bon retour !</h2>
                         <p class="text-[#8A8A8A]">Connecte-toi pour trouver un trajet.</p>
                     </div>

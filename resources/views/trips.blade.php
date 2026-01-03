@@ -102,7 +102,13 @@
 
                 <!-- Boucle pour chaque trajet disponible -->
                 @foreach($trips as $trip)
-                <div class="bg-white rounded-[2rem] p-6 shadow-sm border border-gray-100 hover:shadow-md transition cursor-pointer group">
+                <div class="trip-card bg-white rounded-[2rem] p-6 shadow-sm border border-gray-100 hover:shadow-md transition cursor-pointer group"
+                     data-start-lat="{{ $trip->start_lat }}"
+                     data-start-long="{{ $trip->start_long }}"
+                     data-end-lat="{{ $trip->end_lat }}"
+                     data-end-long="{{ $trip->end_long }}"
+                     data-start-address="{{ $trip->start_address }}"
+                     data-end-address="{{ $trip->end_address }}">
                     <div class="flex justify-between items-start mb-6">
                         <div class="flex gap-4 relative">
                             <!-- Timeline -->

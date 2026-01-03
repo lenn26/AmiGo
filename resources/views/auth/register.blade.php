@@ -40,7 +40,7 @@
             <!-- Partie droite - Formulaire d'inscription -->
             <div class="w-full md:w-1/2 bg-white p-8 md:p-10 flex items-center justify-center">
                 <div class="w-full max-w-md space-y-8">
-                    <div class="text-center md:text-left">
+                    <div class="text-center">
                         <h2 class="text-3xl md:text-4xl font-bold text-[#333333] mb-2">Rejoins AmiGo</h2>
                         <p class="text-[#8A8A8A]">Simple, gratuit et sécurisé.</p>
                     </div>
@@ -73,6 +73,15 @@
                                 placeholder="etudiant@u-picardie.fr"
                                 class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-lg focus:ring-2 focus:ring-[#56BA8D] focus:border-[#56BA8D] outline-none transition text-gray-900 placeholder-gray-400">
                             <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                        </div>
+
+                        <!-- Numéro de téléphone -->
+                        <div>
+                            <label for="phone" class="block text-sm font-bold text-gray-700 mb-2">Numéro de téléphone</label>
+                            <input id="phone" type="tel" name="phone" value="{{ old('phone') }}" required autocomplete="tel"
+                                placeholder="06 12 34 56 78"
+                                class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-lg focus:ring-2 focus:ring-[#56BA8D] focus:border-[#56BA8D] outline-none transition text-gray-900 placeholder-gray-400">
+                            <x-input-error :messages="$errors->get('phone')" class="mt-2" />
                         </div>
 
                         <!-- Mot de passe -->

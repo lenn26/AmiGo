@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Models\University;
-use App\Models\Trip;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -11,9 +10,8 @@ Route::get('/', function () {
 });
 
 use Illuminate\Http\Request;
+use App\Models\Trip;
 
-// Route pour la recherche de trajets avec les filtres.
-// Les filtres sont appliqués via des paramètres dans l'URL.
 Route::get('/trajets', function (Request $request) {
     $query = Trip::with('driver')->where('status', '!=', 'completed');
 

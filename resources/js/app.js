@@ -1,5 +1,6 @@
 import "./bootstrap";
 import "./map";
+import "./trips";
 import "./faq";
 
 import Alpine from "alpinejs";
@@ -59,7 +60,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
             },
             {
-                threshold: 0.6
+                threshold: 0.6,
             }
         );
 
