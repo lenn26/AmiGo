@@ -67,6 +67,16 @@ document.addEventListener("DOMContentLoaded", function () {
         const tripCards = document.querySelectorAll(".trip-card");
         tripCards.forEach((card) => {
             card.addEventListener("click", () => {
+                // Gestion de la sélection visuelle (bordure verte + fond)
+                tripCards.forEach(c => {
+                    c.classList.remove("border-[#70D78D]", "ring-2", "ring-[#70D78D]", "bg-green-50");
+                    c.classList.add("border-gray-100", "bg-white");
+                });
+                
+                // Activation de la carte cliquée
+                card.classList.remove("border-gray-100", "bg-white");
+                card.classList.add("border-[#70D78D]", "ring-2", "ring-[#70D78D]", "bg-green-50");
+
                 const startLat = parseFloat(card.dataset.startLat);
                 const startLong = parseFloat(card.dataset.startLong);
                 const endLat = parseFloat(card.dataset.endLat);

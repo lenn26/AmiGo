@@ -54,12 +54,12 @@
             </div>
         </div>
 
-        <!-- Image/Visual Content -->
+        <!-- Téléphone -->
         <div class="lg:w-1/2 relative">
             <div class="relative z-10 bg-white rounded-[2.5rem] shadow-2xl p-3 w-[320px] mx-auto border-8 border-gray-900">
                 <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-24 h-6 bg-gray-900 rounded-b-xl"></div>
                 <div class="h-[600px] bg-gray-50 rounded-[2rem] overflow-hidden flex flex-col relative">
-                    <!-- App Header -->
+                    <!-- En-tête de l'application -->
                     <div class="p-6 pt-12 flex justify-between items-center">
                         <div>
                             <h3 class="font-bold text-3xl text-gray-900">Bonjour !</h3>
@@ -83,7 +83,7 @@
                     <div class="mt-8 px-6">
                         <h4 class="font-bold text-xl text-gray-900 mb-4">Trajets à venir</h4>
                         <div class="bg-white p-4 rounded-3xl shadow-sm border border-gray-100">
-                            <!-- User Info -->
+                            <!-- Infos utilisateur -->
                             <div class="flex items-center gap-2 mb-4">
                                 <div class="w-8 h-8 bg-[#2794EB] rounded-full flex items-center justify-center text-white">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -99,17 +99,17 @@
                                 </div>
                             </div>
 
-                            <!-- Trip Details -->
+                            <!-- Détails du trajet -->
                             <div class="flex justify-between items-end">
                                 <!-- Timeline -->
                                 <div class="relative pl-4 border-l-2 border-gray-200 space-y-6 ml-2">
-                                     <!-- Start -->
+                                     <!-- Départ -->
                                      <div class="relative">
                                         <div class="absolute -left-[21px] top-1 w-3 h-3 rounded-full border-2 border-gray-400 bg-white"></div>
                                         <p class="font-bold text-gray-900 leading-none">07:50</p>
                                         <p class="text-xs text-gray-500 mt-1">Gare d'Amiens</p>
                                      </div>
-                                     <!-- End -->
+                                     <!-- Fin -->
                                      <div class="relative">
                                         <div class="absolute -left-[21px] top-1 w-3 h-3 rounded-full border-2 border-[#70D78D] bg-white"></div>
                                         <p class="font-bold text-gray-900 leading-none">08:15</p>
@@ -117,7 +117,7 @@
                                      </div>
                                 </div>
 
-                                <!-- Price & Info -->
+                                <!-- Prix et informations -->
                                 <div class="text-right space-y-2">
                                     <p class="font-bold text-xl text-gray-900">2,00€</p>
                                     <div class="bg-[#70D78D]/20 text-[#70D78D] text-[10px] font-bold px-2 py-1 rounded-md inline-block">
@@ -142,7 +142,7 @@
         </div>
     </section>
 
-    <!-- Search Section -->
+    <!-- Section de recherche -->
     <section class="container mx-auto px-6 py-14">
         <div class="max-w-7xl mx-auto">
             <h2 class="text-6xl font-bold text-[#333333] mb-4">
@@ -158,15 +158,17 @@
                     <!-- Départ -->
                     <div class="flex-1 w-full relative group">
                         <label class="block text-xs text-white ml-4 mb-1 font-medium">Départ</label>
-                        <div class="flex items-center bg-white rounded-full px-4 py-3 shadow-sm focus-within:ring-2 focus:ring-blue-500">
+                        <div class="flex items-center bg-white rounded-full px-4 py-3 shadow-sm focus-within:ring-2 focus:ring-blue-500 relative">
                             <svg width="38px" height="38px" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path clip-rule="evenodd" d="M2 6V6.29266C2 7.72154 2.4863 9.10788 3.37892 10.2236L8 16L12.6211 10.2236C13.5137 9.10788 14 7.72154 14 6.29266V6C14 2.68629 11.3137 0 8 0C4.68629 0 2 2.68629 2 6ZM8 8C9.10457 8 10 7.10457 10 6C10 4.89543 9.10457 4 8 4C6.89543 4 6 4.89543 6 6C6 7.10457 6.89543 8 8 8Z" fill="#2794EB" fill-rule="evenodd" />
                             </svg>
-                            <input type="text" placeholder="Ex : Gare du Nord" class="w-full bg-transparent outline-none focus:ring-0 border-none text-[#333333] placeholder-gray-400 font-medium focus:border-blue-500">
+                            <input type="text" id="home_start_address" placeholder="Ex : Gare du Nord" class="w-full bg-transparent outline-none focus:ring-0 border-none text-[#333333] placeholder-gray-400 font-medium focus:border-blue-500">
                         </div>
+                        <!-- Suggestions Départ -->
+                        <div id="home_start_suggestions" class="absolute z-50 w-full bg-white border border-gray-100 rounded-xl mt-1 shadow-lg hidden overflow-hidden left-0"></div>
                     </div>
 
-                    <!-- Swap Icon -->
+                    <!-- Icone de swap -->
                     <button class="p-2 text-white hover:bg-white/20 rounded-full transition md:mt-4">
                         <svg width="55px" height="55px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff">
                             <path d="M6 13 2 9l4-4" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
@@ -179,12 +181,14 @@
                     <!-- Arrivée -->
                     <div class="flex-1 w-full relative">
                         <label class="block text-xs text-white ml-4 mb-1 font-medium">Arrivée</label>
-                        <div class="flex items-center bg-white rounded-full px-4 py-3 shadow-sm focus-within:ring-2 focus:ring-blue-500">
+                        <div class="flex items-center bg-white rounded-full px-4 py-3 shadow-sm focus-within:ring-2 focus:ring-blue-500 relative">
                             <svg width="38px" height="38px" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M1 1V16H3V10H7L9 12H15V3H9L7 1H1Z" fill="#47D6B6" />
                             </svg>
-                            <input type="text" placeholder="Ex : Campus Citadelle" class="w-full bg-transparent outline-none focus:ring-0 border-none text-[#333333] placeholder-gray-400 font-medium focus:border-blue-500">
+                            <input type="text" id="home_end_address" placeholder="Ex : Campus Citadelle" class="w-full bg-transparent outline-none focus:ring-0 border-none text-[#333333] placeholder-gray-400 font-medium focus:border-blue-500">
                         </div>
+                        <!-- Suggestions Arrivée -->
+                        <div id="home_end_suggestions" class="absolute z-50 w-full bg-white border border-gray-100 rounded-xl mt-1 shadow-lg hidden overflow-hidden left-0"></div>
                     </div>
 
                     <!-- Bouton go -->
@@ -203,7 +207,7 @@
         </div>
     </section>
 
-    <!-- Map Section -->
+    <!-- Section de la carte -->
     <section class="container mx-auto px-6 py-12">
         <div class="max-w-7xl mx-auto">
             <div class="mb-8">
@@ -216,23 +220,18 @@
             </div>
 
             <div class="flex flex-col lg:flex-row gap-8">
-                <!-- Map Visual Placeholder -->
+                <!-- Placeholder visuel de la carte -->
                 <div class="w-full lg:w-3/4 bg-gray-100 rounded-[2rem] h-[500px] relative overflow-hidden shadow-2xl border border-gray-200">
-                    <!-- Map Background Pattern -->
+                    <!-- Motif de fond de la carte -->
                     <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#cbd5e1 1px, transparent 1px); background-size: 20px 20px;"></div>
 
-                    <!-- Mapbox Integration -->
-                    <link href="https://api.mapbox.com/mapbox-gl-js/v3.9.4/mapbox-gl.css" rel="stylesheet">
-                    <script src="https://api.mapbox.com/mapbox-gl-js/v3.9.4/mapbox-gl.js"></script>
-                    <script>
-                        window.universities = @json($universities);
-                    </script>
-
+                    <!-- Intégration Mapbox -->
+                    
                     <!-- Container de la map -->
                     <div id="map" class="w-full h-full z-0 rounded-[2rem]"></div>
                 </div>
 
-                <!-- Legend -->
+                <!-- Légende -->
                 <div class="w-full lg:w-1/4 space-y-4">
                     <div class="flex items-center gap-3 p-4 bg-white rounded-xl shadow-sm border border-gray-100">
                         <div class="w-10 h-10 bg-[#84cc16] rounded-full flex items-center justify-center text-white shadow-lg border-2 border-white">
@@ -255,7 +254,7 @@
         </div>
     </section>
 
-    <!-- Contact Section -->
+    <!-- Section de contact -->
     <section class="bg-[url('/public/images/img_contact_fond.png')] bg-cover bg-center w-full py-20">
         <div class="container mx-auto px-6">
             <div class="max-w-2xl ml-auto border border-gray-200 rounded-3xl p-20 bg-white backdrop-blur-sm">
@@ -269,7 +268,7 @@
                     </p>
                 </div>
 
-                <!-- Contact Form -->
+                <!-- Formulaire de contact -->
                 <form class="space-y-6">
                     <!-- Email Input -->
                     <div>
@@ -287,4 +286,16 @@
             </div>
         </div>
     </section>
+
+    <script>
+        // Initialisation de l'autocomplétion après le chargement de la page
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                if (typeof window.setupAutocomplete === 'function') {
+                    window.setupAutocomplete('home_start_address', 'home_start_suggestions');
+                    window.setupAutocomplete('home_end_address', 'home_end_suggestions');
+                }
+            }, 100);
+        });
+    </script>
 </x-main-layout>

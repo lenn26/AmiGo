@@ -2,6 +2,10 @@ import "./bootstrap";
 import "./map";
 import "./trips";
 import "./faq";
+import { setupAutocomplete } from "./autocomplete";
+
+// Autocomplétion d'adresse
+window.setupAutocomplete = setupAutocomplete;
 
 import Alpine from "alpinejs";
 

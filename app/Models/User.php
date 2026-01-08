@@ -24,6 +24,10 @@ class User extends Authenticatable
         'last_name',
         'email',
         'password',
+        'phone',
+        'bio',
+        'avatar',
+        'is_verified',
     ];
 
     /**
@@ -44,9 +48,31 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_verified' => 'boolean',
         ];
+    }
+
+    /**
+     * Determine if the user has verified their email address.
+     *
+     * @return bool
+     */
+    public function hasVerifiedEmail()
+    {
+        return $this->is_verified;
+    }
+
+    /**
+     * Mark the given user's email as verified.
+     *
+     * @return bool
+     */
+    public function markEmailAsVerified()
+    {
+        return $this->forceFill([
+            'is_verified' => true,
+        ])->save();
     }
 
     public function ratingsReceived()
@@ -57,5 +83,15 @@ class User extends Authenticatable
     public function getAverageRatingAttribute()
     {
         return round($this->ratingsReceived()->avg('rating'), 1) ?: 5.0;
+    }
+
+    public function getNameAttribute()
+    {
+        return "{$this->first_name} {$this->last_name}";
+    }
+
+    public function vehicles()
+    {
+        return $this->hasMany(Vehicle::class, 'owner_id');
     }
 }

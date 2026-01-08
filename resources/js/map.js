@@ -1,7 +1,10 @@
+import mapboxgl from 'mapbox-gl';
+import 'mapbox-gl/dist/mapbox-gl.css';
+
 document.addEventListener("DOMContentLoaded", function () {
     const mapElement = document.getElementById("map");
 
-    if (mapElement && typeof mapboxgl !== "undefined") {
+    if (mapElement) {
         // Configuration de base pour la map
         // Clé d'API Mapbox
         mapboxgl.accessToken =
@@ -18,9 +21,16 @@ document.addEventListener("DOMContentLoaded", function () {
         // Ajout des contrôles de navigation (zoom et rotation)
         map.addControl(new mapboxgl.NavigationControl());
 
-        // Liste des universités récupérée depuis la base de données (via la vue Blade)
-        const locations = window.universities || [];
-
+        function loadLocations() {
+             return fetch('/api/locations')
+                .then(response => response.json())
+                .then(data => data)
+                .catch(error => {
+                    console.error('Erreur lors du chargement des universités:', error);
+                    return [];
+                });
+        }
+        
         // Fonction pour ajouter un marqueur
         function addMarker(loc, coords) {
             // Création du logo d'université pour le marqueur
@@ -53,34 +63,36 @@ document.addEventListener("DOMContentLoaded", function () {
                 .addTo(map);
         }
 
-        // Boucle sur les lieux
-        locations.forEach(function (loc) {
-            if (loc.latitude && loc.longitude) {
-                // Si on a déjà les coordonnées (depuis la BDD)
-                addMarker(loc, [
-                    parseFloat(loc.longitude),
-                    parseFloat(loc.latitude),
-                ]);
-            } else if (loc.address) {
-                // Sinon on utilise le geocoding
-                const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
-                    loc.address
-                )}.json?access_token=${mapboxgl.accessToken}&limit=1`;
+        loadLocations().then(locations => {
+            // Boucle sur les lieux
+            locations.forEach(function (loc) {
+                if (loc.latitude && loc.longitude) {
+                    // Si on a déjà les coordonnées (depuis la BDD)
+                    addMarker(loc, [
+                        parseFloat(loc.longitude),
+                        parseFloat(loc.latitude),
+                    ]);
+                } else if (loc.address) {
+                    // Sinon on utilise le geocoding
+                    const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
+                        loc.address
+                    )}.json?access_token=${mapboxgl.accessToken}&limit=1`;
 
-                fetch(url)
-                    .then((response) => response.json())
-                    .then((data) => {
-                        if (data.features && data.features.length > 0) {
-                            const coords = data.features[0].center;
-                            addMarker(loc, coords);
-                        } else {
-                            console.error("Adresse introuvable :", loc.address);
-                        }
-                    })
-                    .catch((error) =>
-                        console.error("Erreur Geocoding :", error)
-                    );
-            }
+                    fetch(url)
+                        .then((response) => response.json())
+                        .then((data) => {
+                            if (data.features && data.features.length > 0) {
+                                const coords = data.features[0].center;
+                                addMarker(loc, coords);
+                            } else {
+                                console.error("Adresse introuvable :", loc.address);
+                            }
+                        })
+                        .catch((error) =>
+                            console.error("Erreur Geocoding :", error)
+                        );
+                }
+            });
         });
     }
 });

@@ -16,8 +16,12 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
+        $vehicle = $request->user()->vehicles()->first() 
+                   ?? new \App\Models\Vehicle;
+
         return view('profile.edit', [
             'user' => $request->user(),
+            'vehicle' => $vehicle,
         ]);
     }
 
@@ -33,6 +37,35 @@ class ProfileController extends Controller
         }
 
         $request->user()->save();
+
+        // Gestion du véhicule
+        // On vérifie si au moins un champ véhicule est rempli pour créer/mettre à jour
+        if ($request->filled(['make', 'model', 'color', 'license_plate', 'seats_total'])) {
+             $vehicle = $request->user()->vehicles()->first();
+             
+             if (!$vehicle) {
+                $vehicle = new \App\Models\Vehicle();
+                $vehicle->owner_id = $request->user()->id;
+             }
+             
+             $vehicle->make = $request->validated('make') ?? 'Unknown';
+             $vehicle->model = $request->validated('model');
+             $vehicle->color = $request->validated('color');
+             $vehicle->license_plate = $request->validated('license_plate');
+             $vehicle->seats_total = $request->validated('seats_total');
+             
+             $vehicle->save();
+        }
+
+        if ($request->filled('password')) {
+             $request->validate([
+                'password' => ['confirmed', \Illuminate\Validation\Rules\Password::defaults()],
+            ]);
+            
+            $request->user()->update([
+                'password' => \Illuminate\Support\Facades\Hash::make($request->input('password')),
+            ]);
+        }
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }

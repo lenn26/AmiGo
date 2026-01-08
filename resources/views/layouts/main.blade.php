@@ -20,6 +20,7 @@
         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
     </style>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="//unpkg.com/alpinejs" defer></script>
     <script>
         tailwind.config = {
             theme: {
@@ -76,7 +77,7 @@
                     </a>
                 </div>
 
-                <!-- Bouton Menu Mobile -->
+                <!-- Bouton menu mobile -->
                 <button @click="open = !open" class="group md:hidden flex flex-col justify-center items-center gap-1.5 w-10 h-10 z-50 focus:outline-none">
                     <div class="w-6 h-0.5 bg-[#333333] transition-all duration-300 origin-center" :class="{ 'group-hover:rotate-45 group-hover:translate-y-2': open }"></div>
                     <div class="w-6 h-0.5 bg-[#333333] transition-all duration-300" :class="{ 'group-hover:opacity-0': open }"></div>
@@ -84,7 +85,7 @@
                 </button>
             </div>
 
-            <!-- Desktop Nav -->
+            <!-- Navigation desktop -->
             <nav class="hidden md:flex items-center gap-8 text-base font-medium text-[#333333]">
                 <a href="/" class="relative group @if(request()->is('/')) text-[#3499FE] font-semibold @else hover:text-black @endif transition">
                     Accueil
@@ -103,15 +104,74 @@
                     Contact
                     <span class="absolute bottom-0 left-0 w-full h-[2px] bg-[#3499FE] origin-right scale-x-0 transition-transform duration-300 group-hover:scale-x-100 group-hover:origin-left"></span>
                 </a>
+                
+                @auth
+                    <!-- Lien vers l'administration si l'utilisateur est admin -->
+                    @if(Auth::user()->role === 'admin')
+                    <a href="{{ route('admin.dashboard') }}" class="relative group @if(request()->is('admin*')) text-[#3499FE] font-semibold @else hover:text-black text-red-600 @endif transition">
+                        Administration
+                        <span class="absolute bottom-0 left-0 w-full h-[2px] bg-red-600 origin-right scale-x-0 transition-transform duration-300 group-hover:scale-x-100 group-hover:origin-left"></span>
+                    </a>
+                    @endif
+                @endauth
             </nav>
             
             <!-- Login -->
             <div class="hidden md:flex items-center gap-4">
-                <a href="{{ route('register') }}" class="text-base font-medium text-[#333333] hover:text-black transition">Inscription</a>
-                <a href="{{ route('login') }}" class="px-6 py-2 bg-[#2794EB] text-white text-base font-semibold rounded-lg hover:bg-blue-600 transition shadow-md shadow-blue-500/20">Connexion</a>
+                <!-- Vérification si l'utilisateur est connecté -->
+                @auth
+                    <!-- Menu utilisateur -->
+                    <div class="relative" x-data="{ dropdownOpen: false }">
+                        <button @click="dropdownOpen = !dropdownOpen" @click.away="dropdownOpen = false" class="flex items-center gap-2 focus:outline-none transition hover:opacity-80">
+                            <!-- Afficher le nom de l'utilisateur connecté -->    
+                            <span class="text-base font-medium text-[#333333]">{{ Auth::user()->first_name }}</span>
+                            @if(Auth::user()->avatar)
+                                <!-- Afficher l'avatar de l'utilisateur s'il en a un -->
+                                <img src="{{ Auth::user()->avatar }}" alt="Avatar" class="w-9 h-9 rounded-full object-cover border border-gray-200">
+                            @else
+                                <!-- Afficher une icône par défaut si l'utilisateur n'a pas d'avatar -->
+                                <div class="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 border border-gray-100">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                                </div>
+                            @endif
+                            <!-- Petite flèche vers le bas -->
+                            <svg class="w-4 h-4 text-gray-400" :class="{'rotate-180': dropdownOpen}" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="transition: transform 0.2s"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+
+                        <!-- Menu déroulant -->
+                        <div x-show="dropdownOpen"
+                             x-transition:enter="transition ease-out duration-100"
+                             x-transition:enter-start="transform opacity-0 scale-95"
+                             x-transition:enter-end="transform opacity-100 scale-100"
+                             x-transition:leave="transition ease-in duration-75"
+                             x-transition:leave-start="transform opacity-100 scale-100"
+                             x-transition:leave-end="transform opacity-0 scale-95"
+                             class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-100 py-1 z-50 overflow-hidden"
+                             style="display: none;">
+                            
+                            <!-- Lien vers le profil -->
+                            <a href="{{ route('profile.edit') }}" class="flex items-center gap-2 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                                Mon profil
+                            </a>
+
+                            <!-- Formulaire de déconnexion -->
+                            <form method="POST" action="{{ route('logout') }}" class="border-t border-gray-100">
+                                @csrf
+                                <button type="submit" class="w-full text-left flex items-center gap-2 px-4 py-3 text-sm text-red-600 hover:bg-red-50 transition-colors">
+                                    <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                                    Déconnexion
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                @else
+                    <a href="{{ route('register') }}" class="text-base font-medium text-[#333333] hover:text-black transition">Inscription</a>
+                    <a href="{{ route('login') }}" class="px-6 py-2 bg-[#2794EB] text-white text-base font-semibold rounded-lg hover:bg-blue-600 transition shadow-md shadow-blue-500/20">Connexion</a>
+                @endauth
             </div>
 
-            <!-- Menu Déroulant Mobile -->
+            <!-- Menu déroulant mobile -->
             <div x-show="open" 
                  x-transition:enter="transition ease-out duration-200"
                  x-transition:enter-start="opacity-0 -translate-y-2"
@@ -127,8 +187,29 @@
                 <x-mobile-nav-link :href="route('contact')" :active="request()->is('contact*')">Contact</x-mobile-nav-link>
                 
                 <div class="flex flex-col gap-3 mt-2">
-                    <a href="{{ route('register') }}" class="text-center text-base font-medium text-[#333333] hover:text-black transition py-2">Inscription</a>
-                    <a href="{{ route('login') }}" class="text-center px-6 py-3 bg-[#2794EB] text-white text-base font-semibold rounded-lg hover:bg-blue-600 transition shadow-md shadow-blue-500/20">Connexion</a>
+                    <!-- Vérification si l'utilisateur est connecté -->
+                    @auth
+                        <!-- Si l'utilisateur est un admin, on affiche le lien vers le dashboard admin -->
+                        @if(Auth::user()->role === 'admin')
+                            <a href="{{ route('admin.dashboard') }}" class="text-center text-base font-medium text-white bg-gray-800 hover:bg-black rounded-lg transition py-2 mb-2">
+                                Administration
+                            </a>
+                        @endif
+                        <!-- Si l'utilisateur est connecté, on affiche le bouton profil et déconnexion -->
+                        <a href="{{ route('profile.edit') }}" class="text-center text-base font-medium text-[#333333] hover:text-black transition py-2">
+                            Mon Profil ({{ Auth::user()->first_name }})
+                        </a>
+                        <form method="POST" action="{{ route('logout') }}" class="w-full">
+                            @csrf
+                            <button type="submit" class="w-full text-center px-6 py-3 bg-red-500 text-white text-base font-semibold rounded-lg hover:bg-red-600 transition shadow-md shadow-red-500/20">
+                                Déconnexion
+                            </button>
+                        </form>
+                    @else
+                        <!-- Si l'utilisateur n'est pas connecté, on affiche les liens d'inscription et de connexion -->
+                        <a href="{{ route('register') }}" class="text-center text-base font-medium text-[#333333] hover:text-black transition py-2">Inscription</a>
+                        <a href="{{ route('login') }}" class="text-center px-6 py-3 bg-[#2794EB] text-white text-base font-semibold rounded-lg hover:bg-blue-600 transition shadow-md shadow-blue-500/20">Connexion</a>
+                    @endauth
                 </div>
             </div>
         </div>

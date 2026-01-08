@@ -13,38 +13,44 @@
         </div>
 
         <!-- Barre de recherche -->
-        <div class="bg-gradient-to-r from-[#2794EB] via-[#4BC5BC] to-[#70D78D] p-4 rounded-[2rem] mb-6 shadow-lg shadow-blue-500/10">
+        <form action="{{ route('trips') }}" method="GET" class="bg-gradient-to-r from-[#2794EB] via-[#4BC5BC] to-[#70D78D] p-4 rounded-[2rem] mb-6 shadow-lg shadow-blue-500/10">
+            <!-- Filtres de recherche (caché) -->
+            @if(request('luggage')) <input type="hidden" name="luggage" value="1"> @endif
+            @if(request('pets')) <input type="hidden" name="pets" value="1"> @endif
+            @if(request('girl_only')) <input type="hidden" name="girl_only" value="1"> @endif
+
             <div class="flex flex-col lg:flex-row gap-3">
                 <!-- Lieu de départ -->
-                <div class="flex-1 bg-white rounded-full flex items-center px-4 py-3">
-                    <svg class="w-5 h-5 text-gray-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                    <input type="text" placeholder="Ex : Gare Du Nord" class="w-full outline-none focus:outline-none focus:ring-0 border-none text-gray-700 placeholder-gray-400 bg-transparent">
+                <div class="flex-1 bg-white rounded-full flex items-center px-4 py-3 relative">
+                    <svg class="w-5 h-5 text-gray-400 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    <input type="text" id="search-start" name="from" value="{{ request('from') }}" placeholder="Ex : Gare Du Nord" class="w-full outline-none focus:outline-none focus:ring-0 border-none text-gray-700 placeholder-gray-400 bg-transparent">
+                    <div id="search-start-suggestions" class="absolute top-full left-0 w-full mt-1 bg-white rounded-xl shadow-lg hidden max-h-60 overflow-y-auto z-50"></div>
                 </div>
                 <!-- Lieu d'arrivée -->
-                <div class="flex-1 bg-white rounded-full flex items-center px-4 py-3">
-                    <svg class="w-5 h-5 text-gray-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                    <input type="text" placeholder="Ex : Campus Santé" class="w-full outline-none focus:outline-none focus:ring-0 border-none text-gray-700 placeholder-gray-400 bg-transparent">
+                <div class="flex-1 bg-white rounded-full flex items-center px-4 py-3 relative">
+                    <svg class="w-5 h-5 text-gray-400 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    <input type="text" id="search-end" name="to" value="{{ request('to') }}" placeholder="Ex : Campus Santé" class="w-full outline-none focus:outline-none focus:ring-0 border-none text-gray-700 placeholder-gray-400 bg-transparent">
+                    <div id="search-end-suggestions" class="absolute top-full left-0 w-full mt-1 bg-white rounded-xl shadow-lg hidden max-h-60 overflow-y-auto z-50"></div>
                 </div>
                 <!-- Sélection de la date -->
                 <div class="w-full lg:w-48 bg-white rounded-full flex items-center px-4 py-3">
-                    <input type="date" class="w-full outline-none focus:outline-none focus:ring-0 border-none text-gray-700 placeholder-gray-400 bg-transparent" placeholder="jj/mm/aaaa">
+                    <input type="date" name="date" value="{{ request('date') }}" class="w-full outline-none focus:outline-none focus:ring-0 border-none text-gray-700 placeholder-gray-400 bg-transparent" placeholder="jj/mm/aaaa">
                 </div>
                 <!-- Sélection du nombre de passagers -->
                 <div class="w-full lg:w-48 bg-white rounded-full flex items-center px-4 py-3 relative group cursor-pointer">
-                    <select class="w-full outline-none focus:outline-none focus:ring-0 border-none text-gray-700 bg-transparent appearance-none cursor-pointer z-10">
-                        <option value="1">1 passager</option>
-                        <option value="2">2 passagers</option>
-                        <option value="3">3 passagers</option>
-                        <option value="4">4 passagers</option>
-                        <option value="5">5 passagers</option>
+                    <select name="seats" class="w-full outline-none focus:outline-none focus:ring-0 border-none text-gray-700 bg-transparent appearance-none cursor-pointer z-10 box-border">
+                        <option value="1" {{ request('seats') == '1' ? 'selected' : '' }}>1 passager</option>
+                        <option value="2" {{ request('seats') == '2' ? 'selected' : '' }}>2 passagers</option>
+                        <option value="3" {{ request('seats') == '3' ? 'selected' : '' }}>3 passagers</option>
+                        <option value="4" {{ request('seats') == '4' ? 'selected' : '' }}>4 passagers</option>
                     </select>
                 </div>
                 <!-- Bouton Rechercher -->
-                <button class="bg-[#2794EB] text-white px-8 py-3 rounded-2xl font-semibold hover:bg-blue-600 transition shadow-md">
+                <button type="submit" class="bg-[#2794EB] text-white px-8 py-3 rounded-2xl font-semibold hover:bg-blue-600 transition shadow-md">
                     Rechercher
                 </button>
             </div>
-        </div>
+        </form>
 
         <!-- Filtres de recherche -->
         <div class="flex flex-wrap gap-4 mb-8">
@@ -95,9 +101,9 @@
                         <h3 class="font-bold text-[#333333] text-lg">Vous conduisez ?</h3>
                         <p class="text-gray-500 text-sm">Partagez votre trajet et économisez.</p>
                     </div>
-                    <button class="bg-[#70D78D] text-white px-6 py-2.5 rounded-xl font-bold hover:bg-green-500 transition shadow-md shadow-green-400/20">
+                    <a href="{{ route('trips.create') }}" class="bg-[#70D78D] text-white px-6 py-2.5 rounded-xl font-bold hover:bg-green-500 transition shadow-md shadow-green-400/20 inline-block">
                         + Publier
-                    </button>
+                    </a>
                 </div>
 
                 <!-- Boucle pour chaque trajet disponible -->
@@ -134,6 +140,8 @@
                         
                         <div class="text-right">
                             <span class="block text-2xl font-bold text-[#333333]">{{ number_format($trip->price, 2, ',', ' ') }}€</span>
+                            <!-- Date du trajet (format français) -->
+                            <span class="block text-sm text-gray-500 font-medium mb-1">{{ $trip->start_time->translatedFormat('l d F') }}</span>
                             <span class="inline-block {{ $trip->seats_available > 1 ? 'bg-[#70D78D]/20 text-[#70D78D]' : 'bg-orange-100 text-orange-500' }} text-xs font-bold px-2 py-1 rounded-md mt-1">
                                 {{ $trip->seats_available }} place{{ $trip->seats_available > 1 ? 's' : '' }} restante{{ $trip->seats_available > 1 ? 's' : '' }}
                             </span>
