@@ -52,18 +52,39 @@
                         <h3 class="text-xl font-bold text-gray-800 mb-6">FAQ Rapide</h3>
                         
                         <div class="space-y-4">
-                            <div class="pb-4 border-b border-gray-100 flex justify-between items-center cursor-pointer group">
-                                <span class="text-gray-600 text-sm group-hover:text-[#3499FE] transition">Comment faire pour réserver un trajet ?</span>
-                                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                                </svg>
+                            
+                            <div x-data="{ open: false }" class="border-b border-gray-100 pb-4">
+                                <button @click="open = !open" class="w-full flex justify-between items-center cursor-pointer group focus:outline-none">
+                                    <span class="text-gray-600 text-sm group-hover:text-[#3499FE] text-left transition font-medium">
+                                        Comment faire pour réserver un trajet ?
+                                    </span>
+                                    <svg :class="{'rotate-180': open}" class="w-4 h-4 text-gray-400 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                    </svg>
+                                </button>
+                                <div x-show="open" x-transition class="mt-2">
+                                    <p class="text-gray-500 text-sm leading-relaxed">
+                                        Il suffit de vous rendre sur la page d'accueil.
+                                    </p>
+                                </div>
                             </div>
-                            <div class="pb-2 flex justify-between items-center cursor-pointer group">
-                                <span class="text-gray-600 text-sm group-hover:text-[#3499FE] transition">Est-ce que on peut prendre nos animaux de compagnies ?</span>
-                                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                                </svg>
+
+                            <div x-data="{ open: false }" class="border-b border-gray-100 pb-2">
+                                <button @click="open = !open" class="w-full flex justify-between items-center cursor-pointer group focus:outline-none">
+                                    <span class="text-gray-600 text-sm group-hover:text-[#3499FE] text-left transition font-medium">
+                                        Puis-je voyager avec mon animal de compagnie ?
+                                    </span>
+                                    <svg :class="{'rotate-180': open}" class="w-4 h-4 text-gray-400 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                    </svg>
+                                </button>
+                                <div x-show="open" x-transition class="mt-2">
+                                    <p class="text-gray-500 text-sm leading-relaxed">
+                                        Oui, les animaux sont acceptés à bord de nos véhicules.
+                                    </p>
+                                </div>
                             </div>
+
                         </div>
                     </div>
 
