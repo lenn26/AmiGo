@@ -1,6 +1,7 @@
 <x-main-layout>
-    <div class="container mx-auto px-4 py-8 max-w-5xl">
+    <div class="container mx-auto px-4 py-8 max-w-5xl min-h-screen flex flex-col">
         <h1 class="text-3xl font-bold mb-8 text-gray-900 border-b pb-4">Mes Réservations</h1>
+    
 
         <!-- Réservations à venir -->
         <section class="mb-12">
@@ -10,9 +11,9 @@
             </h2>
 
             @if($upcoming->isEmpty())
-                <div class="bg-white rounded-xl shadow-sm p-8 text-center border border-gray-100">
-                    <p class="text-gray-500 text-lg mb-4">Aucun trajet prévu pour le moment.</p>
-                    <a href="{{ route('trips') }}" class="inline-block px-6 py-2 bg-[#2794EB] text-white rounded-lg hover:bg-blue-600 transition">
+                <div class="bg-white rounded-xl shadow-sm p-8 text-center border border-gray-100 min-h-[400px] flex flex-col justify-center items-center">
+                    <p class="text-gray-500 text-lg mb-6">Aucun trajet prévu pour le moment.</p>
+                    <a href="{{ route('trips') }}" class="inline-block px-8 py-3 bg-[#2794EB] text-white rounded-lg hover:bg-blue-600 transition text-lg font-medium">
                         Rechercher un trajet
                     </a>
                 </div>
@@ -100,5 +101,6 @@
                 </div>
             @endif
         </section>
+        <div class="h-48 md:h-64"></div>
     </div>
 </x-main-layout>

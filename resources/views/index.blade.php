@@ -23,11 +23,11 @@
             <!-- Boutons -->
             <div class="flex flex-wrap gap-4">
                 <!-- Bouton recherche de trajet -->
-                <a href="#" class="px-8 py-4 bg-[#2794EB] text-white font-semibold rounded-xl hover:bg-blue-600 transition shadow-lg shadow-blue-500/25">
+                <a href="{{ route('trips') }}" class="px-8 py-4 bg-[#2794EB] text-white font-semibold rounded-xl hover:bg-blue-600 transition shadow-lg shadow-blue-500/25">
                     Tu cherches un trajet ?
                 </a>
                 <!-- Bouton publication de trajet -->
-                <a href="#" class="px-8 py-4 bg-[#70D78D] text-white font-semibold rounded-xl hover:bg-green-500 transition shadow-lg shadow-green-400/25">
+                <a href="{{ Auth::check() ? route('trips.create') : route('login') }}" class="px-8 py-4 bg-[#70D78D] text-white font-semibold rounded-xl hover:bg-green-500 transition shadow-lg shadow-green-400/25">
                     Publie ton trajet !
                 </a>
             </div>
