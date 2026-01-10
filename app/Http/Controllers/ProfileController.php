@@ -11,23 +11,21 @@ use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
-    /**
-     * Display the user's profile form.
-     */
+    // Afficher le formulaire de modification du profil
     public function edit(Request $request): View
     {
-        $vehicle = $request->user()->vehicles()->first() 
-                   ?? new \App\Models\Vehicle;
+        $vehicles = $request->user()->vehicles;
+
+        $vehicle = $vehicles->first() ?? new \App\Models\Vehicle;
 
         return view('profile.edit', [
             'user' => $request->user(),
-            'vehicle' => $vehicle,
+            'vehicle' => $vehicle, 
+            'vehicles' => $vehicles,
         ]);
     }
 
-    /**
-     * Update the user's profile information.
-     */
+    // Met à jour les informations du profil de l'utilisateur.
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
         $request->user()->fill($request->validated());
@@ -70,9 +68,7 @@ class ProfileController extends Controller
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
 
-    /**
-     * Delete the user's account.
-     */
+    // Supprime le compte utilisateur.
     public function destroy(Request $request): RedirectResponse
     {
         $request->validateWithBag('userDeletion', [

@@ -151,8 +151,17 @@
                             
                             <!-- Lien vers le profil -->
                             <a href="{{ route('profile.edit') }}" class="flex items-center gap-2 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
-                                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                </svg>
                                 Mon profil
+                            </a>
+
+                            <a href="{{ route('reservations') }}" class="flex items-center gap-2 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path d="M19.6873 14.2222C19.8909 13.5167 20 12.7711 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C14.3413 20 16.4476 18.9943 17.9106 17.3912M19.6873 14.2222L19 13M19.6873 14.2222L20.75 13.25M9 12L11 14L15 10" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+                                </svg>
+                                Mes réservations
                             </a>
 
                             <!-- Formulaire de déconnexion -->
@@ -265,9 +274,9 @@
                 <div class="text-center">
                     <h4 class="bg-gradient-to-r from-[#5CB68A] to-[#6EC26B] bg-clip-text text-transparent font-semibold text-5xl mb-8 uppercase tracking-wider relative inline-block group pb-2 pt-2">Légal<span class="absolute bottom-0 left-0 w-0 h-1 bg-gradient-to-r from-[#5CB68A] to-[#6EC26B] group-hover:w-full transition-all duration-300"></span></h4>
                     <ul class="space-y-4 text-gray-300 font-medium text-3xl">
-                        <li class="transition-transform duration-300 hover:-translate-y-1"><a href="#" class="hover:text-white transition">Mention légales</a></li>
-                        <li class="transition-transform duration-300 hover:-translate-y-1"><a href="#" class="hover:text-white transition">Confidentialité</a></li>
-                        <li class="transition-transform duration-300 hover:-translate-y-1"><a href="#" class="hover:text-white transition">Conditions d'utilisation</a></li>
+                        <li class="transition-transform duration-300 hover:-translate-y-1"><a href="{{ route('legal.notice') }}" class="hover:text-white transition">Mentions légales</a></li>
+                        <li class="transition-transform duration-300 hover:-translate-y-1"><a href="{{ route('legal.privacy') }}" class="hover:text-white transition">Confidentialité</a></li>
+                        <li class="transition-transform duration-300 hover:-translate-y-1"><a href="{{ route('legal.terms') }}" class="hover:text-white transition">Conditions d'utilisation</a></li>
                     </ul>
                 </div>
             </div>

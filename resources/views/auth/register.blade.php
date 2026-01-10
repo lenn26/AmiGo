@@ -1,7 +1,7 @@
 <x-main-layout>
     <div class="min-h-[calc(100vh-8rem)] flex items-center justify-center py-8 px-4 sm:px-6 lg:px-8 mb-24">
         <div class="flex flex-col md:flex-row w-full max-w-6xl bg-white rounded-3xl shadow-2xl overflow-hidden">
-            <!-- Partie gauche - Promotional -->
+            <!-- Partie gauche - Promotionnel -->
             <div class="w-full md:w-1/2 bg-[#1A1A1A] p-8 md:p-10 flex flex-col justify-between relative">
                 <!-- Retour au site -->
                 <div>
@@ -133,7 +133,7 @@
                             <input id="terms" type="checkbox" name="terms" required
                                 class="w-4 h-4 text-[#56BA8D] border-gray-300 rounded focus:ring-[#56BA8D]">
                             <label for="terms" class="ml-2 block text-sm text-gray-500">
-                                J'accepte les <a href="#" class="text-[#56BA8D] hover:underline">CGU</a> et certifie être étudiant.
+                                J'accepte les <a href="{{ route('legal.terms') }}" class="text-[#56BA8D] hover:underline">CGU</a> et certifie être étudiant.
                             </label>
                         </div>
 

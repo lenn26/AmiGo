@@ -15,7 +15,7 @@ class User extends Authenticatable
     protected $table = 'USERS';
 
     /**
-     * The attributes that are mass assignable.
+     * Les attributs qui sont assignables en masse.
      *
      * @var list<string>
      */
@@ -31,7 +31,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
+     * Les attributs qui doivent être cachés pour la sérialisation.
      *
      * @var list<string>
      */
@@ -41,7 +41,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * Récupère les attributs qui doivent être convertis.
      *
      * @return array<string, string>
      */
@@ -54,7 +54,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Determine if the user has verified their email address.
+     * Détermine si l'utilisateur a vérifié son adresse email.
      *
      * @return bool
      */
@@ -64,7 +64,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Mark the given user's email as verified.
+     * Marque l'email de l'utilisateur donné comme vérifié.
      *
      * @return bool
      */
@@ -93,5 +93,10 @@ class User extends Authenticatable
     public function vehicles()
     {
         return $this->hasMany(Vehicle::class, 'owner_id');
+    }
+
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class, 'passenger_id');
     }
 }

@@ -1,7 +1,6 @@
 <x-main-layout>
     <div class="container mx-auto px-6 py-8">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <!-- Form Section (Left, 2 cols) -->
             <div class="lg:col-span-2 bg-white rounded-[2rem] p-8 shadow-sm border border-gray-100">
                 <h1 class="text-5xl font-extrabold text-[#333333] mb-2">
                     T’as de la place ?
@@ -85,13 +84,28 @@
                                 class="w-full bg-gray-50 border-none rounded-xl px-4 py-3 text-gray-700 placeholder-gray-400 focus:ring-2 focus:ring-[#70D78D]">
                         </div>
                         <div>
-                            <label class="block text-sm font-semibold text-[#333333] mb-2">Véhicule</label>
+                            <div class="flex justify-between items-center mb-2">
+                                <label class="text-sm font-semibold text-[#333333]">Véhicule</label>
+                                <div class="flex items-center gap-3">
+                                    <button type="button" id="refresh_vehicles" class="text-xs text-gray-500 hover:text-[#2794EB] flex items-center transition-colors" title="Rafraîchir la liste">
+                                        <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                                        Actualiser
+                                    </button>
+                                    <a href="{{ route('profile.edit') }}" class="text-xs text-[#2794EB] hover:underline font-medium" target="_blank">+ Ajouter</a>
+                                </div>
+                            </div>
                             <select name="vehicle_id" class="w-full bg-gray-50 border-none rounded-xl px-4 py-3 text-gray-700 focus:ring-2 focus:ring-[#70D78D]">
                                 <option value="" disabled selected>Ton véhicule</option>
                                 @foreach($vehicles as $vehicle)
                                     <option value="{{ $vehicle->id }}" {{ old('vehicle_id') == $vehicle->id ? 'selected' : '' }}>{{ $vehicle->make }} {{ $vehicle->model }} ({{ $vehicle->license_plate }})</option>
                                 @endforeach
                             </select>
+                             @if($vehicles->isEmpty())
+                                <p class="text-xs text-amber-600 mt-1 flex items-center">
+                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                                    Aucun véhicule enregistré.
+                                </p>
+                            @endif
                         </div>
                     </div>
 
@@ -272,6 +286,65 @@
             if(timeInput) {
                 timeInput.addEventListener('change', calculateRouteDuration);
             }
+
+            // Gestion du rafraîchissement des véhicules
+            document.getElementById('refresh_vehicles')?.addEventListener('click', function() {
+                const btn = this;
+                const select = document.querySelector('select[name="vehicle_id"]');
+                const originalText = btn.innerHTML;
+                
+                // Etat de chargement
+                btn.innerHTML = '<svg class="animate-spin w-3.5 h-3.5 mr-1" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Chargement...';
+                btn.classList.add('cursor-not-allowed', 'opacity-75');
+                btn.disabled = true;
+                
+                fetch('{{ route("api.user.vehicles") }}')
+                    .then(response => response.json())
+                    .then(data => {
+                        const currentVal = select.value;
+                        
+                        // Vider la liste (sauf le placeholder)
+                        select.innerHTML = '<option value="" disabled>Ton véhicule</option>';
+                        
+                        // Gérer le message "Aucun véhicule"
+                        const container = select.parentElement;
+                        const existingMsg = container.querySelector('.text-amber-600');
+                        
+                        if (data.length === 0) {
+                            if(!existingMsg) {
+                                const msg = document.createElement('p');
+                                msg.className = "text-xs text-amber-600 mt-1 flex items-center";
+                                msg.innerHTML = '<svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>Aucun véhicule enregistré.';
+                                container.appendChild(msg);
+                            }
+                            select.value = "";
+                        } else {
+                            if(existingMsg) existingMsg.remove();
+    
+                            data.forEach(vehicle => {
+                                const option = document.createElement('option');
+                                option.value = vehicle.id;
+                                option.textContent = `${vehicle.make} ${vehicle.model} (${vehicle.license_plate})`;
+                                if (vehicle.id == currentVal) option.selected = true;
+                                select.appendChild(option);
+                            });
+                            
+                            // Sélectionner le dernier ajouté si rien n'était sélectionné
+                            if (!currentVal && data.length > 0) {
+                                select.value = data[data.length - 1].id; 
+                            }
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Impossible de récupérer les véhicules.');
+                    })
+                    .finally(() => {
+                        btn.innerHTML = originalText;
+                        btn.classList.remove('cursor-not-allowed', 'opacity-75');
+                        btn.disabled = false;
+                    });
+            });
         });
 
         // 1. Fonction pour calculer la durée du trajet via l'API Directions de Mapbox
@@ -312,16 +385,14 @@
             // Ajout de la durée (secondes * 1000 pour ms)
             const arrivalDate = new Date(date.getTime() + (durationSeconds * 1000));
 
-            // Format to HH:mm
+            // Format en HH:mm
             const arrivalHours = String(arrivalDate.getHours()).padStart(2, '0');
             const arrivalMinutes = String(arrivalDate.getMinutes()).padStart(2, '0');
 
             arrivalInput.value = `${arrivalHours}:${arrivalMinutes}`;
         }
 
-        // Fonctions pour incrémenter / décrémenter les places
-
-        // Fontion pour incrémenter le nombre de places
+        // Fonction pour incrémenter le nombre de places
         function incrementSeats() {
             const input = document.getElementById('seats_input');
             let val = parseInt(input.value);

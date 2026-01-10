@@ -14,16 +14,14 @@ use Illuminate\View\View;
 
 class RegisteredUserController extends Controller
 {
-    /**
-     * Display the registration view.
-     */
+    // Affiche le formulaire d'inscription.
     public function create(): View
     {
         return view('auth.register');
     }
 
     /**
-     * Handle an incoming registration request.
+     * Gère une nouvelle demande d'enregistrement utilisateur.
      *
      * @throws \Illuminate\Validation\ValidationException
      */
@@ -37,12 +35,16 @@ class RegisteredUserController extends Controller
             'phone' => ['nullable', 'string', 'max:20'],
         ]);
 
+        // Vérification automatique si l'email est de l'université
+        $isVerified = str_ends_with($request->email, '@u-picardie.fr');
+
         $user = User::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'phone' => $request->phone,
+            'is_verified' => $isVerified,
         ]);
 
         event(new Registered($user));
