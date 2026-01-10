@@ -94,68 +94,79 @@
 
     <!-- General FAQ -->
     <section class="container mx-auto px-6 py-16 max-w-4xl">
-        <h2 class="text-3xl font-bold text-[#333333] mb-10">Questions fréquentes</h2>
+        
+        <div class="bg-white rounded-3xl shadow-lg p-8 sm:p-10">
+            
+            <h2 class="text-3xl font-bold text-[#333333] mb-8">Questions fréquentes</h2>
 
-        <div class="space-y-4" x-data="{ active: null }">
-            <!-- Question 1 -->
-            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-                <button @click="active = (active === 1 ? null : 1)" class="w-full px-6 py-4 text-left flex justify-between items-center focus:outline-none">
-                    <span class="font-bold text-gray-900">Comment proposer un trajet ?</span>
-                    <span class="text-blue-500 transform transition-transform duration-200" :class="active === 1 ? 'rotate-180' : ''">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            <div class="space-y-6">
+                
+                <div x-data="{ open: false }" class="border-b border-gray-100 pb-6">
+                    <button @click="open = !open" class="w-full flex justify-between items-center cursor-pointer group focus:outline-none">
+                        <span class="text-gray-800 text-lg group-hover:text-[#3499FE] text-left transition font-medium">
+                            Comment proposer un trajet ?
+                        </span>
+                        <svg :class="{'rotate-180': open}" class="w-5 h-5 text-gray-400 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                         </svg>
-                    </span>
-                </button>
-                <div x-show="active === 1" x-collapse class="px-6 pb-4 text-gray-600">
-                    C'est très simple ! Connecte-toi, clique sur "Publie ton trajet", renseigne ton point de départ, ton arrivée et ton horaire. C'est tout !
+                    </button>
+                    <div x-show="open" x-transition class="mt-3">
+                        <p class="text-gray-600 leading-relaxed">
+                            C'est très simple ! Connecte-toi, clique sur "Publie ton trajet", renseigne ton point de départ, ton arrivée et ton horaire. C'est tout !
+                        </p>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Question 2 -->
-            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-                <button @click="active = (active === 2 ? null : 2)" class="w-full px-6 py-4 text-left flex justify-between items-center focus:outline-none">
-                    <span class="font-bold text-gray-900">Le paiement est-il sécurisé ?</span>
-                    <span class="text-blue-500 transform transition-transform duration-200" :class="active === 2 ? 'rotate-180' : ''">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                <div x-data="{ open: false }" class="border-b border-gray-100 pb-6">
+                    <button @click="open = !open" class="w-full flex justify-between items-center cursor-pointer group focus:outline-none">
+                        <span class="text-gray-800 text-lg group-hover:text-[#3499FE] text-left transition font-medium">
+                            Le paiement est-il sécurisé ?
+                        </span>
+                        <svg :class="{'rotate-180': open}" class="w-5 h-5 text-gray-400 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                         </svg>
-                    </span>
-                </button>
-                <div x-show="active === 2" x-collapse class="px-6 pb-4 text-gray-600">
-                    Oui, toutes les transactions passent par notre partenaire de paiement sécurisé. L'argent est bloqué jusqu'à la validation du trajet.
+                    </button>
+                    <div x-show="open" x-transition class="mt-3">
+                        <p class="text-gray-600 leading-relaxed">
+                            Oui, toutes les transactions passent par notre partenaire de paiement sécurisé. L'argent est bloqué jusqu'à la validation du trajet.
+                        </p>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Question 3 -->
-            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-                <button @click="active = (active === 3 ? null : 3)" class="w-full px-6 py-4 text-left flex justify-between items-center focus:outline-none">
-                    <span class="font-bold text-gray-900">Puis-je annuler mon trajet ?</span>
-                    <span class="text-blue-500 transform transition-transform duration-200" :class="active === 3 ? 'rotate-180' : ''">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                <div x-data="{ open: false }" class="border-b border-gray-100 pb-6">
+                    <button @click="open = !open" class="w-full flex justify-between items-center cursor-pointer group focus:outline-none">
+                        <span class="text-gray-800 text-lg group-hover:text-[#3499FE] text-left transition font-medium">
+                            Puis-je annuler mon trajet ?
+                        </span>
+                        <svg :class="{'rotate-180': open}" class="w-5 h-5 text-gray-400 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                         </svg>
-                    </span>
-                </button>
-                <div x-show="active === 3" x-collapse class="px-6 pb-4 text-gray-600">
-                    L'annulation est gratuite jusqu'à 24h avant le départ. Passé ce délai, des frais peuvent s'appliquer pour dédommager le conducteur.
+                    </button>
+                    <div x-show="open" x-transition class="mt-3">
+                        <p class="text-gray-600 leading-relaxed">
+                            L'annulation est gratuite jusqu'à 24h avant le départ. Passé ce délai, des frais peuvent s'appliquer pour dédommager le conducteur.
+                        </p>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Question 4 -->
-            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-                <button @click="active = (active === 4 ? null : 4)" class="w-full px-6 py-4 text-left flex justify-between items-center focus:outline-none">
-                    <span class="font-bold text-gray-900">Comment contacter le support ?</span>
-                    <span class="text-blue-500 transform transition-transform duration-200" :class="active === 4 ? 'rotate-180' : ''">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                <div x-data="{ open: false }" class="pb-2">
+                    <button @click="open = !open" class="w-full flex justify-between items-center cursor-pointer group focus:outline-none">
+                        <span class="text-gray-800 text-lg group-hover:text-[#3499FE] text-left transition font-medium">
+                            Comment contacter le support ?
+                        </span>
+                        <svg :class="{'rotate-180': open}" class="w-5 h-5 text-gray-400 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                         </svg>
-                    </span>
-                </button>
-                <div x-show="active === 4" x-collapse class="px-6 pb-4 text-gray-600">
-                    Tu peux nous contacter via la page Contact ou directement par email à support@amigo-amiens.fr.
+                    </button>
+                    <div x-show="open" x-transition class="mt-3">
+                        <p class="text-gray-600 leading-relaxed">
+                            Tu peux nous contacter via la page Contact ou directement par email à support@amigo-amiens.fr.
+                        </p>
+                    </div>
                 </div>
+
             </div>
+        </div>
     </section>
 
 </x-main-layout>

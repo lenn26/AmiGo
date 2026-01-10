@@ -73,7 +73,7 @@
                 <!-- Section : Mes véhicules -->
                 <div class="mb-8 border-b pb-8" x-data="{ showModal: false }">
                     <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-lg font-medium text-blue-500">Mes véhicules</h2>
+                        <h2 class="text-lg font-medium text-blue-500">{{ $vehicles->count() == 1 ? 'Mon véhicule' : 'Mes véhicules' }}</h2>
                     </div>
                 
                     <div class="space-y-4 mb-6">
