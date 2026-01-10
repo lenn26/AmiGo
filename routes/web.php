@@ -110,6 +110,15 @@ Route::middleware('auth')->group(function () {
     Route::post('/vehicles', [VehicleController::class, 'store'])->name('vehicles.store');
     Route::patch('/vehicles/{vehicle}', [VehicleController::class, 'update'])->name('vehicles.update');
     Route::delete('/vehicles/{vehicle}', [VehicleController::class, 'destroy'])->name('vehicles.destroy');
+    // Suppression d'un trajet par le conducteur
+    Route::delete('/trajets/{trip}', function (App\Models\Trip $trip) {
+        // On vérifie que c'est bien mon trajet
+        if ($trip->driver_id !== auth()->id()) {
+            abort(403, 'Action non autorisée');
+        }
+        $trip->delete(); 
+        return back(); 
+    })->name('trips.destroy');
     
     // Page "Mes réservations" 
     Route::get('/mes-reservations', function () {
@@ -121,7 +130,12 @@ Route::middleware('auth')->group(function () {
         $upcoming = $bookings->filter(fn($b) => $b->trip->start_time >= now());
         $history = $bookings->filter(fn($b) => $b->trip->start_time < now());
 
-        return view('reservations', compact('upcoming', 'history'));
+        $myTrips = App\Models\Trip::where('driver_id', auth()->id())
+                    ->where('start_time', '>=', now()) 
+                    ->orderBy('start_time', 'asc')
+                    ->get();
+
+        return view('reservations', compact('upcoming', 'history', 'myTrips'));
     })->name('reservations');
 
     // API Interne : Récupération AJAX des véhicules

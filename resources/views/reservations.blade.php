@@ -1,13 +1,86 @@
 <x-main-layout>
     <div class="container mx-auto px-4 py-8 max-w-5xl min-h-screen flex flex-col">
-        <h1 class="text-3xl font-bold mb-8 text-gray-900 border-b pb-4">Mes Réservations</h1>
+        <h1 class="text-3xl font-bold mb-8 text-gray-900 border-b pb-4">Mes trajets</h1>
+
+        <!-- Mes trajets publiés -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-semibold mb-6 flex items-center text-[#70D78D]">
+                <svg class="w-7 h-7 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+                Publiés
+            </h2>
+
+            @if($myTrips->isEmpty())
+                <div class="bg-green-50 rounded-2xl border border-green-100 p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div class="flex items-center gap-4">
+                        <div class="bg-white p-3 rounded-full shadow-sm text-[#70D78D]">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                        </div>
+                        <div>
+                            <p class="font-bold text-gray-800">Aucun trajet publié.</p>
+                            <p class="text-sm text-gray-500">Rentabilise tes déplacements en proposant un trajet !</p>
+                        </div>
+                    </div>
+                    <a href="{{ route('trips.create') }}" class="px-6 py-2 bg-[#70D78D] text-white font-bold rounded-xl hover:bg-green-500 transition shadow-sm whitespace-nowrap">
+                        Publier un trajet
+                    </a>
+                </div>
+            @else
+                <div class="space-y-4">
+                    @foreach($myTrips as $trip)
+                        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col md:flex-row items-center justify-between gap-4 border-l-4 border-l-[#70D78D]">
+                            
+                            <div class="flex-grow">
+                                <div class="flex items-center gap-3 mb-2">
+                                    <span class="bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded border border-green-200">
+                                        {{ \Carbon\Carbon::parse($trip->start_time)->format('d/m/Y') }}
+                                    </span>
+                                    <span class="text-gray-900 font-bold text-lg">
+                                        {{ \Carbon\Carbon::parse($trip->start_time)->format('H:i') }}
+                                    </span>
+                                </div>
+                                <div class="flex items-center gap-2 text-gray-700">
+                                    <span class="font-medium">{{ $trip->start_address }}</span>
+                                    <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                                    <span class="font-medium">{{ $trip->end_address }}</span>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center gap-6 justify-between md:justify-end w-full md:w-auto">
+                                <div class="text-right">
+                                    <p class="text-xs text-gray-400 uppercase tracking-wide font-bold">Place{{ $trip->seats_available > 1 ? 's' : '' }} Dispo</p>
+                                    <div class="flex items-center justify-end gap-1 font-bold text-[#333333] text-lg">
+                                        <svg class="w-5 h-5 text-[#70D78D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                                        {{ $trip->seats_available }}
+                                    </div>
+                                </div>
+                                
+                                <div class="h-8 w-px bg-gray-200 hidden md:block"></div>
+
+                                <div class="text-right min-w-[80px]">
+                                    <span class="block text-xl font-bold text-[#333333]">{{ $trip->price }} €</span>
+                                    <span class="text-xs text-gray-400">par pers.</span>
+                                </div>
+                            </div>
+                            <form action="{{ route('trips.destroy', $trip->id) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr ? Cette action est irréversible.');" class="mt-2">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="flex items-center justify-center gap-1.5 px-3 py-1.5 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition text-xs font-bold w-full uppercase tracking-wide">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                    Annuler
+                                </button>
+                            </form>
+                        </div>
+                    @endforeach
+                </div>
+            @endif
+        </section>
     
 
-        <!-- Réservations à venir -->
+        <!-- Mes trajets reservés -->
         <section class="mb-12">
             <h2 class="text-2xl font-semibold mb-6 flex items-center text-[#2794EB]">
                 <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                Trajets à venir
+                Réservés
             </h2>
 
             @if($upcoming->isEmpty())

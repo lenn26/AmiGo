@@ -405,5 +405,15 @@
             let val = parseInt(input.value);
             if (val > 1) input.value = val - 1;
         }
+
+        // Définir la date minimale comme aujourd'hui
+        document.addEventListener('DOMContentLoaded', function() {
+            const dateInput = document.querySelector("input[name='date']");
+            if (dateInput) {
+                const today = new Date();
+                today.setMinutes(today.getMinutes() - today.getTimezoneOffset());
+                dateInput.min = today.toISOString().split('T')[0];
+            }
+        });
     </script>
 </x-main-layout>

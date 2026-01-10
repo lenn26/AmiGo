@@ -6,6 +6,7 @@ use App\Models\Trip;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class TripController extends Controller
 {
@@ -14,7 +15,7 @@ class TripController extends Controller
         $validated = $request->validate([
             'start_address' => 'required|string|max:255',
             'end_address' => 'required|string|max:255',
-            'date' => 'required|date',
+            'date' => 'required|date|after_or_equal:today',
             'time' => 'required',
             'price' => 'required|numeric|min:0',
             'vehicle_id' => 'required|exists:VEHICLES,id',
@@ -29,9 +30,16 @@ class TripController extends Controller
         ], [
             'start_lat.required' => 'Veuillez sélectionner une adresse de départ dans la liste.',
             'end_lat.required' => 'Veuillez sélectionner une adresse d\'arrivée dans la liste.',
+            'date.after_or_equal' => 'La date ne peut pas être dans le passé.',
         ]);
 
         $start_time = Carbon::parse($validated['date'] . ' ' . $validated['time']);
+
+        if ($start_time->isPast()) {
+            throw ValidationException::withMessages([
+                'time' => ['L\'heure de départ est déjà passée !']
+            ]);
+        }
 
         // Pour l'instant, nous utilisons des valeurs par défaut pour les coordonnées
         // Dans une version plus avancée, il faudrait utiliser une API de géocodage
