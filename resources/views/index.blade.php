@@ -43,13 +43,24 @@
                     <p class="text-base text-gray-500">Prix moyen</p>
                 </div>
             </div>
-            <div>
-                <div class="flex flex-row">
-                    <p class="text-2xl text-red-500">Faut mettre les images ici</p>
-                    <p class="self-center text-2xl font-medium text-[#333333]/80">+400 Étudiants connectés</p>
+           <div class="flex flex-row items-center gap-4">
+                <div class="flex -space-x-4 rtl:space-x-reverse">
+                    <img class="w-14 h-14 rounded-full shadow-md border-2 border-white"
+                        src="{{ asset('images/avatar1.png') }}"
+                        alt="Avatar 1">
+
+                    <img class="w-14 h-14 rounded-full shadow-md border-2 border-white"
+                        src="{{ asset('images/avatar2.png') }}"
+                        alt="Avatar 2">
+
+                    <img class="w-14 h-14 rounded-full shadow-md border-2 border-white"
+                        src="{{ asset('images/avatar3.png') }}"
+                        alt="Avatar 3">
                 </div>
-                <div class="flex text-xl text-blue-500">
-                    ★★★★★ <span class="text-blue-500 ml-1">4.9/5</span>
+                <div class="flex flex-col items-start"> <p class="text-xl font-medium text-[#333333]/80">+400 Étudiants connectés</p>
+                    <div class="flex items-center text-yellow-400 text-lg">
+                        ★★★★★ <span class="text-blue-500 ml-1 font-bold">4.9/5</span>
+                    </div>
                 </div>
             </div>
         </div>
