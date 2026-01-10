@@ -81,7 +81,7 @@
                             <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-gray-100">
                                 <div>
                                     <h3 class="font-bold text-gray-800">{{ $v->make }} {{ $v->model }}</h3>
-                                    <p class="text-sm text-gray-500">{{ $v->color }} • {{ $v->license_plate }} • {{ $v->seats_total }} places</p>
+                                    <p class="text-sm text-gray-500">{{ $v->color }} • {{ $v->license_plate }} • {{ $v->seats_total }} place{{ $v->seats_total > 1 ? 's' : '' }}</p>
                                 </div>
                                 <div class="flex items-center gap-2">
                                     <button type="button" 
@@ -193,7 +193,7 @@
                                     </div>
                                     <div>
                                         <x-input-label for="new_seats" :value="__('Places')" />
-                                        <x-text-input id="new_seats" name="seats_total" type="number" class="mt-1 block w-full bg-gray-50" placeholder="4" required min="1" />
+                                        <x-text-input id="new_seats" name="seats_total" type="number" class="mt-1 block w-full bg-gray-50" placeholder="4" required min="1" max="10" />
                                     </div>
                                 </div>
                             </div>
@@ -261,7 +261,7 @@
                                     </div>
                                     <div>
                                         <x-input-label for="edit_seats" :value="__('Places')" />
-                                        <x-text-input id="edit_seats" name="seats_total" x-model="form.seats" type="number" class="mt-1 block w-full bg-gray-50" required min="1" />
+                                        <x-text-input id="edit_seats" name="seats_total" x-model="form.seats" type="number" class="mt-1 block w-full bg-gray-50" required min="1" max="10" />
                                     </div>
                                 </div>
                             </div>
