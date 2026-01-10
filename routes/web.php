@@ -30,6 +30,7 @@ Route::get('/trajets', function (Request $request) {
     // Donc on filtre sur la date de début et le statut du trajet
     $query = Trip::with(['driver', 'vehicle'])
                 ->where('status', '!=', 'completed')
+                ->where('seats_available', '>', 0)
                 ->where('start_time', '>=', now());
 
     if ($request->filled('from')) {

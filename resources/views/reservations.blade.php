@@ -54,7 +54,7 @@
                             
                             <!-- Statut et Prix -->
                             <div class="flex flex-col items-end gap-2 min-w-[140px]" x-data="{ showCancelModal: false }">
-                                <span class="text-xl font-bold text-[#333333]">{{ $booking->trip->price }} €</span>
+                                <span class="text-xl font-bold text-[#333333]">{{ number_format($booking->trip->price * $booking->seats_booked, 2, ',', ' ') }} €</span>
                                 @if($booking->status == 'confirmed')
                                     <span class="bg-[#70D78D] text-white px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-2">Confirmé</span>
                                 @elseif($booking->status == 'pending')

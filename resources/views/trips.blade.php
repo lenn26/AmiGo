@@ -352,8 +352,8 @@
                             <!-- Zone de réservation -->
                             <div class="bg-gray-50 px-4 py-4 sm:px-6 flex items-center justify-between">
                                  <div>
-                                    <p class="text-sm text-gray-500">Prix par passager</p>
-                                    <span class="text-2xl font-bold text-[#333333]" x-text="activeTrip.price + ' €'"></span>
+                                    <p class="text-sm text-gray-500" x-text="seats > 1 ? 'Prix total' : 'Prix par passager'">Prix par passager</p>
+                                    <span class="text-2xl font-bold text-[#333333]" x-text="(activeTrip.price * seats).toLocaleString('fr-FR', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + ' €'"></span>
                                  </div>
                                  <div class="flex items-center gap-4">
                                      <form :action="'/trips/' + activeTrip.id + '/book'" method="POST" class="flex gap-4 items-center">
