@@ -62,6 +62,6 @@ class VehicleController extends Controller
 
         $vehicle->delete();
 
-        return redirect()->back()->with('status', 'vehicle-deleted');
+        return redirect()->route('profile.edit')->with('status', 'vehicle-deleted');
     }
 }
