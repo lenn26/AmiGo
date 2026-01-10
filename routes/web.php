@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Route;
 | Routes Web
 |--------------------------------------------------------------------------
 |
-| Ce fichier enregistre les routes web de votre application.
+| Ce fichier enregistre les routes web de l'application.
 |
 */
 
@@ -28,7 +28,7 @@ use App\Models\Trip;
 Route::get('/trajets', function (Request $request) {
     // On ne veut que les trajets futurs et non terminés
     // Donc on filtre sur la date de début et le statut du trajet
-    $query = Trip::with('driver')
+    $query = Trip::with(['driver', 'vehicle'])
                 ->where('status', '!=', 'completed')
                 ->where('start_time', '>=', now());
 
@@ -77,7 +77,20 @@ Route::get('/trajets', function (Request $request) {
     }
 
     $trips = $query->get();
-    return view('trips', compact('trips'));
+
+    $upcoming_bookings = collect();
+    if (auth()->check()) {
+        $upcoming_bookings = auth()->user()->bookings()
+            ->with('trip')
+            ->whereHas('trip', function($q) {
+                $q->where('start_time', '>=', now());
+            })
+            ->whereIn('status', ['accepted', 'confirmed', 'pending'])
+            ->get()
+            ->sortBy('trip.start_time');
+    }
+
+    return view('trips', compact('trips', 'upcoming_bookings'));
 })->name('trips');
 
 use App\Models\Vehicle;
@@ -97,6 +110,35 @@ Route::middleware('auth')->get('/proposer-trajet', function () {
 
 // Enregistrement d'un nouveau trajet
 Route::post('/proposer-trajet', [TripController::class, 'store'])->name('trips.store')->middleware('auth');
+
+// Réservation d'un trajet
+Route::post('/trips/{trip}/book', function (Request $request, Trip $trip) {
+    if (!auth()->check()) {
+        return redirect()->route('login');
+    }
+    
+    $seats = (int) $request->input('seats', 1);
+
+    if ($seats < 1 || $seats > $trip->seats_available) {
+       return back()->with('error', 'Nombre de places invalide ou insuffisant.');
+    }
+    if ($trip->driver_id === auth()->id()) {
+         return back()->with('error', 'Vous ne pouvez pas réserver votre propre trajet.');
+    }
+    
+    // Créer la réservation
+    App\Models\Booking::create([
+        'trip_id' => $trip->id,
+        'passenger_id' => auth()->id(),
+        'seats_booked' => $seats,
+        'status' => 'confirmed' 
+    ]);
+
+    // Décrémenter les places
+    $trip->decrement('seats_available', $seats);
+
+    return redirect()->route('reservations')->with('success', 'Trajet réservé !');
+})->name('trips.book')->middleware('auth');
 
 // Tableau de bord utilisateur
 Route::get('/dashboard', function () {
@@ -130,15 +172,36 @@ Route::middleware('auth')->group(function () {
         $upcoming = $bookings->filter(fn($b) => $b->trip->start_time >= now());
         $history = $bookings->filter(fn($b) => $b->trip->start_time < now());
 
-        $myTrips = App\Models\Trip::where('driver_id', auth()->id())
-                    ->where('start_time', '>=', now()) 
-                    ->orderBy('start_time', 'asc')
-                    ->get();
-
-        return view('reservations', compact('upcoming', 'history', 'myTrips'));
+        return view('reservations', compact('upcoming', 'history'));
     })->name('reservations');
 
-    // API Interne : Récupération AJAX des véhicules
+    // Annulation d'une réservation par le passager
+    Route::delete('/reservations/{booking}', function (App\Models\Booking $booking) {
+        if ($booking->passenger_id !== auth()->id()) {
+            abort(403, 'Action non autorisée');
+        }
+
+        // Remettre les places disponibles
+        $booking->trip->increment('seats_available', $booking->seats_booked);
+
+        $booking->delete();
+        return back();
+    })->name('bookings.destroy');
+
+    // Page "Mes publications"
+    Route::get('/mes-publications', function () {
+        $trips = App\Models\Trip::with(['vehicle', 'bookings.passenger'])
+                    ->where('driver_id', auth()->id())
+                    ->get()
+                    ->sortByDesc('start_time');
+
+        $upcoming = $trips->filter(fn($t) => $t->start_time >= now())->sortBy('start_time');
+        $history = $trips->filter(fn($t) => $t->start_time < now());
+
+        return view('publications', compact('upcoming', 'history'));
+    })->name('publications');
+
+    // API Interne : Récupération des véhicules
     Route::get('/api/user/vehicles', function () {
         return auth()->user()->vehicles()->get(['id', 'make', 'model', 'license_plate']);
     })->name('api.user.vehicles');

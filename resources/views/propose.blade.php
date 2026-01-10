@@ -195,7 +195,7 @@
                     </div>
 
                     <div class="mt-6 text-center">
-                        <a href="#" class="text-[#2794EB] text-sm font-bold hover:underline">Voir tout l'historique</a>
+                        <a href="{{ route('publications') }}" class="text-[#2794EB] text-sm font-bold hover:underline">Voir tout l'historique</a>
                     </div>
                 </div>
             </div>

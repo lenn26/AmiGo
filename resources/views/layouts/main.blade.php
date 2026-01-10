@@ -65,7 +65,7 @@
     </div>
 
     <!-- En-tête -->
-    <header id="main-navbar" class="w-full py-6 px-4 flex justify-center sticky top-0 z-50 pointer-events-none transition-transform duration-300 ease-in-out" x-data="{ open: false }">
+    <header id="main-navbar" class="w-full py-6 px-4 flex justify-center sticky top-0 z-50 pointer-events-none transition-transform duration-300 ease-in-out" x-data="{ open: false, mobileTrajetsOpen: false }">
         <div class="w-full max-w-7xl bg-white rounded-[2rem] md:rounded-full shadow-xl px-8 py-4 flex flex-col md:flex-row items-center justify-between border border-gray-100 pointer-events-auto relative">
             <div class="w-full md:w-auto flex items-center justify-between">
                 <!-- Navbar -->
@@ -92,10 +92,33 @@
                     <!-- Animation quand on passe la souris sur la navbar -->
                     <span class="absolute bottom-0 left-0 w-full h-[2px] bg-[#3499FE] origin-right scale-x-0 transition-transform duration-300 group-hover:scale-x-100 group-hover:origin-left"></span>
                 </a>
-                <a href="{{ route('trips') }}" class="relative group @if(request()->is('trajets*')) text-[#3499FE] font-semibold @else hover:text-black @endif transition">
-                    Mes trajets
-                    <span class="absolute bottom-0 left-0 w-full h-[2px] bg-[#3499FE] origin-right scale-x-0 transition-transform duration-300 group-hover:scale-x-100 group-hover:origin-left"></span>
-                </a>
+                <div class="relative group">
+                    <button class="flex items-center gap-1 relative @if(request()->routeIs('trips') || request()->routeIs('trips.create') || request()->routeIs('reservations')) text-[#3499FE] font-semibold @else hover:text-black @endif transition">
+                        Mes trajets
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 transition-transform duration-200 group-hover:rotate-180" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                        <span class="absolute bottom-0 left-0 w-full h-[2px] bg-[#3499FE] origin-right scale-x-0 transition-transform duration-300 group-hover:scale-x-100 group-hover:origin-left"></span>
+                    </button>
+                    
+                    <div class="absolute left-1/2 transform -translate-x-1/2 top-full mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-100 py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                        <a href="{{ route('trips') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#3499FE]">
+                            Rechercher un trajet
+                        </a>
+                        <a href="{{ route('trips.create') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#3499FE]">
+                            Publier un trajet
+                        </a>
+                        
+                        <div class="h-px bg-gray-100 my-1 mx-2"></div>
+
+                        <a href="{{ route('reservations') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#3499FE]">
+                            Mes réservations
+                        </a>
+                        <a href="{{ route('publications') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#3499FE]">
+                            Mes publications
+                        </a>
+                    </div>
+                </div>
                 <a href="{{ route('faq') }}" class="relative group @if(request()->is('faq*')) text-[#3499FE] font-semibold @else hover:text-black @endif transition">
                     FAQ
                     <span class="absolute bottom-0 left-0 w-full h-[2px] bg-[#3499FE] origin-right scale-x-0 transition-transform duration-300 group-hover:scale-x-100 group-hover:origin-left"></span>
@@ -164,6 +187,13 @@
                                 Mes réservations
                             </a>
 
+                            <a href="{{ route('publications') }}" class="flex items-center gap-2 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                                </svg>
+                                Mes publications
+                            </a>
+
                             <!-- Formulaire de déconnexion -->
                             <form method="POST" action="{{ route('logout') }}" class="border-t border-gray-100">
                                 @csrf
@@ -191,7 +221,32 @@
                  class="w-full md:hidden flex flex-col gap-4 pt-6 pb-2 border-t border-gray-100 mt-4">
                 
                 <x-mobile-nav-link href="/" :active="request()->is('/')">Accueil</x-mobile-nav-link>
-                <x-mobile-nav-link :href="route('trips')" :active="request()->is('trajets*')">Mes trajets</x-mobile-nav-link>
+                
+                <!-- Menu déroulant Trajets Mobile -->
+                <div class="w-full flex flex-col">
+                    <button @click="mobileTrajetsOpen = !mobileTrajetsOpen" 
+                            class="w-full flex items-center justify-between text-lg transition {{ (request()->routeIs('trips') || request()->routeIs('trips.create') || request()->routeIs('reservations')) ? 'text-[#3499FE] font-semibold' : 'text-[#333333] font-medium hover:text-[#3499FE]' }}">
+                        <span>Trajets</span>
+                        <svg class="w-4 h-4 transition-transform duration-200" :class="{'rotate-180': mobileTrajetsOpen}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    
+                    <div x-show="mobileTrajetsOpen" class="flex flex-col w-full mt-2 space-y-2">
+                        <a href="{{ route('trips') }}" class="block pl-4 text-base font-medium text-gray-500 hover:text-[#3499FE]">
+                            Rechercher un trajet
+                        </a>
+                        <a href="{{ route('trips.create') }}" class="block pl-4 text-base font-medium text-gray-500 hover:text-[#3499FE]">
+                            Publier un trajet
+                        </a>
+                        <a href="{{ route('reservations') }}" class="block pl-4 text-base font-medium text-gray-500 hover:text-[#3499FE]">
+                            Mes réservations
+                        </a>
+                        <a href="{{ route('publications') }}" class="block pl-4 text-base font-medium text-gray-500 hover:text-[#3499FE]">
+                            Mes publications
+                        </a>
+                        
+                    </div>
+                </div>
+
                 <x-mobile-nav-link :href="route('faq')" :active="request()->is('faq*')">FAQ</x-mobile-nav-link>
                 <x-mobile-nav-link :href="route('contact')" :active="request()->is('contact*')">Contact</x-mobile-nav-link>
                 
