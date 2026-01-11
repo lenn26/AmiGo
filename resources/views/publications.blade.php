@@ -104,7 +104,38 @@
         </section>
 
         <!-- Historique -->
-        <section>
+       <section x-data="{ 
+            showHistoryModal: false, 
+            active: null, 
+            showReportForm: false,
+            
+            check24h(dateString) {
+                const tripDate = new Date(dateString);
+                const now = new Date();
+                const diffMs = now - tripDate;
+                const diffHrs = diffMs / (1000 * 60 * 60);
+                return diffHrs < 24;
+            },
+
+            // Vérifie si un utilisateur spécifique a déjà été signalé
+            hasReportedUser(userId) {
+                if (!this.active || !this.active.reports) return false;
+                return this.active.reports.some(r => r.reported_user_id == userId);
+            },
+
+            // Vérifie s'il reste au moins un passager à signaler sur ce trajet
+            canReportAnyone() {
+                if (!this.active || !this.active.bookings) return false;
+                
+                for (let booking of this.active.bookings) {
+                        if (booking.passenger && !this.hasReportedUser(booking.passenger.id)) {
+                            return true;
+                        }
+                }
+                
+                return false;
+            }
+        }">
             <h2 class="text-2xl font-semibold mb-6 flex items-center text-gray-600">
                 <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 Historique des publications
@@ -115,7 +146,19 @@
             @else
                 <div class="space-y-4 opacity-75">
                     @foreach($history as $trip)
-                        <div class="bg-gray-50 rounded-2xl border border-gray-100 p-4 flex flex-col md:flex-row items-center justify-between gap-4">
+                         @php
+                            // Charge les relations
+                            $trip->load(['vehicle', 'bookings.passenger', 'reports']);
+                            // On filtre les reports pour savoir s'il y en a UN de l'utilisateur courant (le conducteur) et on réindexe
+                            $trip->setRelation('reports', $trip->reports->where('reporter_id', auth()->id())->values());
+                            // Données complètes
+                            $jsData = $trip;
+                        @endphp
+                        
+                        <div 
+                            @dblclick="active = {{ json_encode($jsData) }}; showHistoryModal = true; showReportForm = false"
+                            class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col md:flex-row items-center justify-between gap-4 cursor-pointer hover:shadow-md transition duration-200"
+                        >
                             <div class="flex-grow">
                                 <span class="text-sm text-gray-500 mb-1 block">
                                     {{ \Carbon\Carbon::parse($trip->start_time)->isoFormat('LL') }}
@@ -126,12 +169,234 @@
                                     <span class="font-medium">{{ $trip->end_address }}</span>
                                 </div>
                             </div>
-                            <div class="text-right">
+                            <div class="text-right flex flex-col items-end">
                                 <span class="block font-bold text-gray-700">{{ $trip->price }} €</span>
-                                <span class="text-xs text-gray-500">Terminé</span>
+                                <span class="text-xs text-gray-500 mt-1 mb-2">Terminé</span>
+                                <button 
+                                    @click.stop="active = {{ json_encode($jsData) }}; showHistoryModal = true; showReportForm = false"
+                                    class="text-blue-500 hover:text-blue-700 text-sm font-medium flex items-center gap-1 transition"
+                                >
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                    Voir plus
+                                </button>
                             </div>
                         </div>
                     @endforeach
+                </div>
+
+                 <!-- Modal de détail -->
+                <div x-show="showHistoryModal" class="fixed z-50 inset-0 overflow-y-auto" style="display: none;">
+                    <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+                        <!-- Fond sombre -->
+                        <div x-show="showHistoryModal" x-transition.opacity class="fixed inset-0 transition-opacity" aria-hidden="true" @click="showHistoryModal = false">
+                            <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+                        </div>
+                        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+                        <!-- Contenu du modal -->
+                        <div x-show="showHistoryModal" x-transition.scale class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full">
+                            
+                            <template x-if="active">
+                                <div>
+                                    <!-- Entête -->
+                                    <div class="bg-gray-50 px-6 py-4 border-b border-gray-100 flex justify-between items-center">
+                                        <h3 class="text-2xl font-bold text-gray-800" x-text="showReportForm ? 'Signaler un passager' : 'Détail de la publication'"></h3>
+                                        <button @click="showHistoryModal = false" class="text-gray-400 hover:text-gray-600 transition">
+                                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                        </button>
+                                    </div>
+
+                                    <!-- Vue détails -->
+                                    <div x-show="!showReportForm" class="p-8">
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                                            <!-- Colonne gauche -->
+                                            <div>
+                                                <h4 class="text-lg font-bold text-gray-700 mb-4 flex items-center">
+                                                    <svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                                    Itinéraire
+                                                </h4>
+                                                
+                                                <div class="relative pl-6 border-l-2 border-gray-100 ml-2 space-y-8">
+                                                    <!-- Départ -->
+                                                    <div class="relative">
+                                                        <span class="absolute -left-[31px] bg-white border-2 border-blue-500 w-4 h-4 rounded-full"></span>
+                                                        <p class="font-bold text-xl text-gray-900" x-text="new Date(active.start_time).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})"></p>
+                                                        <p class="text-gray-500" x-text="active.start_address"></p>
+                                                    </div>
+                                                    <!-- Arrivée -->
+                                                    <div class="relative">
+                                                        <span class="absolute -left-[31px] bg-white border-2 border-green-500 w-4 h-4 rounded-full"></span>
+                                                        <p class="font-bold text-xl text-gray-900" x-text="new Date(active.end_time).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})"></p>
+                                                        <p class="text-gray-500" x-text="active.end_address"></p>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Description -->
+                                                <template x-if="active.description">
+                                                    <div class="mt-8">
+                                                        <h4 class="text-gray-900 font-bold mb-2">À propos du trajet</h4>
+                                                        <p class="text-gray-600 text-sm leading-relaxed bg-gray-50 p-4 rounded-lg" x-text="active.description"></p>
+                                                    </div>
+                                                </template>
+
+                                                <!-- Passagers -->
+                                                <div class="mt-8 pt-6 border-t border-gray-100">
+                                                    <h4 class="text-gray-900 font-bold mb-4">Passagers</h4>
+                                                    <template x-if="active.bookings && active.bookings.length > 0">
+                                                        <div class="space-y-3">
+                                                            <template x-for="booking in active.bookings">
+                                                                <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                                                                     <template x-if="booking.passenger.avatar">
+                                                                        <img :src="booking.passenger.avatar" class="w-10 h-10 rounded-full mr-3 object-cover">
+                                                                    </template>
+                                                                    <template x-if="!booking.passenger.avatar">
+                                                                        <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold mr-3" x-text="booking.passenger.first_name.charAt(0)"></div>
+                                                                    </template>
+                                                                    <div>
+                                                                        <p class="font-medium text-gray-900" x-text="booking.passenger.first_name + ' ' + booking.passenger.last_name"></p>
+                                                                        <p class="text-xs text-gray-500" x-text="booking.seats_booked + ' place(s)'"></p>
+                                                                    </div>
+                                                                </div>
+                                                            </template>
+                                                        </div>
+                                                    </template>
+                                                    <template x-if="!active.bookings || active.bookings.length === 0">
+                                                        <p class="text-gray-500 italic">Aucun passager</p>
+                                                    </template>
+                                                </div>
+                                            </div>
+
+                                            <!-- Colonne droite -->
+                                            <div>
+                                                <h4 class="text-lg font-bold text-gray-700 mb-4 flex items-center">
+                                                    <svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Details
+                                                </h4>
+                                                <div class="space-y-4">
+                                                    <div class="flex justify-between border-b border-gray-50 pb-2">
+                                                        <span class="text-gray-500">Véhicule</span>
+                                                        <span class="font-medium text-gray-900" x-text="active.vehicle ? (active.vehicle.make + ' ' + active.vehicle.model) : 'Non spécifié'"></span>
+                                                    </div>
+                                                    <div class="flex justify-between border-b border-gray-50 pb-2">
+                                                        <span class="text-gray-500">Couleur</span>
+                                                        <span class="font-medium text-gray-900" x-text="active.vehicle ? active.vehicle.color : '-'"></span>
+                                                    </div>
+                                                    <div class="flex justify-between border-b border-gray-50 pb-2">
+                                                        <span class="text-gray-500">Date</span>
+                                                        <span class="font-medium text-gray-900 first-letter:uppercase" x-text="new Date(active.start_time).toLocaleDateString(undefined, {weekday:'long', day:'numeric', month:'long'})"></span>
+                                                    </div>
+                                                    <div class="flex justify-between items-center pt-2">
+                                                        <span class="text-gray-500">Places restantes</span>
+                                                        <span class="font-bold text-gray-900 bg-gray-100 px-3 py-1 rounded" x-text="active.seats_available"></span>
+                                                    </div>
+                                                    <div class="flex justify-between items-center pt-2">
+                                                        <span class="text-gray-500">Revenus générés</span>
+                                                        <span class="font-bold text-green-600 text-lg" x-text="new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(active.price * (active.bookings ? active.bookings.reduce((acc, b) => acc + b.seats_booked, 0) : 0))"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                     <!-- Vue formulaire de signalement -->
+                                    <div x-show="showReportForm" class="p-8">
+                                        <form :action="'/trips/' + active.id + '/report'" method="POST">
+                                            @csrf
+                                            
+                                            <div class="mb-4">
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">Qui voulez-vous signaler ?</label>
+                                                <select name="reported_user_id" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200" required>
+                                                    <option value="" disabled selected>Sélectionnez un passager</option>
+                                                    
+                                                    <!-- Option Passagers -->
+                                                    <template x-for="booking in active.bookings">
+                                                        <option :value="booking.passenger.id"
+                                                                :disabled="hasReportedUser(booking.passenger.id)"
+                                                                x-text="booking.passenger.first_name + ' ' + booking.passenger.last_name + (hasReportedUser(booking.passenger.id) ? ' (Déjà signalé)' : '')">
+                                                        </option>
+                                                    </template>
+                                                </select>
+                                            </div>
+
+                                            <div class="mb-4">
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">Raison du signalement</label>
+                                                <select name="reason" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200" required>
+                                                    <option value="" disabled selected>Sélectionnez une raison</option>
+                                                    <optgroup label="Comportement">
+                                                        <option value="Absence au rendez-vous">Absence au rendez-vous</option>
+                                                        <option value="Retard important">Retard important</option>
+                                                        <option value="Comportement inapproprié">Comportement inapproprié / Agressivité</option>
+                                                        <option value="Non-respect des règles">Non-respect des règles</option>
+                                                    </optgroup>
+                                                    <optgroup label="Autre">
+                                                        <option value="Paiement non honoré">Paiement non honoré</option>
+                                                        <option value="Autre">Autre</option>
+                                                    </optgroup>
+                                                </select>
+                                            </div>
+
+                                            <div class="mb-6">
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">Description du problème</label>
+                                                <textarea name="description" rows="3" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200" placeholder="Décrivez la situation en quelques mots..." required></textarea>
+                                            </div>
+
+                                            <div class="mb-6 flex justify-end gap-3 pt-4 border-t border-gray-100">
+                                                <template x-if="!canReportAnyone()">
+                                                    <span class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-gray-500 bg-gray-100 italic">
+                                                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                                        Tous les passagers ont été signalés
+                                                    </span>
+                                                </template>
+                                                <template x-if="canReportAnyone()">
+                                                     <div class="flex gap-3">
+                                                        <button type="button" @click="showReportForm = false" class="px-5 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition font-medium">Retour</button>
+                                                        <button type="submit" class="px-5 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition font-medium shadow-md">Envoyer le signalement</button>
+                                                     </div>
+                                                </template>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                    <!-- Footer (Visible seulement en mode Détails) -->
+                                    <div x-show="!showReportForm" class="bg-gray-50 px-8 py-5 flex items-center justify-between border-t border-gray-100">
+                                        <div>
+                                            <p class="text-sm text-gray-500">Prix par place</p>
+                                            <p class="text-3xl font-bold text-gray-900" x-text="new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(active.price)"></p>
+                                        </div>
+                                        
+                                        <!-- Logique d'affichage du bouton Signaler -->
+                                        <div>
+                                            <template x-if="check24h(active.start_time)">
+                                                <div>
+                                                     <template x-if="!active.bookings || active.bookings.length === 0">
+                                                        <span class="text-gray-400 italic text-sm">Aucun passager à signaler</span>
+                                                     </template>
+                                                     <template x-if="active.bookings && active.bookings.length > 0">
+                                                        <div>
+                                                            <template x-if="!canReportAnyone()">
+                                                                <span class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-gray-500 bg-gray-100 italic">
+                                                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                                                    Signalements effectués
+                                                                </span>
+                                                            </template>
+                                                            <template x-if="canReportAnyone()">
+                                                                <button @click="showReportForm = true" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-red-600 hover:bg-red-700 shadow-sm transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                                                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                                                                    Signaler un problème
+                                                                </button>
+                                                            </template>
+                                                        </div>
+                                                     </template>
+                                                </div>
+                                            </template>
+                                            <template x-if="!check24h(active.start_time)">
+                                                <span class="text-gray-400 text-sm italic">Délai de signalement dépassé</span>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
                 </div>
             @endif
         </section>

@@ -26,6 +26,11 @@ use App\Models\Trip;
 
 // Page de recherche de trajets
 Route::get('/trajets', function (Request $request) {
+    // Passes les trajets à 'completed' dont l'heure de départ est passée
+    Trip::where('start_time', '<', now())
+        ->whereIn('status', ['planned', 'open', 'full'])
+        ->update(['status' => 'completed']);
+
     // On ne veut que les trajets futurs et non terminés
     // Donc on filtre sur la date de début et le statut du trajet
     $query = Trip::with(['driver', 'vehicle'])
@@ -165,7 +170,7 @@ Route::middleware('auth')->group(function () {
     
     // Page "Mes réservations" 
     Route::get('/mes-reservations', function () {
-        $bookings = App\Models\Booking::with(['trip.driver', 'trip.vehicle'])
+        $bookings = App\Models\Booking::with(['trip.driver', 'trip.vehicle', 'trip.reports', 'trip.bookings.passenger'])
             ->where('passenger_id', auth()->id())
             ->get()
             ->sortByDesc(fn($booking) => $booking->trip->start_time);
@@ -188,6 +193,95 @@ Route::middleware('auth')->group(function () {
         $booking->delete();
         return back();
     })->name('bookings.destroy');
+
+    // Signalement d'un trajet
+    Route::post('/reservations/{booking}/report', function (Request $request, App\Models\Booking $booking) {
+        if ($booking->passenger_id !== auth()->id()) {
+            abort(403, 'Action non autorisée');
+        }
+
+        $reportedUserId = $request->input('reported_user_id');
+
+        // Vérification de sécurité : l'utilisateur signalé doit faire partie du trajet (Chauffeur ou Passager)
+        $isDriver = $booking->trip->driver_id == $reportedUserId;
+        $isPassenger = $booking->trip->bookings()->where('passenger_id', $reportedUserId)->exists();
+
+        if (!$isDriver && !$isPassenger) {
+            return back()->with('error', 'L\'utilisateur signalé ne fait pas partie de ce trajet.');
+        }
+
+        // Vérification si déjà signalé (Spécifique à la personne visée)
+        if (App\Models\Report::where('trip_id', $booking->trip_id)
+            ->where('reporter_id', auth()->id())
+            ->where('reported_user_id', $reportedUserId)
+            ->exists()) {
+             return back()->with('error', 'Vous avez déjà signalé cet utilisateur pour ce trajet.');
+        }
+
+        $tripStartTime = \Carbon\Carbon::parse($booking->trip->start_time);
+        
+        // Vérification des 24h après le départ
+        if (now()->diffInHours($tripStartTime, false) < -24) {
+             return back()->with('error', 'Le délai de 24h pour signaler ce trajet est dépassé.');
+        }
+
+        // Création du signalement
+        App\Models\Report::create([
+            'reason' => $request->input('reason'),
+            'description' => $request->input('description'),
+            'status' => 'open',
+            'trip_id' => $booking->trip_id,
+            'reported_user_id' => $reportedUserId,
+            'reporter_id' => auth()->id(),
+        ]);
+
+        return back()->with('success', 'Votre signalement a été pris en compte.');
+
+    })->name('bookings.report');
+    
+    // Signalement d'un passager par le conducteur
+    Route::post('/trips/{trip}/report', function (Request $request, App\Models\Trip $trip) {
+        if ($trip->driver_id !== auth()->id()) {
+            abort(403, 'Action non autorisée');
+        }
+
+        $reportedUserId = $request->input('reported_user_id');
+
+        // Vérification de sécurité : l'utilisateur signalé doit être un passager du trajet
+        $isPassenger = $trip->bookings()->where('passenger_id', $reportedUserId)->exists();
+
+        if (!$isPassenger) {
+            return back()->with('error', 'L\'utilisateur signalé ne fait pas partie de ce trajet.');
+        }
+
+        // Vérification si déjà signalé
+        if (App\Models\Report::where('trip_id', $trip->id)
+            ->where('reporter_id', auth()->id())
+            ->where('reported_user_id', $reportedUserId)
+            ->exists()) {
+             return back()->with('error', 'Vous avez déjà signalé cet utilisateur pour ce trajet.');
+        }
+
+        $tripStartTime = \Carbon\Carbon::parse($trip->start_time);
+        
+        // Vérification des 24h après le départ
+        if (now()->diffInHours($tripStartTime, false) < -24) {
+             return back()->with('error', 'Le délai de 24h pour signaler ce trajet est dépassé.');
+        }
+
+        // Création du signalement
+        App\Models\Report::create([
+            'reason' => $request->input('reason'),
+            'description' => $request->input('description'),
+            'status' => 'open',
+            'trip_id' => $trip->id,
+            'reported_user_id' => $reportedUserId,
+            'reporter_id' => auth()->id(),
+        ]);
+
+        return back()->with('success', 'Votre signalement a été pris en compte.');
+
+    })->name('trips.report');
 
     // Page "Mes publications"
     Route::get('/mes-publications', function () {

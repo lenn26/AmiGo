@@ -17,6 +17,9 @@ class Report extends Model
         'reporter_id',
     ];
 
+    // Désactive la gestion de "updated_at" mais garde "created_at" automatique
+    const UPDATED_AT = null;
+
     public function trip()
     {
         return $this->belongsTo(Trip::class);
