@@ -171,7 +171,7 @@
                             </div>
                             <div class="text-right flex flex-col items-end">
                                 <span class="block font-bold text-gray-700">{{ $trip->price }} €</span>
-                                <span class="text-xs text-gray-500 mt-1 mb-2">Terminé</span>
+                                <span class="text-xs text-green-600 font-semibold mt-2 mb-2">Terminé</span>
                                 <button 
                                     @click.stop="active = {{ json_encode($jsData) }}; showHistoryModal = true; showReportForm = false"
                                     class="text-blue-500 hover:text-blue-700 text-sm font-medium flex items-center gap-1 transition"
