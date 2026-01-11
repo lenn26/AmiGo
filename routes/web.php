@@ -238,6 +238,38 @@ Route::middleware('auth')->group(function () {
         return back()->with('success', 'Votre signalement a été pris en compte.');
 
     })->name('bookings.report');
+
+    // Notation d'un trajet (Avis au conducteur)
+    Route::post('/reservations/{booking}/rate', function (Request $request, App\Models\Booking $booking) {
+        if ($booking->passenger_id !== auth()->id()) {
+            abort(403, 'Action non autorisée');
+        }
+
+        // Validation
+        $request->validate([
+            'rating' => 'required|numeric|min:0.5|max:5', // Permet 0.5, 1, 1.5 etc
+            'comment' => 'nullable|string|max:1000',
+        ]);
+
+        // Vérification si déjà noté
+        if (App\Models\Rating::where('trip_id', $booking->trip_id)
+            ->where('rater_id', auth()->id())
+            ->exists()) {
+             return back()->with('error', 'Vous avez déjà donné votre avis sur ce trajet.');
+        }
+
+        // Création de la note
+        App\Models\Rating::create([
+            'rating' => $request->rating,
+            'comment' => $request->comment,
+            'trip_id' => $booking->trip_id,
+            'rated_id' => $booking->trip->driver_id,
+            'rater_id' => auth()->id(),
+        ]);
+
+        return back()->with('success', 'Votre avis a été publié.');
+
+    })->name('bookings.rate');
     
     // Signalement d'un passager par le conducteur
     Route::post('/trips/{trip}/report', function (Request $request, App\Models\Trip $trip) {

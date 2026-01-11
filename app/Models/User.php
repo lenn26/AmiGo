@@ -40,6 +40,11 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    protected $appends = [
+        'average_rating',
+        'ratings_count',
+    ];
+
     /**
      * Récupère les attributs qui doivent être convertis.
      *
@@ -80,9 +85,19 @@ class User extends Authenticatable
         return $this->hasMany(Rating::class, 'rated_id');
     }
 
+    // Obtenir la moyenne des notes reçues
     public function getAverageRatingAttribute()
     {
-        return round($this->ratingsReceived()->avg('rating'), 1) ?: 5.0;
+        $avg = $this->ratingsReceived()->avg('rating');
+
+        // Par défaut, on retourne 5 si aucune note n'est disponible
+        // On formate avec une virgule et une décimale
+        return number_format((float) ($avg ?: 5), 1, ',', '');
+    }
+
+    public function getRatingsCountAttribute()
+    {
+        return $this->ratingsReceived()->count();
     }
 
     public function getNameAttribute()

@@ -122,6 +122,9 @@
             showHistoryModal: false, 
             active: null, 
             showReportForm: false,
+            showRatingForm: false,
+            ratingVal: 0,
+            hoverVal: 0,
             
             check24h(dateString) {
                 const tripDate = new Date(dateString);
@@ -174,11 +177,17 @@
                             // Ensuite on filtre les reports pour ne garder que ceux de l'utilisateur courant (et on réindexe avec values())
                             $booking->trip->setRelation('reports', $booking->trip->reports->where('reporter_id', auth()->id())->values());
                             
+                            // Charge la note utilisateur pour ce trajet
+                            $userRating = \App\Models\Rating::where('trip_id', $booking->trip->id)
+                                ->where('rater_id', auth()->id())
+                                ->first();
+                            $booking->user_rating = $userRating;
+
                             $jsData = $booking;
                         @endphp
 
                         <div 
-                            @dblclick="active = {{ json_encode($jsData) }}; showHistoryModal = true; showReportForm = false"
+                            @dblclick="active = {{ json_encode($jsData) }}; showHistoryModal = true; showReportForm = false; showRatingForm = false"
                             class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col md:flex-row items-center justify-between gap-4 cursor-pointer hover:shadow-md transition duration-200"
                         >
                             <div class="flex-grow">
@@ -190,16 +199,36 @@
                                     <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
                                     <span class="font-medium">{{ $booking->trip->end_address }}</span>
                                 </div>
+                                <div class="mt-2">
+                                    @if($booking->user_rating)
+                                        <div class="text-green-500 text-sm font-semibold flex items-center gap-1">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                            Avis publié
+                                        </div>
+                                    @else
+                                        <button 
+                                            @click.stop="active = {{ json_encode($jsData) }}; showHistoryModal = true; showReportForm = false; showRatingForm = true; ratingVal = 0"
+                                            type="button"
+                                            class="text-yellow-500 hover:text-yellow-700 text-sm font-semibold flex items-center gap-1 transition"
+                                        >
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.2691 4.41115C11.5006 3.89177 11.6164 3.63208 11.7776 3.55211C11.9176 3.48263 12.082 3.48263 12.222 3.55211C12.3832 3.63208 12.499 3.89177 12.7305 4.41115L14.5745 8.54808C14.643 8.70162 14.6772 8.77839 14.7302 8.83718C14.777 8.8892 14.8343 8.93081 14.8982 8.95929C14.9705 8.99149 15.0541 9.00031 15.2213 9.01795L19.7256 9.49336C20.2911 9.55304 20.5738 9.58288 20.6997 9.71147C20.809 9.82316 20.8598 9.97956 20.837 10.1342C20.8108 10.3122 20.5996 10.5025 20.1772 10.8832L16.8125 13.9154C16.6877 14.0279 16.6252 14.0842 16.5857 14.1527C16.5507 14.2134 16.5288 14.2807 16.5215 14.3503C16.5132 14.429 16.5306 14.5112 16.5655 14.6757L17.5053 19.1064C17.6233 19.6627 17.6823 19.9408 17.5989 20.1002C17.5264 20.2388 17.3934 20.3354 17.2393 20.3615C17.0619 20.3915 16.8156 20.2495 16.323 19.9654L12.3995 17.7024C12.2539 17.6184 12.1811 17.5765 12.1037 17.56C12.0352 17.5455 11.9644 17.5455 11.8959 17.56C11.8185 17.5765 11.7457 17.6184 11.6001 17.7024L7.67662 19.9654C7.18404 20.2495 6.93775 20.3915 6.76034 20.3615C6.60623 20.3354 6.47319 20.2388 6.40075 20.1002C6.31736 19.9408 6.37635 19.6627 6.49434 19.1064L7.4341 14.6757C7.46898 14.5112 7.48642 14.429 7.47814 14.3503C7.47081 14.2807 7.44894 14.2134 7.41394 14.1527C7.37439 14.0842 7.31195 14.0279 7.18708 13.9154L3.82246 10.8832C3.40005 10.5025 3.18884 10.3122 3.16258 10.1342C3.13978 9.97956 3.19059 9.82316 3.29993 9.71147C3.42581 9.58288 3.70856 9.55304 4.27406 9.49336L8.77835 9.01795C8.94553 9.00031 9.02911 8.99149 9.10139 8.95929C9.16534 8.93081 9.2226 8.8892 9.26946 8.83718C9.32241 8.77839 9.35663 8.70162 9.42508 8.54808L11.2691 4.41115Z"/>
+                                            </svg>
+                                            Ajouter un avis
+                                        </button>
+                                    @endif
+                                </div>
                             </div>
                             <div class="text-right flex flex-col items-end">
                                 <span class="block font-bold text-gray-900">{{ number_format($booking->trip->price * $booking->seats_booked, 2, ',', ' ') }} €</span>
-                                <span class="text-xs text-green-600 font-semibold mt-2 mb-2">Terminé</span>
+                                <span class="text-sm text-green-600 font-semibold mt-2 mb-2">Terminé</span>
                                 
                                 <button 
-                                    @click.stop="active = {{ json_encode($jsData) }}; showHistoryModal = true; showReportForm = false"
-                                    class="text-blue-500 hover:text-blue-700 text-sm font-medium flex items-center gap-1 transition"
+                                    @click.stop="active = {{ json_encode($jsData) }}; showHistoryModal = true; showReportForm = false; showRatingForm = false"
+                                    class="text-blue-500 hover:text-blue-700 text-sm font-semibold flex items-center gap-1 transition"
                                 >
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                    <svg class="w-4 h-4" fill="none"  stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                                     Voir plus
                                 </button>
                             </div>
@@ -223,14 +252,14 @@
                                 <div>
                                     <!-- Entête -->
                                     <div class="bg-gray-50 px-6 py-4 border-b border-gray-100 flex justify-between items-center">
-                                        <h3 class="text-2xl font-bold text-gray-800" x-text="showReportForm ? 'Signaler un problème' : 'Détail du trajet passé'"></h3>
+                                        <h3 class="text-2xl font-bold text-gray-800" x-text="showReportForm ? 'Signaler un problème' : (showRatingForm ? 'Noter le conducteur' : 'Détail du trajet passé')"></h3>
                                         <button @click="showHistoryModal = false" class="text-gray-400 hover:text-gray-600 transition">
                                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                                         </button>
                                     </div>
 
                                     <!-- Vue détails -->
-                                    <div x-show="!showReportForm" class="p-8">
+                                    <div x-show="!showReportForm && !showRatingForm" class="p-8">
                                         <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
                                             <!-- Colonne gauche -->
                                             <div>
@@ -274,9 +303,15 @@
                                                         </template>
                                                         <div>
                                                             <p class="font-bold text-gray-900 text-lg" x-text="active.trip.driver.first_name + ' ' + active.trip.driver.last_name.charAt(0) + '.'"></p>
-                                                            <div class="flex items-center text-yellow-500 text-sm">
-                                                                <span>★ 4.8/5</span> <span class="text-gray-400 ml-1 text-xs">(12 avis)</span>
-                                                            </div>
+                                                            <template x-if="active.trip.driver.ratings_count > 0">
+                                                                <div class="flex items-center text-yellow-500 text-sm">
+                                                                    <span x-text="'★ ' + active.trip.driver.average_rating + '/5'"></span> 
+                                                                    <span class="text-gray-400 ml-1 text-xs" x-text="'(' + active.trip.driver.ratings_count + ' avis)'"></span>
+                                                                </div>
+                                                            </template>
+                                                            <template x-if="active.trip.driver.ratings_count == 0">
+                                                                <div class="text-sm text-gray-400 font-medium">0 avis</div>
+                                                            </template>
                                                         </div>
                                                     </div>
                                                     <template x-if="active.trip.driver.bio">
@@ -384,8 +419,63 @@
                                         </form>
                                     </div>
 
+                                    <!-- Vue formulaire de notation -->
+                                    <div x-show="showRatingForm" class="p-8">
+                                        <form :action="'/reservations/' + active.id + '/rate'" method="POST">
+                                            @csrf
+                                            
+                                            <div class="mb-6">
+                                                 <label class="block text-sm font-medium text-gray-700 mb-2">Mettre une note au conducteur</label>
+                                                 <input type="hidden" name="rating" :value="ratingVal">
+                                                 <div class="flex items-center gap-1" @mouseleave="hoverVal = 0">
+                                                     <template x-for="i in 5">
+                                                         <div class="relative w-8 h-8 cursor-pointer" 
+                                                              @mousemove="
+                                                                  let rect = $el.getBoundingClientRect();
+                                                                  let x = $event.clientX - rect.left;
+                                                                  hoverVal = (x < rect.width / 2) ? i - 0.5 : i;
+                                                              "
+                                                              @click="ratingVal = hoverVal"
+                                                         >
+                                                             <!-- Fond (etoile vide) -->
+                                                             <svg class="absolute inset-0 w-full h-full text-gray-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                                <path d="M11.2691 4.41115C11.5006 3.89177 11.6164 3.63208 11.7776 3.55211C11.9176 3.48263 12.082 3.48263 12.222 3.55211C12.3832 3.63208 12.499 3.89177 12.7305 4.41115L14.5745 8.54808C14.643 8.70162 14.6772 8.77839 14.7302 8.83718C14.777 8.8892 14.8343 8.93081 14.8982 8.95929C14.9705 8.99149 15.0541 9.00031 15.2213 9.01795L19.7256 9.49336C20.2911 9.55304 20.5738 9.58288 20.6997 9.71147C20.809 9.82316 20.8598 9.97956 20.837 10.1342C20.8108 10.3122 20.5996 10.5025 20.1772 10.8832L16.8125 13.9154C16.6877 14.0279 16.6252 14.0842 16.5857 14.1527C16.5507 14.2134 16.5288 14.2807 16.5215 14.3503C16.5132 14.429 16.5306 14.5112 16.5655 14.6757L17.5053 19.1064C17.6233 19.6627 17.6823 19.9408 17.5989 20.1002C17.5264 20.2388 17.3934 20.3354 17.2393 20.3615C17.0619 20.3915 16.8156 20.2495 16.323 19.9654L12.3995 17.7024C12.2539 17.6184 12.1811 17.5765 12.1037 17.56C12.0352 17.5455 11.9644 17.5455 11.8959 17.56C11.8185 17.5765 11.7457 17.6184 11.6001 17.7024L7.67662 19.9654C7.18404 20.2495 6.93775 20.3915 6.76034 20.3615C6.60623 20.3354 6.47319 20.2388 6.40075 20.1002C6.31736 19.9408 6.37635 19.6627 6.49434 19.1064L7.4341 14.6757C7.46898 14.5112 7.48642 14.429 7.47814 14.3503C7.47081 14.2807 7.44894 14.2134 7.41394 14.1527C7.37439 14.0842 7.31195 14.0279 7.18708 13.9154L3.82246 10.8832C3.40005 10.5025 3.18884 10.3122 3.16258 10.1342C3.13978 9.97956 3.19059 9.82316 3.29993 9.71147C3.42581 9.58288 3.70856 9.55304 4.27406 9.49336L8.77835 9.01795C8.94553 9.00031 9.02911 8.99149 9.10139 8.95929C9.16534 8.93081 9.2226 8.8892 9.26946 8.83718C9.32241 8.77839 9.35663 8.70162 9.42508 8.54808L11.2691 4.41115Z"/>
+                                                             </svg>
+                                                             
+                                                             <!-- Demi etoile -->
+                                                             <div x-show="(hoverVal || ratingVal) >= i - 0.5" class="absolute inset-0 overflow-hidden w-1/2">
+                                                                 <svg class="w-[200%] h-full text-yellow-500 fill-current" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                                     <path d="M8.30595 19.371L12.0008 16.7999L12.0008 4.44753V4.44752C12.0008 4.18078 12.0008 4.0474 11.9674 4.01758C11.9387 3.99199 11.8979 3.98509 11.8624 3.99986C11.821 4.01705 11.7772 4.14304 11.6897 4.395L9.94998 9.39985C9.8841 9.58938 9.85116 9.68414 9.7918 9.75471C9.73936 9.81706 9.67249 9.86564 9.597 9.89625C9.51154 9.93089 9.41123 9.93294 9.21063 9.93702L5.26677 10.0174C4.56191 10.0318 4.20949 10.0389 4.06884 10.1732C3.94711 10.2894 3.892 10.459 3.92218 10.6246C3.95706 10.8158 4.23795 11.0288 4.79975 11.4547L7.94316 13.8379C8.10305 13.9591 8.183 14.0197 8.23177 14.098C8.27486 14.1671 8.3004 14.2457 8.30618 14.327C8.31272 14.419 8.28367 14.515 8.22556 14.707L7.08328 18.4827C6.87913 19.1575 6.77706 19.4949 6.86127 19.6702C6.93416 19.8218 7.07846 19.9267 7.24523 19.9491C7.43793 19.9751 7.72727 19.7737 8.30595 19.371Z"/>
+                                                                 </svg>
+                                                             </div>
+
+                                                             <!-- Etoile pleine -->
+                                                             <div x-show="(hoverVal || ratingVal) >= i" class="absolute inset-0 text-yellow-500 fill-current">
+                                                                  <svg class="w-full h-full" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                                     <path d="M11.2691 4.41115C11.5006 3.89177 11.6164 3.63208 11.7776 3.55211C11.9176 3.48263 12.082 3.48263 12.222 3.55211C12.3832 3.63208 12.499 3.89177 12.7305 4.41115L14.5745 8.54808C14.643 8.70162 14.6772 8.77839 14.7302 8.83718C14.777 8.8892 14.8343 8.93081 14.8982 8.95929C14.9705 8.99149 15.0541 9.00031 15.2213 9.01795L19.7256 9.49336C20.2911 9.55304 20.5738 9.58288 20.6997 9.71147C20.809 9.82316 20.8598 9.97956 20.837 10.1342C20.8108 10.3122 20.5996 10.5025 20.1772 10.8832L16.8125 13.9154C16.6877 14.0279 16.6252 14.0842 16.5857 14.1527C16.5507 14.2134 16.5288 14.2807 16.5215 14.3503C16.5132 14.429 16.5306 14.5112 16.5655 14.6757L17.5053 19.1064C17.6233 19.6627 17.6823 19.9408 17.5989 20.1002C17.5264 20.2388 17.3934 20.3354 17.2393 20.3615C17.0619 20.3915 16.8156 20.2495 16.323 19.9654L12.3995 17.7024C12.2539 17.6184 12.1811 17.5765 12.1037 17.56C12.0352 17.5455 11.9644 17.5455 11.8959 17.56C11.8185 17.5765 11.7457 17.6184 11.6001 17.7024L7.67662 19.9654C7.18404 20.2495 6.93775 20.3915 6.76034 20.3615C6.60623 20.3354 6.47319 20.2388 6.40075 20.1002C6.31736 19.9408 6.37635 19.6627 6.49434 19.1064L7.4341 14.6757C7.46898 14.5112 7.48642 14.429 7.47814 14.3503C7.47081 14.2807 7.44894 14.2134 7.41394 14.1527C7.37439 14.0842 7.31195 14.0279 7.18708 13.9154L3.82246 10.8832C3.40005 10.5025 3.18884 10.3122 3.16258 10.1342C3.13978 9.97956 3.19059 9.82316 3.29993 9.71147C3.42581 9.58288 3.70856 9.55304 4.27406 9.49336L8.77835 9.01795C8.94553 9.00031 9.02911 8.99149 9.10139 8.95929C9.16534 8.93081 9.2226 8.8892 9.26946 8.83718C9.32241 8.77839 9.35663 8.70162 9.42508 8.54808L11.2691 4.41115Z"/>
+                                                                  </svg>
+                                                             </div>
+                                                         </div>
+                                                     </template>
+                                                     <span class="ml-2 text-xl font-bold text-gray-700" x-text="ratingVal || hoverVal || 0"></span>
+                                                     <span class="text-sm text-gray-500">/ 5</span>
+                                                 </div>
+                                            </div>
+
+                                            <div class="mb-6">
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">Commentaire (facultatif)</label>
+                                                <textarea name="comment" rows="3" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200" placeholder="Partagez votre expérience avec ce conducteur..."></textarea>
+                                            </div>
+
+                                            <div class="flex justify-end gap-3 pt-4 border-t border-gray-100">
+                                                <button type="button" @click="showRatingForm = false" class="px-5 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition font-medium">Annuler</button>
+                                                <button type="submit" class="px-5 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition font-medium shadow-md">Publier l'avis</button>
+                                            </div>
+                                        </form>
+                                    </div>
+
                                     <!-- Footer (Visible seulement en mode Détails) -->
-                                    <div x-show="!showReportForm" class="bg-gray-50 px-8 py-5 flex items-center justify-between border-t border-gray-100">
+                                    <div x-show="!showReportForm && !showRatingForm" class="bg-gray-50 px-8 py-5 flex items-center justify-between border-t border-gray-100">
                                         <div>
                                             <p class="text-sm text-gray-500">Prix payé</p>
                                             <p class="text-3xl font-bold text-gray-900" x-text="new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(active.trip.price * active.seats_booked)"></p>
