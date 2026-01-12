@@ -279,18 +279,38 @@
                     </p>
                 </div>
 
+                <!-- Messages de succès ou d'erreur -->
+                @if(session('success'))
+                    <div class="mb-6 p-4 bg-green-50 border border-green-200 text-green-700 rounded-xl">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                @if(session('error'))
+                    <div class="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 rounded-xl">
+                        {{ session('error') }}
+                    </div>
+                @endif
+
                 <!-- Formulaire de contact -->
-                <form class="space-y-6">
+                <form action="{{ route('contact.store') }}" method="POST" class="space-y-6">
+                    @csrf
                     <!-- Email Input -->
                     <div>
-                        <input type="email" placeholder="Votre E-mail" class="w-full px-6 py-4 bg-[#F5F5F5] text-gray-900 rounded-xl border-none focus:ring-2 focus:ring-blue-500 outline-none transition placeholder-gray-400 font-medium">
+                        <input type="email" name="email" value="{{ old('email') }}" placeholder="Votre E-mail" class="w-full px-6 py-4 bg-[#F5F5F5] text-gray-900 rounded-xl border-none focus:ring-2 focus:ring-blue-500 outline-none transition placeholder-gray-400 font-medium @error('email') ring-2 ring-red-500 @enderror">
+                        @error('email')
+                            <p class="text-red-500 text-sm mt-2">{{ $message }}</p>
+                        @enderror
                     </div>
                     <!-- Message Input -->
                     <div>
-                        <textarea placeholder="Votre message" rows="4" class="w-full px-6 py-4 bg-[#F5F5F5] text-gray-900 rounded-xl border-none focus:ring-2 focus:ring-blue-500 outline-none transition resize-none placeholder-gray-400 font-medium"></textarea>
+                        <textarea placeholder="Votre message" name="message" rows="4" class="w-full px-6 py-4 bg-[#F5F5F5] text-gray-900 rounded-xl border-none focus:ring-2 focus:ring-blue-500 outline-none transition resize-none placeholder-gray-400 font-medium @error('message') ring-2 ring-red-500 @enderror">{{ old('message') }}</textarea>
+                        @error('message')
+                            <p class="text-red-500 text-sm mt-2">{{ $message }}</p>
+                        @enderror
                     </div>
-                    <!-- Submit Button -->
-                    <button class="w-full py-5 bg-[#369AF7] text-white font-bold rounded-xl hover:bg-blue-600 transition shadow-lg shadow-blue-500/25 text-lg">
+                    <!-- Bouton d'envoi -->
+                    <button type="submit" class="w-full py-5 bg-[#369AF7] text-white font-bold rounded-xl hover:bg-blue-600 transition shadow-lg shadow-blue-500/25 text-lg">
                         J'envoie dès maintenant !
                     </button>
                 </form>

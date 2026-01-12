@@ -363,20 +363,28 @@ Route::get('/contact', function () {
     return view('contact');
 })->name('contact');
 
+// Envoi du formulaire de contact
+Route::post('/contact', [App\Http\Controllers\ContactController::class, 'store'])->name('contact.store');
+
+// FAQ
 Route::get('/faq', function () {
     return view('faq');
 })->name('faq');
 
+// Mentions légales
 Route::get('/legal/notice', function () {
     return view('legal.notice');
 })->name('legal.notice');
 
+// Politique de confidentialité
 Route::get('/legal/privacy', function () {
     return view('legal.privacy');
 })->name('legal.privacy');
 
+// Conditions générales d'utilisation
 Route::get('/legal/terms', function () {
     return view('legal.terms');
 })->name('legal.terms');
 
+// Auth routes
 require __DIR__ . '/auth.php';

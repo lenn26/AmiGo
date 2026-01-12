@@ -4,7 +4,7 @@
             
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                 
-                <!-- COLONNE GAUCHE (Infos + FAQ) -->
+                <!-- Colonne de gauche (Infos + FAQ) -->
                 <div class="lg:col-span-5 space-y-8">
                     
                     <!-- Carte Coordonnées -->
@@ -90,7 +90,7 @@
 
                 </div>
 
-                <!-- COLONNE DROITE (Formulaire) -->
+                <!-- Colonne de droite (Formulaire) -->
                 <div class="lg:col-span-7">
                     <div class="bg-white rounded-3xl shadow-xl p-8 lg:p-12">
                         <h1 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-4 leading-tight">
@@ -101,17 +101,41 @@
                             Contactez-nous maintenant, on sera toujours à votre service !
                         </p>
 
-                        <form action="#" method="POST" class="space-y-6">
+                        <!-- Messages de succès ou d'erreur -->
+                        @if(session('success'))
+                            <div class="mb-6 p-4 bg-green-50 border border-green-200 text-green-700 rounded-xl">
+                                {{ session('success') }}
+                            </div>
+                        @endif
+
+                        @if(session('error'))
+                            <div class="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 rounded-xl">
+                                {{ session('error') }}
+                            </div>
+                        @endif
+
+                        <!-- Formulaire de contact -->
+                        <form action="{{ route('contact.store') }}" method="POST" class="space-y-6">
+                            @csrf
+                            <!-- Mail -->
                             <div>
-                                <input type="email" placeholder="Votre E-mail" 
-                                    class="w-full bg-gray-50 border-none rounded-xl px-6 py-4 text-gray-700 placeholder-gray-400 focus:ring-2 focus:ring-[#3499FE] focus:bg-white transition outline-none">
+                                <input type="email" name="email" value="{{ old('email') }}" placeholder="Votre E-mail" 
+                                    class="w-full bg-gray-50 border-none rounded-xl px-6 py-4 text-gray-700 placeholder-gray-400 focus:ring-2 focus:ring-[#3499FE] focus:bg-white transition outline-none @error('email') ring-2 ring-red-500 @enderror">
+                                @error('email')
+                                    <p class="text-red-500 text-sm mt-2">{{ $message }}</p>
+                                @enderror
                             </div>
                             
+                            <!-- Message -->
                             <div>
-                                <textarea rows="4" placeholder="Votre message" 
-                                    class="w-full bg-gray-50 border-none rounded-xl px-6 py-4 text-gray-700 placeholder-gray-400 focus:ring-2 focus:ring-[#3499FE] focus:bg-white transition outline-none resize-none"></textarea>
+                                <textarea rows="4" name="message" placeholder="Votre message" 
+                                    class="w-full bg-gray-50 border-none rounded-xl px-6 py-4 text-gray-700 placeholder-gray-400 focus:ring-2 focus:ring-[#3499FE] focus:bg-white transition outline-none resize-none @error('message') ring-2 ring-red-500 @enderror">{{ old('message') }}</textarea>
+                                @error('message')
+                                    <p class="text-red-500 text-sm mt-2">{{ $message }}</p>
+                                @enderror
                             </div>
 
+                            <!-- Bouton d'envoi -->
                             <button type="submit" class="w-full bg-[#3499FE] hover:bg-blue-600 text-white font-bold rounded-xl py-4 transition duration-300 shadow-lg shadow-blue-200">
                                 J'envoie dès maintenant !
                             </button>
