@@ -43,7 +43,7 @@
                                     <div class="h-10 w-10 flex-shrink-0">
                                         <!-- Affichage de l'avatar ou des initiales -->
                                         @if($user->avatar)
-                                            <img class="h-10 w-10 rounded-full object-cover" src="{{ asset('storage/' . $user->avatar) }}" alt="">
+                                            <img class="h-10 w-10 rounded-full object-cover" src="{{ $user->avatar }}" alt="">
                                         <!-- Si il n'y a pas d'avatar on afficher les initiales -->
                                         @else
                                             <div class="h-10 w-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-sm">

@@ -11,7 +11,7 @@
                 <!-- Informations de l'utilisateur -->
                 <div class="flex items-center gap-3">
                     @if($user->avatar)
-                        <img src="{{ asset('storage/' . $user->avatar) }}" alt="{{ $user->first_name }}" class="w-10 h-10 rounded-full object-cover">
+                        <img src="{{ $user->avatar }}" alt="{{ $user->first_name }}" class="w-10 h-10 rounded-full object-cover">
                     @else
                         <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center text-[#2794EB] font-bold text-sm">
                             {{ substr($user->first_name, 0, 1) }}

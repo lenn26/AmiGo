@@ -28,7 +28,16 @@ class ProfileController extends Controller
     // Met à jour les informations du profil de l'utilisateur.
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        // Remplir les champs validés (sauf avatar qui est géré séparément)
+        $request->user()->fill($request->safe()->except(['avatar']));
+
+        // Gestion de l'upload de l'avatar
+        if ($request->hasFile('avatar')) {
+            $file = $request->file('avatar');
+            $filename = time() . '_' . $request->user()->id . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('images/avatars'), $filename);
+            $request->user()->avatar = '/images/avatars/' . $filename;
+        }
 
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;

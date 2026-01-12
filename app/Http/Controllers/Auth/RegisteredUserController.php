@@ -35,8 +35,21 @@ class RegisteredUserController extends Controller
             'phone' => ['nullable', 'string', 'max:20'],
         ]);
 
-        // Vérification automatique si l'email est de l'université
-        $isVerified = str_ends_with($request->email, '@u-picardie.fr');
+        // Vérification automatique si l'email est d'une université d'Amiens
+        $universityDomains = [
+            '@u-picardie.fr',
+            '@etud.u-picardie.fr',
+            '@u-picardie.com',
+            '@univ-picardie.fr'
+        ];
+        
+        $isVerified = false;
+        foreach ($universityDomains as $domain) {
+            if (str_ends_with($request->email, $domain)) {
+                $isVerified = true;
+                break;
+            }
+        }
 
         $user = User::create([
             'first_name' => $request->first_name,

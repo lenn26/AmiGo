@@ -15,7 +15,7 @@
                                         <div class="relative">
                                             <!-- Avatar de l'utilisateur -->
                                             @if($conversation->user->avatar)
-                                                <img src="{{ asset('storage/' . $conversation->user->avatar) }}" alt="{{ $conversation->user->first_name }}" class="w-14 h-14 rounded-full object-cover border border-gray-200">
+                                                <img src="{{ $conversation->user->avatar }}" alt="{{ $conversation->user->first_name }}" class="w-14 h-14 rounded-full object-cover border border-gray-200">
                                             @else
                                                 <div class="w-14 h-14 rounded-full bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center text-[#2794EB] font-bold text-xl">
                                                     {{ substr($conversation->user->first_name, 0, 1) }}
