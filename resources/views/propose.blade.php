@@ -34,6 +34,7 @@
                         <input type="hidden" name="end_lat" id="end_lat" value="{{ old('end_lat') }}">
                         <input type="hidden" name="end_long" id="end_long" value="{{ old('end_long') }}">
                         <input type="hidden" name="duration" id="duration" value="{{ old('duration') }}">
+                        <input type="hidden" name="distance" id="distance" value="{{ old('distance') }}">
 
                         <div class="relative group">
                             <label class="block text-sm font-semibold text-[#333333] mb-2">Départ</label>
@@ -102,7 +103,7 @@
                                     <option value="{{ $vehicle->id }}" {{ old('vehicle_id') == $vehicle->id ? 'selected' : '' }}>{{ $vehicle->make }} {{ $vehicle->model }} ({{ $vehicle->license_plate }})</option>
                                 @endforeach
                             </select>
-                             @if($vehicles->isEmpty())
+                            @if($vehicles->isEmpty())
                                 <p class="text-xs text-amber-600 mt-1 flex items-center">
                                     <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
                                     Aucun véhicule enregistré.
@@ -152,6 +153,12 @@
                         </div>
                     </div>
 
+                    <!-- Description du trajet -->
+                    <div>
+                        <label class="block text-sm font-semibold text-[#333333] mb-2">Description du trajet (optionnel)</label>
+                        <textarea name="description" rows="3" placeholder="Précisez un lieu de rendez-vous, s'il est possible de faire un détour..." class="w-full bg-gray-50 border-none rounded-xl px-4 py-3 text-gray-700 placeholder-gray-400 focus:ring-2 focus:ring-[#70D78D] resize-none">{{ old('description') }}</textarea>
+                    </div>
+
                     <!-- Bouton valider -->
                     <div class="pt-4">
                         <button type="submit" class="w-full bg-[#70D78D] hover:bg-green-500 text-white font-bold py-4 rounded-xl shadow-lg shadow-green-500/30 transition transform hover:-translate-y-0.5">
@@ -178,8 +185,8 @@
                                         {{ $trip->start_time->format('d M à H\hi') }}
                                     </div>
                                     <div class="text-xs text-gray-500 flex items-center gap-1">
-                                         <!-- Adresse -->
-                                         {{ Str::limit($trip->start_address, 15) }} &rarr; {{ Str::limit($trip->end_address, 15) }}
+                                        <!-- Adresse -->
+                                        {{ Str::limit($trip->start_address, 15) }} &rarr; {{ Str::limit($trip->end_address, 15) }}
                                     </div>
                                 </div>
                                 <div class="text-right">
@@ -369,6 +376,12 @@
                         const durationSeconds = data.routes[0].duration;
                         const durationInput = document.getElementById('duration');
                         if (durationInput) durationInput.value = durationSeconds;
+                        
+                        // Récupération de la distance en mètres
+                        const distanceMeters = data.routes[0].distance;
+                        const distanceInput = document.getElementById('distance');
+                        if (distanceInput) distanceInput.value = distanceMeters;
+                        
                         updateArrivalTimeField(durationSeconds);
                     }
                 })

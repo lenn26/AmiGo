@@ -41,7 +41,7 @@
                                 </div>
                                 <div>
                                     <h4 class="font-bold text-gray-900">Email</h4>
-                                    <p class="text-sm text-gray-500">contact@amigo-amiens.fr</p>
+                                    <p class="text-sm text-gray-500">mail.contact.amigo.amiens@gmail.com</p>
                                 </div>
                             </div>
                         </div>

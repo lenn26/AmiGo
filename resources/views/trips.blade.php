@@ -68,7 +68,7 @@
         <div class="flex flex-wrap gap-4 mb-8">
             <!-- Filtre bagage -->
             <a href="{{ request()->fullUrlWithQuery(['luggage' => request('luggage') ? null : 1]) }}" 
-               class="flex items-center gap-2 px-6 py-2.5 border rounded-full transition shadow-sm group {{ request('luggage') ? 'bg-blue-50 border-[#2794EB] text-[#2794EB]' : 'bg-white border-gray-200 text-gray-600 hover:border-[#2794EB] hover:text-[#2794EB]' }}">
+            class="flex items-center gap-2 px-6 py-2.5 border rounded-full transition shadow-sm group {{ request('luggage') ? 'bg-blue-50 border-[#2794EB] text-[#2794EB]' : 'bg-white border-gray-200 text-gray-600 hover:border-[#2794EB] hover:text-[#2794EB]' }}">
                 <svg class="w-5 h-5 transition-colors {{ request('luggage') ? 'text-[#2794EB]' : 'text-gray-600 group-hover:text-[#2794EB]' }}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M8 7V6.2C8 5.0799 8 4.51984 8.21799 4.09202C8.40973 3.71569 8.71569 3.40973 9.09202 3.21799C9.51984 3 10.0799 3 11.2 3H12.8C13.9201 3 14.4802 3 14.908 3.21799C15.2843 3.40973 15.5903 3.71569 15.782 4.09202C16 4.51984 16 5.0799 16 6.2V7M7 21V7.00169M17 21V7M7 7.00169C7.24373 7 7.50929 7 7.8 7H16M7 7.00169C5.83507 7.00979 5.16873 7.05658 4.63803 7.32698C4.07354 7.6146 3.6146 8.07354 3.32698 8.63803C3 9.27976 3 10.1198 3 11.8V16.2C3 17.8802 3 18.7202 3.32698 19.362C3.6146 19.9265 4.07354 20.3854 4.63803 20.673C5.27976 21 6.11984 21 7.8 21H16.2C17.8802 21 18.7202 21 19.362 20.673C19.9265 20.3854 20.3854 19.9265 20.673 19.362C21 18.7202 21 17.8802 21 16.2V11.8C21 10.1198 21 9.27976 20.673 8.63803C20.3854 8.07354 19.9265 7.6146 19.362 7.32698C18.7202 7 17.8802 7 16.2 7H17M17 7H16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
@@ -76,7 +76,7 @@
             </a>
             <!-- Filtre animaux -->
             <a href="{{ request()->fullUrlWithQuery(['pets' => request('pets') ? null : 1]) }}" 
-               class="flex items-center gap-2 px-6 py-2.5 border rounded-full transition shadow-sm group {{ request('pets') ? 'bg-blue-50 border-[#2794EB] text-[#2794EB]' : 'bg-white border-gray-200 text-gray-600 hover:border-[#2794EB] hover:text-[#2794EB]' }}">
+            class="flex items-center gap-2 px-6 py-2.5 border rounded-full transition shadow-sm group {{ request('pets') ? 'bg-blue-50 border-[#2794EB] text-[#2794EB]' : 'bg-white border-gray-200 text-gray-600 hover:border-[#2794EB] hover:text-[#2794EB]' }}">
                 <svg class="w-5 h-5 transition-colors {{ request('pets') ? 'text-[#2794EB]' : 'text-gray-600 group-hover:text-[#2794EB]' }}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd" clip-rule="evenodd" d="M12.0196 14.9374C11.7284 14.9374 11.4307 14.9818 11.1784 15.0796C11.0546 15.1275 10.9032 15.2031 10.7699 15.3252C10.6361 15.4479 10.4632 15.6749 10.4632 15.9999C10.4632 16.3249 10.6361 16.5519 10.7699 16.6745C10.9032 16.7967 11.0546 16.8722 11.1784 16.9202C11.4307 17.018 11.7284 17.0624 12.0196 17.0624C12.3109 17.0624 12.6085 17.018 12.8609 16.9202C12.9846 16.8722 13.136 16.7967 13.2693 16.6745C13.4032 16.5519 13.5761 16.3249 13.5761 15.9999C13.5761 15.6749 13.4032 15.4479 13.2693 15.3252C13.136 15.2031 12.9846 15.1275 12.8609 15.0796C12.6085 14.9818 12.3109 14.9374 12.0196 14.9374Z" fill="currentColor"/>
                     <path d="M14.0365 12.6464C14.2015 12.38 14.5274 12.0625 15.0163 12.0625C15.5051 12.0625 15.831 12.38 15.996 12.6464C16.1681 12.9243 16.2501 13.2612 16.2501 13.5938C16.2501 13.9263 16.1681 14.2632 15.996 14.5411C15.831 14.8075 15.5051 15.125 15.0163 15.125C14.5274 15.125 14.2015 14.8075 14.0365 14.5411C13.8644 14.2632 13.7824 13.9263 13.7824 13.5938C13.7824 13.2612 13.8644 12.9243 14.0365 12.6464Z" fill="currentColor"/>
@@ -87,7 +87,7 @@
             </a>
             <!-- Filtre fille uniquement -->
             <a href="{{ request()->fullUrlWithQuery(['girl_only' => request('girl_only') ? null : 1]) }}" 
-               class="flex items-center gap-2 px-6 py-2.5 border rounded-full transition shadow-sm group {{ request('girl_only') ? 'bg-blue-50 border-[#2794EB] text-[#2794EB]' : 'bg-white border-gray-200 text-gray-600 hover:border-[#2794EB] hover:text-[#2794EB]' }}">
+            class="flex items-center gap-2 px-6 py-2.5 border rounded-full transition shadow-sm group {{ request('girl_only') ? 'bg-blue-50 border-[#2794EB] text-[#2794EB]' : 'bg-white border-gray-200 text-gray-600 hover:border-[#2794EB] hover:text-[#2794EB]' }}">
                 <svg class="w-5 h-5 transition-colors {{ request('girl_only') ? 'text-[#2794EB]' : 'text-gray-600 group-hover:text-[#2794EB]' }}" viewBox="0 0 512 512" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                     <path d="M433.78,491.595c-14.767-164.707-1.572-108.891-58.429-252.545v-53.747l23.347-74.059
                     c1.72-5.457,0.852-11.401-2.358-16.139c-15.205-22.442-23.071-51.435-20.037-73.862C377.824,10.003,369.071,0,357.741,0h-52.431
@@ -238,7 +238,7 @@
             </div>
 
             <!-- Colonne de droite (map) -->
-            <div class="h-[600px] bg-gray-100 rounded-[2rem] overflow-hidden relative shadow-inner border border-gray-200">
+            <div class="h-[600px] bg-gray-100 rounded-[2rem] overflow-hidden shadow-inner border border-gray-200 sticky top-32">
                 <div id="map" class="w-full h-full z-0"></div>
                 <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-[-1]">
                     <span class="text-gray-400">Chargement de la carte...</span>
@@ -289,11 +289,11 @@
                                         </div>
 
                                         <template x-if="activeTrip.description">
-                                            <div class="mt-6">
+                                            <div class="mt-6 pt-4 border-t border-gray-100">
                                                 <h4 class="font-bold text-[#333333] mb-2">
                                                     À propos du trajet
                                                 </h4>
-                                                <p class="text-gray-600 text-sm" x-text="activeTrip.description"></p>
+                                                <p class="text-gray-600 text-sm italic" x-text="activeTrip.description"></p>
                                             </div>
                                         </template>
 
@@ -311,7 +311,7 @@
                                                         <img :src="activeTrip.driver.avatar" class="w-full h-full object-cover">
                                                     </template>
                                                     <template x-if="!activeTrip.driver.avatar">
-                                                         <span x-text="activeTrip.driver.first_name.charAt(0)"></span>
+                                                        <span x-text="activeTrip.driver.first_name.charAt(0)"></span>
                                                     </template>
                                                 </div>
                                                 <div>
@@ -325,7 +325,7 @@
                                                     </div>
                                                     <template x-if="activeTrip.driver.ratings_count > 0">
                                                         <div class="flex items-center gap-1 text-yellow-500 text-xs">
-                                                             <span class="font-bold" x-text="activeTrip.driver.average_rating + '/5'"></span> <span class="text-gray-400" x-text="'(' + activeTrip.driver.ratings_count + ' avis)'"></span>
+                                                            <span class="font-bold" x-text="activeTrip.driver.average_rating + '/5'"></span> <span class="text-gray-400" x-text="'(' + activeTrip.driver.ratings_count + ' avis)'"></span>
                                                         </div>
                                                     </template>
                                                     <template x-if="activeTrip.driver.ratings_count == 0">
@@ -350,7 +350,7 @@
                                                 <span>Véhicule</span>
                                                 <span class="font-semibold text-gray-900" x-text="activeTrip.vehicle ? (activeTrip.vehicle.make + ' ' + activeTrip.vehicle.model) : 'Non spécifié'"></span>
                                             </li>
-                                             <li class="flex justify-between border-b border-gray-100 pb-2">
+                                            <li class="flex justify-between border-b border-gray-100 pb-2">
                                                 <span>Couleur</span>
                                                 <span class="font-semibold text-gray-900" x-text="activeTrip.vehicle ? activeTrip.vehicle.color : '-'"></span>
                                             </li>
@@ -365,13 +365,19 @@
                                                         <span class="bg-blue-100 text-blue-800 text-xs px-2 py-0.5 rounded" title="Bagages autorisés">Bagages</span>
                                                     </template>
                                                     <template x-if="activeTrip.accepts_pets">
-                                                         <span class="bg-green-100 text-green-800 text-xs px-2 py-0.5 rounded" title="Animaux acceptés">Animaux</span>
+                                                        <span class="bg-green-100 text-green-800 text-xs px-2 py-0.5 rounded" title="Animaux acceptés">Animaux</span>
                                                     </template>
                                                     <template x-if="activeTrip.girl_only">
-                                                         <span class="bg-pink-100 text-pink-800 text-xs px-2 py-0.5 rounded" title="Entre filles">Filles</span>
+                                                        <span class="bg-pink-100 text-pink-800 text-xs px-2 py-0.5 rounded" title="Entre filles">Filles</span>
                                                     </template>
                                                 </div>
                                             </li>
+                                            <template x-if="activeTrip.distance_km && activeTrip.distance_km > 0">
+                                                <li class="flex justify-between border-b border-gray-100 pb-2">
+                                                    <span>Distance</span>
+                                                    <span class="font-semibold text-gray-900" x-text="activeTrip.distance_km + ' km'"></span>
+                                                </li>
+                                            </template>
                                         </ul>
                                     </div>
                                 </div>
@@ -379,12 +385,12 @@
                             
                             <!-- Zone de réservation -->
                             <div class="bg-gray-50 px-4 py-4 sm:px-6 flex items-center justify-between">
-                                 <div>
+                                <div>
                                     <p class="text-sm text-gray-500" x-text="seats > 1 ? 'Prix total' : 'Prix par passager'">Prix par passager</p>
                                     <span class="text-2xl font-bold text-[#333333]" x-text="(activeTrip.price * seats).toLocaleString('fr-FR', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + ' €'"></span>
-                                 </div>
-                                 <div class="flex items-center gap-4">
-                                     <form :action="'/trips/' + activeTrip.id + '/book'" method="POST" class="flex gap-4 items-center">
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <form :action="'/trips/' + activeTrip.id + '/book'" method="POST" class="flex gap-4 items-center">
                                         @csrf
                                         <div class="flex items-center gap-2">
                                             <label class="text-sm font-medium text-gray-700">Places :</label>
@@ -398,8 +404,8 @@
                                             <span>Réserver</span>
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
                                         </button>
-                                     </form>
-                                 </div>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                         </template>

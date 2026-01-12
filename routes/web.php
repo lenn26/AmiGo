@@ -26,10 +26,6 @@ use App\Models\Trip;
 
 // Page de recherche de trajets
 Route::get('/trajets', function (Request $request) {
-    // Passes les trajets à 'completed' dont l'heure de départ est passée
-    Trip::where('start_time', '<', now())
-        ->whereIn('status', ['planned', 'open', 'full'])
-        ->update(['status' => 'completed']);
 
     // On ne veut que les trajets futurs et non terminés
     // Donc on filtre sur la date de début et le statut du trajet
@@ -42,26 +38,26 @@ Route::get('/trajets', function (Request $request) {
         // Recherche par mots-clés pour le départ
         $keywords = array_filter(explode(' ', $request->from), fn($w) => strlen($w) > 2);
         if (empty($keywords)) {
-             $query->where('start_address', 'like', '%' . $request->from . '%');
+            $query->where('start_address', 'like', '%' . $request->from . '%');
         } else {
-             $query->where(function($q) use ($keywords) {
-                 foreach ($keywords as $word) {
-                     $q->where('start_address', 'like', '%' . $word . '%');
-                 }
-             });
+            $query->where(function($q) use ($keywords) {
+                foreach ($keywords as $word) {
+                    $q->where('start_address', 'like', '%' . $word . '%');
+                }
+            });
         }
     }
     if ($request->filled('to')) {
         // Recherche par mots-clés pour l'arrivée
         $keywords = array_filter(explode(' ', $request->to), fn($w) => strlen($w) > 2);
         if (empty($keywords)) {
-             $query->where('end_address', 'like', '%' . $request->to . '%');
+            $query->where('end_address', 'like', '%' . $request->to . '%');
         } else {
-             $query->where(function($q) use ($keywords) {
-                 foreach ($keywords as $word) {
-                     $q->where('end_address', 'like', '%' . $word . '%');
-                 }
-             });
+            $query->where(function($q) use ($keywords) {
+                foreach ($keywords as $word) {
+                    $q->where('end_address', 'like', '%' . $word . '%');
+                }
+            });
         }
     }
     if ($request->filled('date')) {
@@ -82,7 +78,7 @@ Route::get('/trajets', function (Request $request) {
         $query->where('girl_only', true);
     }
 
-    $trips = $query->get();
+    $trips = $query->orderBy('start_time', 'asc')->get();
 
     $upcoming_bookings = collect();
     if (auth()->check()) {
@@ -126,10 +122,10 @@ Route::post('/trips/{trip}/book', function (Request $request, Trip $trip) {
     $seats = (int) $request->input('seats', 1);
 
     if ($seats < 1 || $seats > $trip->seats_available) {
-       return back()->with('error', 'Nombre de places invalide ou insuffisant.');
+        return back()->with('error', 'Nombre de places invalide ou insuffisant.');
     }
     if ($trip->driver_id === auth()->id()) {
-         return back()->with('error', 'Vous ne pouvez pas réserver votre propre trajet.');
+        return back()->with('error', 'Vous ne pouvez pas réserver votre propre trajet.');
     }
     
     // Créer la réservation

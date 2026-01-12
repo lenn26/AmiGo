@@ -27,7 +27,7 @@ class TripController extends Controller
             'start_long' => 'required|numeric',
             'end_lat' => 'required|numeric',
             'end_long' => 'required|numeric',
-            'duration' => 'nullable|numeric',
+            'description' => 'nullable|string|max:500',
         ], [
             'start_address.required' => 'L\'adresse de départ est requise.',
             'end_address.required' => 'L\'adresse d\'arrivée est requise.',
@@ -43,6 +43,7 @@ class TripController extends Controller
             'start_long.required' => 'Veuillez sélectionner une adresse de départ dans la liste.',
             'end_lat.required' => 'Veuillez sélectionner une adresse d\'arrivée dans la liste.',
             'end_long.required' => 'Veuillez sélectionner une adresse d\'arrivée dans la liste.',
+            'description.max' => 'La description ne doit pas dépasser 500 caractères.',
         ]);
 
         $start_time = Carbon::parse($validated['date'] . ' ' . $validated['time']);
@@ -72,8 +73,8 @@ class TripController extends Controller
             'start_long' => $validated['start_long'],
             'end_lat' => $validated['end_lat'],
             'end_long' => $validated['end_long'],
-            'distance_km' => 0,
-            'description' => null,
+            'description' => $validated['description'] ?? null,
+            'distance_km' => $request->has('distance') ? round($request->input('distance') / 1000, 1) : 0,
         ]);
 
         return redirect()->route('trips')->with('success', 'Votre trajet a été publié avec succès !');

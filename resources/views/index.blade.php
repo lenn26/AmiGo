@@ -165,7 +165,10 @@
             </p>
 
             <div class="bg-gradient-to-r from-blue-400 to-green-400 rounded-[4rem] p-8 shadow-xl">
-                <div class="flex flex-col md:flex-row items-center md:items-start gap-4 p-2 rounded-xl md:rounded-full backdrop-blur-sm">
+                <form action="{{ route('trips') }}" method="GET" class="flex flex-col md:flex-row items-center md:items-start gap-4 p-2 rounded-xl md:rounded-full backdrop-blur-sm">
+                    <!-- Entrée cachée pour la date -->
+                    <input type="hidden" name="date" value="{{ now()->format('Y-m-d') }}">
+
                     <!-- Départ -->
                     <div class="flex-1 w-full relative group">
                         <label class="block text-xs text-white ml-4 mb-1 font-medium">Départ</label>
@@ -173,14 +176,14 @@
                             <svg width="38px" height="38px" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path clip-rule="evenodd" d="M2 6V6.29266C2 7.72154 2.4863 9.10788 3.37892 10.2236L8 16L12.6211 10.2236C13.5137 9.10788 14 7.72154 14 6.29266V6C14 2.68629 11.3137 0 8 0C4.68629 0 2 2.68629 2 6ZM8 8C9.10457 8 10 7.10457 10 6C10 4.89543 9.10457 4 8 4C6.89543 4 6 4.89543 6 6C6 7.10457 6.89543 8 8 8Z" fill="#2794EB" fill-rule="evenodd" />
                             </svg>
-                            <input type="text" id="home_start_address" placeholder="Ex : Gare du Nord" class="w-full bg-transparent outline-none focus:ring-0 border-none text-[#333333] placeholder-gray-400 font-medium focus:border-blue-500">
+                            <input type="text" name="from" id="home_start_address" placeholder="Ex : Gare du Nord" class="w-full bg-transparent outline-none focus:ring-0 border-none text-[#333333] placeholder-gray-400 font-medium focus:border-blue-500">
                         </div>
                         <!-- Suggestions Départ -->
                         <div id="home_start_suggestions" class="absolute z-50 w-full bg-white border border-gray-100 rounded-xl mt-1 shadow-lg hidden overflow-hidden left-0"></div>
                     </div>
 
                     <!-- Icone de swap -->
-                    <button class="p-2 text-white hover:bg-white/20 rounded-full transition md:mt-4">
+                    <button id="swap_button" class="p-2 text-white hover:bg-white/20 rounded-full transition md:mt-4">
                         <svg width="55px" height="55px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff">
                             <path d="M6 13 2 9l4-4" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                             <path d="M2 9h12" stroke="#ffffff" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" />
@@ -196,17 +199,17 @@
                             <svg width="38px" height="38px" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M1 1V16H3V10H7L9 12H15V3H9L7 1H1Z" fill="#47D6B6" />
                             </svg>
-                            <input type="text" id="home_end_address" placeholder="Ex : Campus Citadelle" class="w-full bg-transparent outline-none focus:ring-0 border-none text-[#333333] placeholder-gray-400 font-medium focus:border-blue-500">
+                            <input type="text" name="to" id="home_end_address" placeholder="Ex : Campus Citadelle" class="w-full bg-transparent outline-none focus:ring-0 border-none text-[#333333] placeholder-gray-400 font-medium focus:border-blue-500">
                         </div>
                         <!-- Suggestions Arrivée -->
                         <div id="home_end_suggestions" class="absolute z-50 w-full bg-white border border-gray-100 rounded-xl mt-1 shadow-lg hidden overflow-hidden left-0"></div>
                     </div>
 
                     <!-- Bouton go -->
-                    <button class="bg-white text-green-500 font-bold py-3 px-8 rounded-full hover:bg-gray-50 transition shadow-lg mt-6 md:mt-7">
+                    <button type="submit" class="bg-white text-green-500 font-bold py-3 px-8 rounded-full hover:bg-gray-50 transition shadow-lg mt-6 md:mt-7">
                         GO
                     </button>
-                </div>
+                </form>
 
                 <div class="mt-6 flex flex-wrap items-center gap-3 text-sm text-white font-medium">
                     <span class="opacity-80">Populaires :</span>
@@ -327,6 +330,32 @@
                     window.setupAutocomplete('home_end_address', 'home_end_suggestions');
                 }
             }, 100);
+            // Ajout de la logique de swap pour les champs Départ et Arrivée
+            const swapBtn = document.getElementById('swap_button');
+            if (swapBtn) {
+                swapBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Animation de rotation
+                    const svg = this.querySelector('svg');
+                    if(svg) {
+                        svg.style.transition = 'transform 0.3s ease';
+                        svg.style.transform = 'rotate(180deg)';
+                        setTimeout(() => {
+                            svg.style.transform = 'rotate(0deg)';
+                        }, 300);
+                    }
+
+                    const startInput = document.getElementById('home_start_address');
+                    const endInput = document.getElementById('home_end_address');
+                    
+                    if (startInput && endInput) {
+                        const tmp = startInput.value;
+                        startInput.value = endInput.value;
+                        endInput.value = tmp;
+                    }
+                });
+            }
         });
     </script>
 </x-main-layout>
