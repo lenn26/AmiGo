@@ -21,6 +21,13 @@ Route::get('/', function () {
 // API pour la recherche d'universités (autocomplétion)
 Route::get('/api/locations', [App\Http\Controllers\UniversityController::class, 'search'])->name('api.universities.search');
 
+// Routes pour les notifications
+Route::middleware('auth')->group(function () {
+    Route::get('/notifications', [App\Http\Controllers\NotificationController::class, 'index'])->name('notifications');
+    Route::post('/notifications/{id}/read', [App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('notifications.read');
+    Route::post('/notifications/read-all', [App\Http\Controllers\NotificationController::class, 'markAllAsRead'])->name('notifications.readAll');
+});
+
 use Illuminate\Http\Request;
 use App\Models\Trip;
 
@@ -139,6 +146,19 @@ Route::post('/trips/{trip}/book', function (Request $request, Trip $trip) {
     // Décrémenter les places
     $trip->decrement('seats_available', $seats);
 
+    // Mettre à jour le statut si le trajet est complet
+    if ($trip->fresh()->seats_available == 0) {
+        $trip->update(['status' => 'full']);
+    }
+
+    // Notifier le conducteur
+    App\Models\Notification::create([
+        'user_id' => $trip->driver_id,
+        'type' => 'booking',
+        'message' => auth()->user()->first_name . ' ' . auth()->user()->last_name . ' a réservé ' . $seats . ' place(s) pour votre trajet du ' . $trip->start_time->format('d/m/Y à H:i') . '.',
+        'is_read' => false,
+    ]);
+
     return redirect()->route('reservations')->with('success', 'Trajet réservé !');
 })->name('trips.book')->middleware('auth');
 
@@ -186,6 +206,11 @@ Route::middleware('auth')->group(function () {
 
         // Remettre les places disponibles
         $booking->trip->increment('seats_available', $booking->seats_booked);
+
+        // Si le trajet était complet, le repasser à "open"
+        if ($booking->trip->fresh()->status === 'full' && $booking->trip->fresh()->seats_available > 0) {
+            $booking->trip->update(['status' => 'open']);
+        }
 
         $booking->delete();
         return back();

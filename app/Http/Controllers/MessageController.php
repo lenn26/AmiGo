@@ -124,6 +124,14 @@ class MessageController extends Controller
             'trip_id' => $request->trip_id, // Optionnel
         ]);
 
+        // Notifier le destinataire
+        \App\Models\Notification::create([
+            'user_id' => $user->id,
+            'type' => 'message',
+            'message' => Auth::user()->first_name . ' ' . Auth::user()->last_name . ' vous a envoyé un message.',
+            'is_read' => false,
+        ]);
+
         return redirect()->route('messages.show', ['user' => $user->id, 'trip_id' => $request->trip_id])->with('success', 'Message envoyé');
     }
 }

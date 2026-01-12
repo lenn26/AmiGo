@@ -131,7 +131,7 @@
                 @auth
                     <!-- Lien vers l'administration si l'utilisateur est admin -->
                     @if(Auth::user()->role === 'admin')
-                    <a href="{{ route('admin.dashboard') }}" class="relative group @if(request()->is('admin*')) text-[#3499FE] font-semibold @else hover:text-black text-red-600 @endif transition">
+                    <a href="{{ route('admin.dashboard') }}" class="relative group @if(request()->is('admin*')) font-semibold @else hover:text-black text-red-600 @endif transition">
                         Administration
                         <span class="absolute bottom-0 left-0 w-full h-[2px] bg-red-600 origin-right scale-x-0 transition-transform duration-300 group-hover:scale-x-100 group-hover:origin-left"></span>
                     </a>
@@ -143,6 +143,22 @@
             <div class="hidden md:flex items-center gap-4">
                 <!-- Vérification si l'utilisateur est connecté -->
                 @auth
+                    <!-- Icône de notification avec badge -->
+                    <a href="{{ route('notifications') }}" class="relative group">
+                        <svg class="w-6 h-6 text-gray-600 group-hover:text-[#2794EB] transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                        </svg>
+                        <!-- Comptage des notifications non lues -->
+                        @php
+                            $unreadCount = \App\Models\Notification::where('user_id', auth()->id())->where('is_read', false)->count();
+                        @endphp
+                        @if($unreadCount > 0)
+                            <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                                {{ $unreadCount > 9 ? '9+' : $unreadCount }}
+                            </span>
+                        @endif
+                    </a>
+
                     <!-- Menu utilisateur -->
                     <div class="relative" x-data="{ dropdownOpen: false }">
                         <button @click="dropdownOpen = !dropdownOpen" @click.away="dropdownOpen = false" class="flex items-center gap-2 focus:outline-none transition hover:opacity-80">
@@ -286,7 +302,7 @@
         </div>
     </header>
 
-    <main class="flex-grow">
+    <main class="flex-grow min-h-screen">
         {{ $slot }}
     </main>
 
