@@ -256,6 +256,9 @@
                                                                         <p class="font-medium text-gray-900" x-text="booking.passenger.first_name + ' ' + booking.passenger.last_name"></p>
                                                                         <p class="text-xs text-gray-500" x-text="booking.seats_booked + ' place(s)'"></p>
                                                                     </div>
+                                                                    <a :href="'/messages/' + booking.passenger.id + '?trip_id=' + active.id" class="ml-auto text-blue-500 hover:text-blue-700 bg-white p-2 rounded-full shadow-sm hover:shadow transition-shadow" title="Envoyer un message">
+                                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+                                                                    </a>
                                                                 </div>
                                                             </template>
                                                         </div>

@@ -45,7 +45,11 @@
                                                 {{ substr($booking->trip->driver->first_name, 0, 1) }}
                                             </div>
                                         @endif
+                                        <!-- Lien pour envoyer un message au conducteur -->
                                         <span>Conducteur : {{ $booking->trip->driver->first_name }}</span>
+                                        <a href="{{ route('messages.show', ['user' => $booking->trip->driver->id, 'trip_id' => $booking->trip->id]) }}" class="text-[#2794EB] hover:text-blue-700 ml-1 p-1 rounded-full hover:bg-blue-50 transition-colors" title="Envoyer un message">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+                                        </a>
                                     </div>
                                     <span class="text-gray-300">|</span>
                                     <span>{{ $booking->seats_booked }} place(s)</span>

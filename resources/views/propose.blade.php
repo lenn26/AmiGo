@@ -17,8 +17,9 @@
                     <!-- Affichage des erreurs de validation -->
                     @if ($errors->any())
                         <div class="bg-red-50 text-red-500 p-4 rounded-xl">
-                            <ul>
-                                @foreach ($errors->all() as $error)
+                            <ul class="list-disc list-inside">
+                                <!-- Affichage des erreurs. array_unique pour éviter les doublons -->
+                                @foreach (array_unique($errors->all()) as $error)
                                     <li>{{ $error }}</li>
                                 @endforeach
                             </ul>
@@ -32,6 +33,7 @@
                         <input type="hidden" name="start_long" id="start_long" value="{{ old('start_long') }}">
                         <input type="hidden" name="end_lat" id="end_lat" value="{{ old('end_lat') }}">
                         <input type="hidden" name="end_long" id="end_long" value="{{ old('end_long') }}">
+                        <input type="hidden" name="duration" id="duration" value="{{ old('duration') }}">
 
                         <div class="relative group">
                             <label class="block text-sm font-semibold text-[#333333] mb-2">Départ</label>
@@ -365,6 +367,8 @@
                 .then(data => {
                     if (data.routes && data.routes.length > 0) {
                         const durationSeconds = data.routes[0].duration;
+                        const durationInput = document.getElementById('duration');
+                        if (durationInput) durationInput.value = durationSeconds;
                         updateArrivalTimeField(durationSeconds);
                     }
                 })

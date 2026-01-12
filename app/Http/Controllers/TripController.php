@@ -27,10 +27,22 @@ class TripController extends Controller
             'start_long' => 'required|numeric',
             'end_lat' => 'required|numeric',
             'end_long' => 'required|numeric',
+            'duration' => 'nullable|numeric',
         ], [
-            'start_lat.required' => 'Veuillez sélectionner une adresse de départ dans la liste.',
-            'end_lat.required' => 'Veuillez sélectionner une adresse d\'arrivée dans la liste.',
+            'start_address.required' => 'L\'adresse de départ est requise.',
+            'end_address.required' => 'L\'adresse d\'arrivée est requise.',
+            'date.required' => 'La date de départ est requise.',
             'date.after_or_equal' => 'La date ne peut pas être dans le passé.',
+            'time.required' => 'L\'heure de départ est requise.',
+            'price.required' => 'Le prix du trajet est requis.',
+            'price.numeric' => 'Le prix doit être un nombre.',
+            'price.min' => 'Le prix ne peut pas être négatif.',
+            'vehicle_id.required' => 'Veuillez sélectionner un véhicule.',
+            'vehicle_id.exists' => 'Le véhicule sélectionné est invalide.',
+            'start_lat.required' => 'Veuillez sélectionner une adresse de départ dans la liste.',
+            'start_long.required' => 'Veuillez sélectionner une adresse de départ dans la liste.',
+            'end_lat.required' => 'Veuillez sélectionner une adresse d\'arrivée dans la liste.',
+            'end_long.required' => 'Veuillez sélectionner une adresse d\'arrivée dans la liste.',
         ]);
 
         $start_time = Carbon::parse($validated['date'] . ' ' . $validated['time']);
@@ -41,16 +53,14 @@ class TripController extends Controller
             ]);
         }
 
-        // Pour l'instant, nous utilisons des valeurs par défaut pour les coordonnées
-        // Dans une version plus avancée, il faudrait utiliser une API de géocodage
         $trip = Trip::create([
             'driver_id' => Auth::id(),
             'vehicle_id' => $validated['vehicle_id'],
             'start_address' => $validated['start_address'],
             'end_address' => $validated['end_address'],
             'start_time' => $start_time,
-            // Estimation basique ou null pour l'instant
-            'end_time' => $start_time->copy()->addHours(1), 
+            // Utilisation de la durée calculée par l'API si disponible
+            'end_time' => $request->has('duration') ? $start_time->copy()->addSeconds((int) $request->duration) : $start_time->copy()->addHours(1),
             'price' => $validated['price'],
             'seats_available' => $validated['seats_available'],
             'status' => 'planned',
