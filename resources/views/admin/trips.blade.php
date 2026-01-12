@@ -40,9 +40,9 @@
                                 <div class="text-xs text-gray-500">{{ $trip->driver->email }}</div>
                             </td>
                             <!-- Information du trajet -->
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm font-medium text-gray-900">{{ $trip->start_location }}</div>
-                                <div class="text-xs text-gray-400 mt-0.5">> {{ $trip->end_location }}</div>
+                            <td class="px-6 py-4">
+                                <div class="text-sm font-medium text-gray-900">{{ Str::limit($trip->start_address, 30) }}</div>
+                                <div class="text-xs text-gray-400 mt-0.5">-> {{ Str::limit($trip->end_address, 30) }}</div>
                             </td>
                             <!-- Date du trajet -->
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -58,7 +58,7 @@
                             </td>
                             <!-- Places disponibles -->
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                {{ $trip->seats_available }} / {{ $trip->total_seats }}
+                                {{ $trip->seats_available }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                 <form action="{{ route('admin.trips.delete', $trip) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce trajet ?');" class="inline">

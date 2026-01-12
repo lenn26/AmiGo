@@ -171,8 +171,9 @@ Route::middleware('auth')->group(function () {
             ->get()
             ->sortByDesc(fn($booking) => $booking->trip->start_time);
 
-        $upcoming = $bookings->filter(fn($b) => $b->trip->start_time >= now());
-        $history = $bookings->filter(fn($b) => $b->trip->start_time < now());
+        // Filtrer les réservations futures et non terminées
+        $upcoming = $bookings->filter(fn($b) => $b->trip->start_time >= now() && $b->trip->status !== 'completed');
+        $history = $bookings->filter(fn($b) => $b->trip->start_time < now() || $b->trip->status === 'completed');
 
         return view('reservations', compact('upcoming', 'history'));
     })->name('reservations');
