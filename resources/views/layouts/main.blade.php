@@ -179,14 +179,14 @@
 
                         <!-- Menu déroulant -->
                         <div x-show="dropdownOpen"
-                             x-transition:enter="transition ease-out duration-100"
-                             x-transition:enter-start="transform opacity-0 scale-95"
-                             x-transition:enter-end="transform opacity-100 scale-100"
-                             x-transition:leave="transition ease-in duration-75"
-                             x-transition:leave-start="transform opacity-100 scale-100"
-                             x-transition:leave-end="transform opacity-0 scale-95"
-                             class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-100 py-1 z-50 overflow-hidden"
-                             style="display: none;">
+                            x-transition:enter="transition ease-out duration-100"
+                            x-transition:enter-start="transform opacity-0 scale-95"
+                            x-transition:enter-end="transform opacity-100 scale-100"
+                            x-transition:leave="transition ease-in duration-75"
+                            x-transition:leave-start="transform opacity-100 scale-100"
+                            x-transition:leave-end="transform opacity-0 scale-95"
+                            class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-100 py-1 z-50 overflow-hidden"
+                            style="display: none;">
                             
                             <!-- Lien vers le profil -->
                             <a href="{{ route('profile.edit') }}" class="flex items-center gap-2 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
@@ -390,7 +390,7 @@
                 <div class="w-full border-t-[1.5px] border-[#474747] mt-16 mb-6"></div>
 
                 <div class="text-[#D9DBE1] text-sm w-full flex flex-col md:flex-row justify-between items-center gap-2">
-                    <p>&copy; 2025 AmiGo. Tous droits réservés.</p>
+                    <p>&copy; 2026 AmiGo. Tous droits réservés.</p>
                     <p class="text-gray-400">Projet étudiant réalisé dans le cadre du BUT Informatique</p>
                 </div>
             </div>
