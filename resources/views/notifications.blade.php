@@ -23,7 +23,10 @@
         <div class="bg-white rounded-[2rem] shadow-sm border border-gray-100 overflow-hidden">
             <!-- Liste des notifications -->
             @forelse($notifications as $notification)
-                <div class="p-6 border-b border-gray-100 flex items-start gap-4 {{ $notification->is_read ? 'bg-white' : 'bg-blue-50/50' }} hover:bg-gray-50 transition">
+                <div 
+                    class="p-6 border-b border-gray-100 flex items-start gap-4 {{ $notification->is_read ? 'bg-white' : 'bg-blue-50/50' }} hover:bg-gray-50 transition {{ $notification->action_url ? 'cursor-pointer' : '' }}"
+                    @if($notification->action_url) onclick="window.location.href='{{ $notification->action_url }}'" @endif
+                >
                     <div class="flex-shrink-0 mt-1">
                         @if($notification->type === 'booking')
                             <div class="w-10 h-10 bg-[#2794EB]/10 rounded-full flex items-center justify-center">
@@ -58,7 +61,7 @@
 
                     <!-- Bouton pour marquer la notification comme lue -->
                     @if(!$notification->is_read)
-                        <form action="{{ route('notifications.read', $notification->id) }}" method="POST">
+                        <form action="{{ route('notifications.read', $notification->id) }}" method="POST" onclick="event.stopPropagation()">
                             @csrf
                             <button type="submit" class="flex-shrink-0 text-xs text-[#2794EB] hover:underline whitespace-nowrap">
                                 Marquer comme lu

@@ -110,6 +110,7 @@ use App\Http\Controllers\TripController;
 Route::middleware('auth')->get('/proposer-trajet', function () {
     // Récupération des trajets du conducteur pour l'historique rapide à droite
     $userTrips = Trip::where('driver_id', auth()->id())
+                    ->where('start_time', '>=', now())
                     ->orderBy('start_time', 'asc')
                     ->get();
     // Récupération des véhicules de l'utilisateur

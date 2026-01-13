@@ -66,6 +66,9 @@
 
     <!-- En-tête -->
     <header id="main-navbar" class="w-full py-6 px-4 flex justify-center sticky top-0 z-50 pointer-events-none transition-transform duration-300 ease-in-out" x-data="{ open: false, mobileTrajetsOpen: false }">
+        @php
+            $unreadCount = auth()->check() ? \App\Models\Notification::where('user_id', auth()->id())->where('is_read', false)->count() : 0;
+        @endphp
         <div class="w-full max-w-7xl bg-white rounded-[2rem] md:rounded-full shadow-xl px-8 py-4 flex flex-col md:flex-row items-center justify-between border border-gray-100 pointer-events-auto relative">
             <div class="w-full md:w-auto flex items-center justify-between">
                 <!-- Navbar -->
@@ -149,9 +152,6 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
                         </svg>
                         <!-- Comptage des notifications non lues -->
-                        @php
-                            $unreadCount = \App\Models\Notification::where('user_id', auth()->id())->where('is_read', false)->count();
-                        @endphp
                         @if($unreadCount > 0)
                             <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
                                 {{ $unreadCount > 9 ? '9+' : $unreadCount }}
@@ -272,6 +272,20 @@
 
                 <x-mobile-nav-link :href="route('faq')" :active="request()->is('faq*')">FAQ</x-mobile-nav-link>
                 <x-mobile-nav-link :href="route('contact')" :active="request()->is('contact*')">Contact</x-mobile-nav-link>
+
+                @auth
+                    <x-mobile-nav-link :href="route('notifications')" :active="request()->routeIs('notifications')">
+                        <div class="flex items-center justify-between w-full">
+                            <span>Notifications</span>
+                            @if($unreadCount > 0)
+                                <span class="bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                                    {{ $unreadCount > 9 ? '9+' : $unreadCount }}
+                                </span>
+                            @endif
+                        </div>
+                    </x-mobile-nav-link>
+                    <x-mobile-nav-link :href="route('messages.index')" :active="request()->routeIs('messages.*')">Messagerie</x-mobile-nav-link>
+                @endauth
                 
                 <div class="flex flex-col gap-3 mt-2">
                     <!-- Vérification si l'utilisateur est connecté -->

@@ -120,14 +120,21 @@
 
                 <!-- Boucle pour chaque trajet disponible -->
                 @foreach($trips as $trip)
+                @php
+                    $tripData = $trip->toArray();
+                    $tripData['formatted_start_time'] = $trip->start_time->format('H:i');
+                    $tripData['formatted_end_time'] = $trip->end_time->format('H:i');
+                    $tripData['formatted_date'] = $trip->start_time->translatedFormat('l d F');
+                    $jsonTrip = json_encode($tripData);
+                @endphp
                 <div class="trip-card bg-white rounded-[2rem] p-6 shadow-sm border border-gray-100 hover:shadow-md transition cursor-pointer group"
-                     @dblclick="activeTrip = {{ json_encode($trip) }}; showTripModal = true"
-                     data-start-lat="{{ $trip->start_lat }}"
-                     data-start-long="{{ $trip->start_long }}"
-                     data-end-lat="{{ $trip->end_lat }}"
-                     data-end-long="{{ $trip->end_long }}"
-                     data-start-address="{{ $trip->start_address }}"
-                     data-end-address="{{ $trip->end_address }}">
+                    @dblclick="activeTrip = {{ $jsonTrip }}; showTripModal = true"
+                    data-start-lat="{{ $trip->start_lat }}"
+                    data-start-long="{{ $trip->start_long }}"
+                    data-end-lat="{{ $trip->end_lat }}"
+                    data-end-long="{{ $trip->end_long }}"
+                    data-start-address="{{ $trip->start_address }}"
+                    data-end-address="{{ $trip->end_address }}">
                     <div class="flex justify-between items-start mb-6">
                         <div class="flex gap-4 relative">
                             <!-- Timeline -->
@@ -228,7 +235,7 @@
                             </div>
                         </div>
                         <div class="flex gap-2 text-gray-400">
-                                <button @click.stop="activeTrip = {{ json_encode($trip) }}; showTripModal = true" class="text-[#2794EB] hover:text-[#1a6ba3] hover:underline font-bold text-sm ml-auto">
+                                <button @click.stop="activeTrip = {{ $jsonTrip }}; showTripModal = true" class="text-[#2794EB] hover:text-[#1a6ba3] hover:underline font-bold text-sm ml-auto">
                                     Voir plus
                                 </button>
                         </div>
@@ -278,12 +285,12 @@
                                         <div class="space-y-4 relative pl-4 border-l-2 border-gray-100 ml-2">
                                             <div class="relative">
                                                 <div class="absolute -left-[21px] top-1 w-3 h-3 rounded-full border-2 border-[#2794EB] bg-white"></div>
-                                                <p class="font-bold text-lg text-gray-800" x-text="new Date(activeTrip.start_time).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})">08:00</p>
+                                                <p class="font-bold text-lg text-gray-800" x-text="activeTrip.formatted_start_time">08:00</p>
                                                 <p class="text-gray-600" x-text="activeTrip.start_address">Depart</p>
                                             </div>
                                             <div class="relative">
                                                 <div class="absolute -left-[21px] top-1 w-3 h-3 rounded-full border-2 border-[#70D78D] bg-white"></div>
-                                                <p class="font-bold text-lg text-gray-800" x-text="new Date(activeTrip.end_time).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})">10:00</p>
+                                                <p class="font-bold text-lg text-gray-800" x-text="activeTrip.formatted_end_time">10:00</p>
                                                 <p class="text-gray-600" x-text="activeTrip.end_address">Arrivée</p>
                                             </div>
                                         </div>
@@ -356,7 +363,7 @@
                                             </li>
                                             <li class="flex justify-between border-b border-gray-100 pb-2">
                                                 <span>Date</span>
-                                                <span class="font-semibold text-gray-900" x-text="new Date(activeTrip.start_time).toLocaleDateString('fr-FR', {weekday: 'long', day: 'numeric', month: 'long'})"></span>
+                                                <span class="font-semibold text-gray-900" x-text="activeTrip.formatted_date"></span>
                                             </li>
                                             <li class="flex justify-between items-center border-b border-gray-100 pb-2">
                                                 <span>Options</span>
