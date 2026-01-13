@@ -46,6 +46,18 @@ class TripController extends Controller
             'description.max' => 'La description ne doit pas dépasser 500 caractères.',
         ]);
 
+        // Sécurité : Vérification contre l'IDOR
+        // On vérifie que le véhicule appartient bien à l'utilisateur connecté
+        $vehicleCheck = \App\Models\Vehicle::where('id', $validated['vehicle_id'])
+                        ->where('owner_id', Auth::id())
+                        ->exists();
+
+        if (! $vehicleCheck) {
+            throw ValidationException::withMessages([
+                'vehicle_id' => ['Le véhicule sélectionné ne vous appartient pas.']
+            ]);
+        }
+
         $start_time = Carbon::parse($validated['date'] . ' ' . $validated['time']);
 
         if ($start_time->isPast()) {
